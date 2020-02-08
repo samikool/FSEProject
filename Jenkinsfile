@@ -12,6 +12,7 @@ pipeline {
             steps {
                 echo 'Testing..'
                 sh java HelloWorld
+                echo 'maybe'
             }
         }
         stage('Deploy') {
