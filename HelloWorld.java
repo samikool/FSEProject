@@ -12,6 +12,6 @@ public class HelloWorld{
     }
 
     public static int power(int x, int y){
-        return x + y + y + y;
+        return x + y;
     }
 }
