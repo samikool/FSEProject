@@ -1,3 +1,5 @@
+import java.math.*;
+
 public class HelloWorld{
     public static void main(String[] args){
         System.out.println("Hello World");
@@ -7,5 +9,9 @@ public class HelloWorld{
     //Can use this function to test our tests
     public static int sum(int x, int y){
         return x + y;
+    }
+
+    public static int power(int x, int n){
+        return Math.pow(x,n);
     }
 }
