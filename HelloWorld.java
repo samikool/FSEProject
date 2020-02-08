@@ -10,8 +10,4 @@ public class HelloWorld{
     public static int sum(int x, int y){
         return x + y + y + y;
     }
-
-    public static int power(int x, int y){
-        return x + y;
-    }
 }
