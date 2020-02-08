@@ -5,11 +5,13 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
+                javac HelloWorld.java
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
+                java HelloWorld.java
             }
         }
         stage('Deploy') {
