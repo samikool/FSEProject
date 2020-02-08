@@ -8,6 +8,6 @@ public class HelloWorld{
 
     //Can use this function to test our tests
     public static int sum(int x, int y){
-        return x + y + y + y;
+        return x + y;
     }
 }
