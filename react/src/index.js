@@ -43,12 +43,13 @@ class Login extends React.Component{
 
   handleChange(event){
     const{name, value} = event.target;
+    console.log("Variable Name: " + name + " " + "Value: " + value);
     this.setState({[name]: value});
   }
 
   handleSubmit(event){
     event.preventDefault();
-    console.log("here");
+    console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
   }
 
   render(){
