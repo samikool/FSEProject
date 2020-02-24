@@ -35,7 +35,7 @@ class Clock extends React.Component{
 class Login extends React.Component{
   constructor(props){
     super(props)
-    this.state = {username: '', password: ''}
+    this.state = {username: '', password: '', resp: ''}
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,6 +50,20 @@ class Login extends React.Component{
   handleSubmit(event){
     event.preventDefault();
     console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
+    
+    fetch("http://localhost:9000/testAPI")
+    .then(res => res.text())
+    .then(res => this.setState({resp: res}));
+
+    const response = fetch('http://localhost:9000/loginRequest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: this.state.username, password: this.state.password}),
+    })
+
+    console.log(async() => await response.json())
+
+
   }
 
   render(){
@@ -77,6 +91,7 @@ class Login extends React.Component{
             value="Submit">
           </input>
         </form>
+        <h4>{this.state.resp}</h4>
       </div>
     );
   }
