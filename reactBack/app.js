@@ -10,6 +10,10 @@ var testAPIRouter = require("./routes/testAPI");
 var loginRequestRouter = require("./routes/loginRequest");
 var cors = require("cors");
 
+TestClass = require('./testClass.js');
+const myTest = new TestClass(4);
+console.log(myTest.getX());
+
 var app = express();
 
 // view engine setup
@@ -43,5 +47,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;
