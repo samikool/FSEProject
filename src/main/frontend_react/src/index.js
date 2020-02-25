@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css'
+import { Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
+
 
 class Clock extends React.Component{
   constructor(props){
@@ -27,7 +31,9 @@ class Clock extends React.Component{
 
   render(){
     return(
-      <h4>{this.state.date.toLocaleTimeString()}</h4>
+      <div style={{padding:10}}>
+        <h4>{this.state.date.toLocaleTimeString()}</h4>
+      </div>
     );
   }
 }
@@ -51,10 +57,6 @@ class Login extends React.Component{
     event.preventDefault();
     console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
     
-    // fetch("http://localhost:5000/testAPI")
-    // .then(res => res.text())
-    // .then(res => this.setState({resp: res}));
-
     fetch('http://localhost:5000/api/loginRequest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -66,28 +68,49 @@ class Login extends React.Component{
 
   render(){
     return(
-      <div>
+      <div style={{ padding: 100 }}>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="uname">Username:</label>
-          <input 
-            type="text" 
-            id="uname" 
-            value={this.state.username} 
-            name="username" 
-            onChange={this.handleChange}/>
-          <br />
+          <label htmlFor="uname">Email Address:</label>
+          <InputGroup className="mb-3">
+            <FormControl
+              placeholder="Email Address"
+              aria-label="Email Address"
+              aria-describedby="basic-addon2"
+              id="uname"
+              value={this.state.username}
+              name="username"
+              onChange={this.handleChange}
+            />
+            <InputGroup.Append>
+              <InputGroup.Text id="basic-addon2">@example.com</InputGroup.Text>
+            </InputGroup.Append>
+          </InputGroup>
           <label htmlFor="pass">Password:</label>
-          <input 
-            type="password" 
-            id="pass" 
-            value={this.state.password} 
-            name="password"
-            onChange={this.handleChange}/>
-          <br />
-          <input
+            <InputGroup className="mb-3">
+            <FormControl
+              placeholder="Password"
+              aria-label="Password"
+              aria-describedby="basic-addon2"
+              id="pass"
+              value={this.state.password}
+              name="password"
+              onChange={this.handleChange}
+            />
+          </InputGroup>
+          <ButtonGroup>
+          <Button
+            variant="secondary"
             type="submit" 
             value="Submit">
-          </input>
+              Login
+          </Button>
+          <Button
+            variant="secondary"
+            type="register" 
+            value="register">
+              Register
+          </Button>
+          </ButtonGroup>
         </form>
         <h4>{this.state.resp}</h4>
       </div>
@@ -98,7 +121,7 @@ class Login extends React.Component{
 
 
 ReactDOM.render(
-  <div>
+  <div style={{'padding':10}}>
     <h4>Welcome</h4>
     <Clock/>
     <Login/>
