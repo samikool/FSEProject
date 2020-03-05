@@ -57,7 +57,7 @@ class Login extends React.Component{
     event.preventDefault();
     console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
     
-    fetch('http://localhost:5000/api/loginRequest', {
+    fetch('http://localhost:5000/loginRequest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({username: this.state.username, password: this.state.password}),

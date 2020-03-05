@@ -13,51 +13,18 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
+//initialize database connection  
+DB = require('./DB');
+database = new DB.DB('postgres', 'localhost', 'fse', 'password', 5432);
+
 const { Pool, Client } = require('pg')
 
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'fse',
-  password: 'password',
-  port: 5432,
-})
-
-// pool.query('SELECT * FROM USERS', (err, res) => {
-//   console.log(err, res.rows[0])
-//   pool.end()
-// })
+var loginRequest = require('./routes/loginRequest');
+app.use('/loginRequest', loginRequest)
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listening on Port %d', port)});
 // WARNING: app.listen(80) will NOT work here!
 
 //login post request
-app.post('/api/loginRequest', function (req, res) {
-
-  var email = req.body['username'];
-  var pw = req.body['password'];
-  var query_str = `SELECT PASSWORD FROM USERS where email='${email}'`;
-  console.log(query_str);
-  //promise
-  pool
-    .query(query_str)
-    .then(dump => {
-      var golden_pw = dump.rows[0].password;
-      if(pw==golden_pw){
-        res.send("Access Granted... In theory");
-      }
-      else{
-        if(dump != null){
-          res.send("Error: Password does not match");
-        }
-        
-      }
-    }
-    )
-    .catch(e => {
-      //console.error(e.stack);
-      res.send("Error: Email does not exist");
-    })
-});
-
+module.exports.app = app;
