@@ -5,17 +5,17 @@ var router = express.Router();
 router.post('/', async function (req, res) {
   var email = req.body['username'];
   var pw = req.body['password'];
-  var query_str = `SELECT PASSWORD FROM USERS where email='${email}'`;
-  console.log(query_str);
 
   let response = await database.login(email, pw);
   
   console.log(response);
+
   if(response == 0){
-    res.send("Password was incorrrect");
+    res.status(200).send("Password was incorrrect");
   }
   else if(response == 1){
-    res.send("Password was correct");
+    const accessToken = jwt.sign({email: email}, process.env.ACCESS_TOKEN_SECRET);
+    res.json({accessToken: accessToken})
   }
   else if(response == -1){
     res.send("Email doesn't exist");

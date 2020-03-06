@@ -15,25 +15,29 @@ class DB{
   }
 
   async login(email, password){
-    return await this.pool.query(`SELECT PASSWORD FROM USERS where email='${email}'`)
-    .then(dump => {
-      var golden_pw = dump.rows[0].password;
-      console.log(golden_pw);
-      if(password==golden_pw){
-        console.log("password same");
-        return 1;
-      }
-      else{
-        if(dump != null){
-          console.log("wrong password");
-          return 0;
-        }
-      }
+
+    var hashedPassword = await this.pool
+    .query(`SELECT PASSWORD FROM USERS where email='${email}'`)
+    .then( res => {
+      console.log("result: " + res.rows[0].password);
+      return res.rows[0].password;
     })
-    .catch(e => {
-      console.log("some error with database");
+    .catch(err => {
       return -1;
     })
+
+    if(hashedPassword == -1){
+      return -1;
+    }
+
+    if(await bcrypt.compare(password, hashedPassword)){
+      console.log("password same");
+      return 1;
+    }
+    else{
+      console.log("wrong password");
+      return 0;
+    }
   }
 
   async register(email, password){
