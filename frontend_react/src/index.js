@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 
-
 class Clock extends React.Component{
   constructor(props){
     super(props)
@@ -56,7 +55,6 @@ class Login extends React.Component{
   handleSubmit(event){
     event.preventDefault();
     console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
-    
     fetch('http://localhost:5000/loginRequest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -1,6 +1,8 @@
 const {Pool, Client} = require('pg')
+const bcrypt = require('bcrypt');
 class DB{
   pool;
+  bcrypt;
   constructor(user, host, database, password, port){
     this.pool = new Pool({
       user: user,
@@ -9,6 +11,7 @@ class DB{
       password: password,
       port: port,
     });
+    this.bcrypt = bcrypt;
   }
 
   async login(email, password){
@@ -31,6 +34,9 @@ class DB{
       console.log("some error with database");
       return -1;
     })
+  }
+
+  async register(email, password){
   }
 }
 

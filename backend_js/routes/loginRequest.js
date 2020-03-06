@@ -12,7 +12,7 @@ router.post('/', async function (req, res) {
   
   console.log(response);
   if(response == 0){
-    res.send("Password was incorrect");
+    res.send("Password was incorrrect");
   }
   else if(response == 1){
     res.send("Password was correct");
