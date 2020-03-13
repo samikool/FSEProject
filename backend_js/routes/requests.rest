@@ -1,6 +1,7 @@
-post http://localhost:5000/loginRequest
+post http://localhost:5000/loginRequest HTTP/1.1
 Content-Type: application/json
+
 {
-    "username": "sam",
-    "password": "sam"
+    "username": "babu.sllapps@tmail.com",
+    "password": "password"
 }

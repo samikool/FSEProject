@@ -29,49 +29,30 @@ class dbApi{
    * @param {string} key Encryption key to compare password
    * @returns {JSON} Return boolean if 
    */
-  async VerifyUser(email,pword,key){
+  async VerifyUser(email,pword){
     var query_str = `SELECT PASSWORD FROM USERS where email='${email}'`;
-    let golden_pw;
-    let res;
+    let golden_pw_enc;
+    let res = {access:false};
     try{
-      golden_pw = this.pool.query(query_str)
-      if(pword==golden_pw){
+      golden_pw_enc = await this.pool.query(query_str)
+      golden_pw_enc = golden_pw_enc.rows[0].password
+      console.log(golden_pw_enc)
+      if(bcrypt.compareSync(pword,golden_pw_enc)){
         // console.log("Access Granted... In theory");
         res = {"access":true};
       }
       else{
-        if(dump != null){
           // console.log("Error: Password does not match");
           res = {"access":false,"failure_reason":"password"};
-        }
+        
       }
     }
     catch(e){
+    //   console.log(e)
       res = {"access":false, "failure_reason":"email"};
     }
 
     return res;
-    // this.pool
-    //   .query(query_str)
-    //   .then(res => {
-    //     var golden_pw = dump.rows[0].password;
-    //     if(pword==golden_pw){
-    //       // console.log("Access Granted... In theory");
-    //       return {"access":true}
-    //     }
-    //     else{
-    //       if(dump != null){
-    //         // console.log("Error: Password does not match");
-    //         return {"access":false,"failure_reason":"password"}
-    //       }
-    //     }
-    //   }
-    //   )
-    //   .catch(e => {
-    //     //console.error(e.stack);
-    //     //no email found in db
-    //     return {"access":false, "failure_reason": "email"}
-    //   })
   }
 
   /** 
