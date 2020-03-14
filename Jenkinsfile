@@ -4,20 +4,23 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building...'
-                bat 'cd ./backend_js'
-                bat 'npm install'
-                bat 'npm start'
-                echo 'Started..'
-                bat 'timeout 1'
-                bat 'npm stop'
-                echo 'Started..'
-                bat 'timeout 1'
-                bat 'cd ../frontend_react'
-                bat 'npm install'
-                bat 'npm start'
-                bat 'timeout 1'
-                bat 'npm stop'
+                dir('backend_js'){
+                    echo 'Installing Backend...'
+                    bat 'npm install'
+                    echo 'Starting Backend...'
+                    bat 'start npm start'
+                    bat 'timeout 1'
+                    bat 'Stopping...'
+                    bat 'npm stop'
+                }
+                dir('frontend_react'){
+                    echo 'Installing Frontend...'
+                    bat 'npm install'
+                    echo 'Starting Frontend...'
+                    bat 'start npm start'
+                    bat 'timeout 1'
+                    bat 'npm stop'
+                }
             }
         }
         stage('Test') {
