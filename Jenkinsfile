@@ -10,7 +10,7 @@ pipeline {
                     echo 'Starting Backend...'
                     bat 'start npm start'
                     sleep 1
-                    bat 'Stopping...'
+                    echo 'Stopping Backend...'
                     bat 'npm stop'
                 }
                 dir('frontend_react'){
@@ -19,6 +19,7 @@ pipeline {
                     echo 'Starting Frontend...'
                     bat 'start npm start'
                     sleep 1
+                    echo 'Stopping Frontend'
                     bat 'npm stop'
                 }
             }
