@@ -20,7 +20,7 @@ pipeline {
                     bat 'start npm start'
                     sleep 1
                     echo 'Stopping Frontend'
-                    bat 'npm stop'
+                    bat 'taskkill /IM \"node.exe\" /f'
                 }
             }
         }
