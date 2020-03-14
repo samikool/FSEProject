@@ -9,7 +9,7 @@ pipeline {
                     bat 'npm install'
                     echo 'Starting Backend...'
                     bat 'start npm start'
-                    bat 'timeout 1'
+                    sleep 1
                     bat 'Stopping...'
                     bat 'npm stop'
                 }
@@ -18,7 +18,7 @@ pipeline {
                     bat 'npm install'
                     echo 'Starting Frontend...'
                     bat 'start npm start'
-                    bat 'timeout 1'
+                    sleep 1
                     bat 'npm stop'
                 }
             }
