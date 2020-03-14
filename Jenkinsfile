@@ -11,7 +11,7 @@ pipeline {
                     bat 'start npm start'
                     sleep 1
                     echo 'Stopping Backend...'
-                    bat 'npm stop'
+                    bat 'taskkill /IM \"node.exe\" /f'
                 }
                 dir('frontend_react'){
                     echo 'Installing Frontend...'
