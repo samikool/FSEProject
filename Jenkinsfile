@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                bat './backend_js/npm start'
+                bat '.\\backend_js\\npm start'
                 echo 'Started..'
                 bat 'timeout 1'
                 bat './backend_js/npm stop'
