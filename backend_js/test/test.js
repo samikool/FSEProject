@@ -28,14 +28,12 @@ describe('Database', function(){
 
 
     describe('#VerifyUser()', function(){
-        it('responds in the form of an object', async function(done){
+        it('responds in the form of {access:boolean failture_reason:string}', 
+        async function(){
             var response = await database.VerifyUser('sam','sam');
-            console.log(response);
             response.should.be.an('object');
             response.access.should.be.a('boolean');
             response.failure_reason.should.be.a('string');
-
-            done();
         });
     });
 
