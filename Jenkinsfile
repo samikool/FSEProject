@@ -6,6 +6,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 bat 'cd ./backend_js'
+                bat 'npm install'
                 bat 'npm start'
                 echo 'Started..'
                 bat 'timeout 1'
@@ -13,6 +14,7 @@ pipeline {
                 echo 'Started..'
                 bat 'timeout 1'
                 bat 'cd ../frontend_react'
+                bat 'npm install'
                 bat 'npm start'
                 bat 'timeout 1'
                 bat 'npm stop'
