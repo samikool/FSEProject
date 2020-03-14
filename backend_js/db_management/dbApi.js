@@ -21,6 +21,52 @@ class dbApi{
     }
     return res
   }
+/**
+ * 
+ * @param {string} name This is the name of the disaster. Field can be null
+ * @param {JSON} location JSON representation of user's address. This may vary between countries. Example: 
+  {
+  "Address":"123 Example",
+  "Country":"United States", 
+  "State":"Florida", 
+  "City":"Orlando", 
+  "Zipcode":32862
+  }
+ * @param {JSON} keywords JSON representation of keywords of items needed
+ * {
+ *  "type":["fire","hurricane"],
+ *  "items_needed":["towels","food","cleaning"]
+ * }
+ */
+  async AddDisaster(name,location,keywords){
+    //check if disaster already has a disaster at the given location
+    var query_str = `SELECT keywords FROM disasters where location='${JSON.stringify(location)}';`
+    // this.pool
+    //     .query(query_str)
+    //     .then(res=>{
+    //       const res_keywords = res.rows[0];
+    //       //check if keywords match the input keywords
+    //       if(res_keywords.type.some(includes(keywords.type))){
+            
+    //       }
+    //     })
+
+
+    query_str = `INSERT INTO disasters (name,location,keywords)
+    VALUES( '${name}',
+            '${JSON.stringify(location)}',
+            '${JSON.stringify(keywords)}');`;
+
+    console.log(query_str);
+    this.pool
+        .query(query_str)
+        .then(res => console.log(res))
+        .catch(e => {
+            console.error(e.detail)
+            // this.pool.query("SELECT * FROM USERS;")
+            //     .then(res_2 => console.log(res_2.rows))
+        })
+  }
 
   /**
    * Check if given email and password combination matches db archives
@@ -85,13 +131,13 @@ class dbApi{
     this.pool
         .query(query_str)
         .then(res => {
-            this.pool.query("SELECT * FROM USERS;")
-                .then(res_2 => console.log(res_2.rows))
+            // this.pool.query("SELECT * FROM USERS;")
+            //     .then(res_2 => console.log(res_2.rows))
         })
         .catch(e => {
             console.error(e.detail)
             this.pool.query("SELECT * FROM USERS;")
-                .then(res_2 => console.log(res_2.rows))
+                // .then(res_2 => console.log(res_2.rows))
         })
     }
     

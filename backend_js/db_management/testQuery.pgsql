@@ -1,6 +1,12 @@
--- SELECT * FROM users;
 
-SELECT PASSWORD FROM USERS where email='babu.slapps@tmail.com'
+-- SELECT PASSWORD FROM USERS where email='babu.slapps@tmail.com'
+
+SELECT * from disasters;
+SELECT * FROM users;
+SELECT * FROM requesters;
+SELECT * FROM requests;
+SELECT * FROM donations;
+SELECT * FROM donors;
 
 
 -- ALTER TABLE users ADD COLUMN isAdmin bool;
