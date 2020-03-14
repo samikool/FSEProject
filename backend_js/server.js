@@ -13,8 +13,6 @@ app.use(cors());
 DB = require('./DB');
 database = new DB.DB('postgres', 'localhost', 'fse', 'password', 5432, require('bcrypt'));
 
-
-
 //routes
 var loginRequest = require('./routes/loginRequest');
 app.use('/loginRequest', loginRequest)

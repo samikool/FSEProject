@@ -5,7 +5,15 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                bat 'mvn compile'
+                bat './backend_js/npm start'
+                echo 'Started..'
+                bat 'timeout 1'
+                bat './backend_js/npm stop'
+                echo 'Started..'
+                bat 'timeout 1'
+                bat './frontend_react/npm start'
+                bat 'timeout 1'
+                bat './frontend_react/npm stop'
             }
         }
         stage('Test') {

@@ -18,6 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "stop": "taskkill /IM \"node.exe\" /f",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
