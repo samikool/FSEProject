@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                echo 'Building...'
                 bat 'cd ./backend_js'
                 bat 'npm install'
                 bat 'npm start'
