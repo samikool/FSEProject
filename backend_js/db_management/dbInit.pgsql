@@ -25,7 +25,7 @@ CREATE TABLE Items (
 
 CREATE TABLE Disasters (
   Disaster_ID SERIAL PRIMARY KEY NOT NULL,
-  Type varchar(255) NOT NULL,
+  -- Type varchar(255) NOT NULL,
   Name varchar(255) NOT NULL,
   Keywords jsonb,
   Location jsonb

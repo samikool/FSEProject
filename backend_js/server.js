@@ -10,8 +10,20 @@ app.use(express.json());
 app.use(cors());
 
 //initialize database connection  
-DB = require('./DB');
-database = new DB.DB('postgres', 'localhost', 'fse', 'password', 5432, require('bcrypt'));
+const { Pool, Client } = require('pg')
+
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'first_aid',
+  password: 'password',
+  port: 5432,
+})
+
+const DB = require('./db_management/dbApi');
+database = new DB(pool)
+
+// database = new DB.DB();
 
 //routes
 var loginRequest = require('./routes/loginRequest');
