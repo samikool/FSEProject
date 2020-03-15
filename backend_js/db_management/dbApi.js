@@ -41,31 +41,58 @@ class dbApi{
   async AddDisaster(name,location,keywords){
     //check if disaster already has a disaster at the given location
     var query_str = `SELECT keywords FROM disasters where location='${JSON.stringify(location)}';`
-    // this.pool
-    //     .query(query_str)
-    //     .then(res=>{
-    //       const res_keywords = res.rows[0];
-    //       //check if keywords match the input keywords
-    //       if(res_keywords.type.some(includes(keywords.type))){
-            
-    //       }
-    //     })
-
-
-    query_str = `INSERT INTO disasters (name,location,keywords)
-    VALUES( '${name}',
-            '${JSON.stringify(location)}',
-            '${JSON.stringify(keywords)}');`;
-
-    console.log(query_str);
-    this.pool
+    var exists = await this.pool
         .query(query_str)
-        .then(res => console.log(res))
-        .catch(e => {
-            console.error(e.detail)
-            // this.pool.query("SELECT * FROM USERS;")
-            //     .then(res_2 => console.log(res_2.rows))
+        .then(res=>{
+          //return false if no disaster at currently location
+          // console.log(res.rows.isEmpty())
+          if (res.rows.length < 1){
+            return false
+          }
+          else{
+            //get row w/ location
+            const res_types = res.rows[0]['keywords'].type;
+            const in_types = keywords.type;
+
+            //values in keywords that are not in db
+            let difference = in_types.filter(x => !res_types.includes(x));
+
+            //create unique array
+            const distinct = (value, index, self)=>{
+              return self.indexOf(value) == index;
+            }         
+            
+            const concat_types = res_types.concat(in_types);
+            // console.log(concat_types);
+            const unique_types = concat_types.filter(distinct);
+
+            //check if keywords match the input keywords
+            var queryformat_types = unique_types.length === 0 ? "" : "\"" + unique_types.join("\",\"") + "\"";
+            query_str = `UPDATE disasters SET keywords=jsonb_set(keywords,'{type}','[${queryformat_types}]') WHERE location='${JSON.stringify(location)}';`
+            // console.log(query_str);
+
+            this.pool
+                .query(query_str)
+
+          }
         })
+
+    if (exists == false){
+      query_str = `INSERT INTO disasters (name,location,keywords)
+      VALUES( '${name}',
+              '${JSON.stringify(location)}',
+              '${JSON.stringify(keywords)}');`;
+
+      console.log(query_str);
+      this.pool
+          .query(query_str)
+          .then(res => console.log(res))
+          .catch(e => {
+              console.error(e.detail)
+              // this.pool.query("SELECT * FROM USERS;")
+              //     .then(res_2 => console.log(res_2.rows))
+          })
+    } 
   }
 
   /**

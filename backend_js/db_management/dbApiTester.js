@@ -18,17 +18,17 @@ let test_user;
 //     console.log(err)
 // });
 
-var array = [
-  {"First_Name":"Antonio","Last_Name":"Washington","Password":"password","Email":"senortonito@gmail.com", "Location":{"Address":"712 Pawnee Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":true},
-  {"First_Name":"Testing","Last_Name":"Guy","Password":"password", "Email":"testing.guy@tmail.com", "Location":{"Address":"123 Example", "Country":"United States", "State":"Florida", "City":"Orlando", "Zipcode":32862}, "isadmin":false},
-  {"First_Name":"Babu","Last_Name":"Slapps","Password":"password", "Email":"babu.slapps@tmail.com", "Location":{"Address":"111 Illiois Rd", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":false},
-  {"First_Name":"Gordon","Last_Name":"Ramstein","Password":"password", "Email":"gordon.gluten@tmail.com", "Location":{"Address":"001 Big Road Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60560}, "isadmin":false},
-];
+// var array = [
+//   {"First_Name":"Antonio","Last_Name":"Washington","Password":"password","Email":"senortonito@gmail.com", "Location":{"Address":"712 Pawnee Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":true},
+//   {"First_Name":"Testing","Last_Name":"Guy","Password":"password", "Email":"testing.guy@tmail.com", "Location":{"Address":"123 Example", "Country":"United States", "State":"Florida", "City":"Orlando", "Zipcode":32862}, "isadmin":false},
+//   {"First_Name":"Babu","Last_Name":"Slapps","Password":"password", "Email":"babu.slapps@tmail.com", "Location":{"Address":"111 Illiois Rd", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":false},
+//   {"First_Name":"Gordon","Last_Name":"Ramstein","Password":"password", "Email":"gordon.gluten@tmail.com", "Location":{"Address":"001 Big Road Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60560}, "isadmin":false},
+// ];
 
-for (let index = 0; index < array.length; index++) {
-  const element = array[index];
-  db.NewUser(element.First_Name,element.Last_Name,element.Password,element.Email,element.Location,element.isadmin)
-}
+// for (let index = 0; index < array.length; index++) {
+//   const element = array[index];
+//   db.NewUser(element.First_Name,element.Last_Name,element.Password,element.Email,element.Location,element.isadmin)
+// }
 
 array = [
   {"name":"Katrina","location":{"country":"USA","state":"Texas","city":"Dallas"},"keywords":{"type":["fire"],"items_need":["towels","food"]}},
