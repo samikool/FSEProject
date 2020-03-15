@@ -16,15 +16,7 @@ const pool = new Pool({
 })
 
 const DB = require('../db_management/dbApi');
-database = new DB(pool)
-
-describe('Array', function() { //<-- async function() if asynchronus code
-    describe('#indexOf()', function() {
-      it('should return -1 when the value is not present', function() {
-        assert.equal([1, 902, 3].indexOf(4), -1);
-      });
-    });
-  });
+database = new DB(pool);
 
 describe('Database', function(){
     describe('#VerifyUser()', function(){
@@ -98,14 +90,52 @@ describe('Database', function(){
         });
     });
 
-    //writing this test won't work until we can return a single user
     describe('#NewUser', function(){
-      it('adds a user to the database', async function(){
-        newUser = {"first_name":"Guy","last_name":"Fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false};
-        await database.NewUser(newUser.First_Name,newUser.Last_Name,newUser.Password,newUser.Email,newUser.Location,newUser.isadmin);
-        users = await database.ReturnUsers();
+      it('adds a user to the database', 
+      async function(){
+        tempUser = {"first_name":"Guy","last_name":"fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false};
+        await database.NewUser(tempUser.first_name,tempUser.last_name,tempUser.password,tempUser.email,tempUser.location,tempUser.isadmin);
+        let user = await database.GetUser(tempUser.email);
+
+        //need to delete values that can't match
+        delete user.user_id;
+        delete user.password;
+        delete user.token;
+        delete tempUser.password;
+
+        tempUser.should.jsonEqual(user);
       })
+      //returns what on success
+      //returns what on email doesn't exist
+
+      describe('#DropUser', function(){
+        it('deletes a user from the database', 
+        async function(){
+          tempUser = {"first_name":"Guy","last_name":"fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false};
+          await database.DropUser(tempUser.email)
+          let user = await database.GetUser(tempUser.email);
+
+          expect(user, undefined);
+        });
+        //returns what if not found
+        //returns successful if works?
+      });
     });
+
+    describe('#GetUser', function(){
+      it('returns a user from the database given the user\'s email', 
+      async function() {
+        let user = await database.GetUser('gordon.gluten@tmail.com');
+
+        user.user_id.should.be.a('number');
+        user.first_name.should.be.a('string');
+        user.last_name.should.be.a('string');
+        user.email.should.be.a('string');
+        user.password.should.be.a('string');
+        user.location.should.be.jsonSchema(locationScheme);
+        user.isadmin.should.be.a('boolean');
+        expect(user.token).to.be.null || expect(user.token).to.be.an('object')
+      })
+      //returns what if not found
+    })
 });
-  //newuser
-  ////test creates user

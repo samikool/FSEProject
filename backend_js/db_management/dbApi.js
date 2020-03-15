@@ -82,7 +82,7 @@ class dbApi{
     try{
       golden_pw_enc = await this.pool.query(query_str)
       golden_pw_enc = golden_pw_enc.rows[0].password
-      console.log(golden_pw_enc)
+      //console.log(golden_pw_enc)
       if(bcrypt.compareSync(pword,golden_pw_enc)){
         // console.log("Access Granted... In theory");
         res = {"access":true};
@@ -127,7 +127,7 @@ class dbApi{
             '${enc_pword}',
             '${JSON.stringify(location)}',
             '${isAdmin}');`;
-    console.log(query_str);
+    //console.log(query_str);
     this.pool
         .query(query_str)
         .then(res => {
@@ -139,6 +139,26 @@ class dbApi{
             this.pool.query("SELECT * FROM USERS;")
                 // .then(res_2 => console.log(res_2.rows))
         })
+    }
+
+    /**
+     * Gets a user with the given email
+     * @param {string} email email of the requested user
+     * @returns {object} with properties of user
+     */
+    async GetUser(email){
+      var query_str = `SELECT * FROM USERS WHERE EMAIL = '${email}'`
+      let res = await this.pool.query(query_str);
+      return res.rows[0];
+    }
+
+    /**
+     * Drops a user from the table with the given email
+     * @param {string} email email of the user to be dropped
+     */
+    async DropUser(email){
+      var query_str = `DELETE FROM USERS WHERE EMAIL = '${email}'`
+      let res = await this.pool.query(query_str);
     }
     
     Disconnect(){
