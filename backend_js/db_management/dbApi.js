@@ -182,7 +182,7 @@ class dbApi{
   * @param {Boolean} isAdmin This will be true if user is an admin (else false).
   */
   async NewUser( fname,lname,pword,email,location,isAdmin){
-    var enc_pword = await bcrypt.hash(pword,10)
+    var enc_pword = await bcrypt.hash(pword,10);
     var query_str = `INSERT INTO Users (First_Name, Last_Name, Email, Password, Location, isadmin)
     VALUES( '${fname}',
             '${lname}',
