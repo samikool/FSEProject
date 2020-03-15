@@ -21,6 +21,42 @@ class dbApi{
     }
     return res
   }
+
+/**
+ * 
+ * @param {*} location 
+ */
+  async ReturnDisaster(location){
+    var query_str = `SELECT * from disasters WHERE location='${JSON.stringify(location)}';`
+    let res;
+    try{ 
+      res = await this.pool.query(query_str)
+      res = res.rows
+    }
+    catch(e){
+      res = e
+    }
+    return res[0]
+  }
+  /**
+   * 
+   * @param {*} name 
+   * @param {*} type 
+   * @param {*} keywords 
+   */
+  AddItem(name,type,keywords){
+    var queryformat_keywords = keywords.length === 0 ? "" : "\"" + keywords.join("\",\"") + "\"";
+    var query_str = `insert into items (name,type,keywords)
+    VALUES(
+        '${name}',
+        '${type}',
+        '[${queryformat_keywords}]')`
+    // console.log(query_str)
+    this.pool.query(query_str)
+      .then(res=>console.log(res))
+  }
+
+
 /**
  * 
  * @param {string} name This is the name of the disaster. Field can be null

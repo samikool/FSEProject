@@ -18,12 +18,12 @@ let test_user;
 //     console.log(err)
 // });
 
-// var array = [
-//   {"First_Name":"Antonio","Last_Name":"Washington","Password":"password","Email":"senortonito@gmail.com", "Location":{"Address":"712 Pawnee Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":true},
-//   {"First_Name":"Testing","Last_Name":"Guy","Password":"password", "Email":"testing.guy@tmail.com", "Location":{"Address":"123 Example", "Country":"United States", "State":"Florida", "City":"Orlando", "Zipcode":32862}, "isadmin":false},
-//   {"First_Name":"Babu","Last_Name":"Slapps","Password":"password", "Email":"babu.slapps@tmail.com", "Location":{"Address":"111 Illiois Rd", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":false},
-//   {"First_Name":"Gordon","Last_Name":"Ramstein","Password":"password", "Email":"gordon.gluten@tmail.com", "Location":{"Address":"001 Big Road Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60560}, "isadmin":false},
-// ];
+var array = [
+  {"First_Name":"Antonio","Last_Name":"Washington","Password":"password","Email":"senortonito@gmail.com", "Location":{"Address":"712 Pawnee Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":true},
+  {"First_Name":"Testing","Last_Name":"Guy","Password":"password", "Email":"testing.guy@tmail.com", "Location":{"Address":"123 Example", "Country":"United States", "State":"Florida", "City":"Orlando", "Zipcode":32862}, "isadmin":false},
+  {"First_Name":"Babu","Last_Name":"Slapps","Password":"password", "Email":"babu.slapps@tmail.com", "Location":{"Address":"111 Illiois Rd", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":false},
+  {"First_Name":"Gordon","Last_Name":"Ramstein","Password":"password", "Email":"gordon.gluten@tmail.com", "Location":{"Address":"001 Big Road Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60560}, "isadmin":false},
+];
 
 // for (let index = 0; index < array.length; index++) {
 //   const element = array[index];
@@ -37,7 +37,25 @@ array = [
   {"name":"Jenny","location":{"country":"USA","state":"Iowa","city":"Iowa City"},"keywords":{"type":["tornado"],"items_need":["food"]}}
 ]
 
+// for (let index = 0; index < array.length; index++) {
+//   const element = array[index];
+//   db.AddDisaster(element.name,element.location,element.keywords)
+// }
+
+const return_location = {"country":"USA","state":"Illinois","city":"Chicago"};
+// db.ReturnDisaster(return_location)
+//   .then(res=>{
+//     console.log(res)
+//   })
+
+array = [
+  {"name":"paper towels","type":"cleaning","keywords":["large","paper"]},
+  {"name":"soap","type":"cleaning","keywords":["small","bar"]},
+  {"name":"hand sanitizer","type":"cleaning","keywords":["bacterial","travel"]},
+  {"name":"canned soup","type":"food","keywords":["soup","vegetable"]},
+  {"name":"vegetables","type":"food","keywords":["carrot","broccoli"]}
+]
 for (let index = 0; index < array.length; index++) {
   const element = array[index];
-  db.AddDisaster(element.name,element.location,element.keywords)
+  db.AddItem(element.name,element.type,element.keywords)  
 }
