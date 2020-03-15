@@ -37,7 +37,25 @@ array = [
   {"name":"Jenny","location":{"country":"USA","state":"Iowa","city":"Iowa City"},"keywords":{"type":["tornado"],"items_need":["food"]}}
 ]
 
+// for (let index = 0; index < array.length; index++) {
+//   const element = array[index];
+//   db.AddDisaster(element.name,element.location,element.keywords)
+// }
+
+const return_location = {"country":"USA","state":"Illinois","city":"Chicago"};
+// db.ReturnDisaster(return_location)
+//   .then(res=>{
+//     console.log(res)
+//   })
+
+array = [
+  {"name":"paper towels","type":"cleaning","keywords":["large","paper"]},
+  {"name":"soap","type":"cleaning","keywords":["small","bar"]},
+  {"name":"hand sanitizer","type":"cleaning","keywords":["bacterial","travel"]},
+  {"name":"canned soup","type":"food","keywords":["soup","vegetable"]},
+  {"name":"vegetables","type":"food","keywords":["carrot","broccoli"]}
+]
 for (let index = 0; index < array.length; index++) {
   const element = array[index];
-  db.AddDisaster(element.name,element.location,element.keywords)
+  db.AddItem(element.name,element.type,element.keywords)  
 }

@@ -18,7 +18,7 @@ CREATE TABLE Donors (
 
 CREATE TABLE Items (
   Item_ID SERIAL PRIMARY KEY NOT NULL,
-  Name varchar(255) NOT NULL,
+  Name varchar(255) Unique NOT NULL,
   Type varchar(255) NOT NULL,
   Keywords jsonb
 );
