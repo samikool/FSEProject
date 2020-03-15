@@ -26,9 +26,10 @@ pipeline {
         }
         stage('Test') {
             steps {
-                dir('backend_js')
-                echo "Running test"
-                bat 'npm test'
+                dir('backend_js'){
+                    echo "Running test"
+                    bat 'npm test'
+                }
             }
         }
         stage('Deploy') {
