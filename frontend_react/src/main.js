@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class main extends React.Component{
+class Main extends React.Component{
     constructor(props){
       super(props)
       this.state = {date: new Date()}
@@ -27,10 +27,12 @@ class main extends React.Component{
     }
   
     render(){
-      return(
-        <div style={{padding:10}}>
-          <h4>{this.state.date.toLocaleTimeString()}</h4>
-        </div>
-      );
+        return(
+            <div style={{padding:10}}>
+                <h4>{this.state.date.toLocaleTimeString()}</h4>
+            </div>
+        );
     }
   }
+
+export default Main;

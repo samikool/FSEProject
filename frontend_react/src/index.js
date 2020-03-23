@@ -3,21 +3,24 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
-import { Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 import {
   Route,
-  BrowserRouter as Router
+  BrowserRouter as Router,
+  Switch,
+  Redirect,
+  useHistory 
 } from "react-router-dom";
 
-import Clock from "./clock";
 import Login from "./login";
+import Main from "./main";
 
 ReactDOM.render(
-  <div style={{'padding':10}}>
-    <h4>Welcome</h4>
-    <Clock/>
-    <Login/>
-  </div>,
+  <Router>
+    <Switch>
+      <Route exact path="/" component={Login}/>
+      <Route exact path="/main" component={Main}/>
+    </Switch>
+  </Router>,
   document.getElementById('root')
 );
 

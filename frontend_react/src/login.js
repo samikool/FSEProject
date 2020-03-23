@@ -2,7 +2,14 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
+import {
+  Route,
+  BrowserRouter as Router,
+  Redirect,
+  useHistory 
+} from "react-router-dom";
 
+import Clock from "./clock"
 
 class Login extends React.Component{
   constructor(props){
@@ -32,10 +39,16 @@ class Login extends React.Component{
       this.setState({resp: res});
       console.log(res);
     });
+
+    //this changes us to the main route which is defiend in the index
+    this.props.history.push('/main');
   }
 
   render(){
     return(
+    <div style={{'padding':10}}>
+     <h4>Welcome</h4>
+     <Clock/>
       <div style={{ padding: 100 }}>
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="uname">Email Address:</label>
@@ -82,6 +95,7 @@ class Login extends React.Component{
         </form>
         <h4>{this.state.resp}</h4>
       </div>
+    </div>
     );
   }
 }
