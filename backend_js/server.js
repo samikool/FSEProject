@@ -27,7 +27,10 @@ database = new DB(pool)
 
 //routes
 var loginRequest = require('./routes/loginRequest');
-app.use('/loginRequest', loginRequest)
+app.use('/loginRequest', loginRequest);
+
+var main = require('./routes/main');
+app.use('/main', loginRequest);
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listeing on Port %d', port)});
