@@ -7,7 +7,9 @@ CREATE TABLE Users (
   Email varchar(255) UNIQUE NOT NULL,
   Password varchar(255) NOT NULL,
   Location jsonb,
-  isAdmin bool,
+  isAdmin bool Default false,
+  isRequester bool Default false,
+  isDonor bool Default false,
   token jsonb
 );
 
@@ -42,7 +44,7 @@ CREATE TABLE Requests (
   Disaster_ID SERIAL NOT NULL,
   Item_ID SERIAL NOT NULL,
   Num_Needed integer NOT NULL,
-  Num_Provided integer NOT NULL
+  Num_Provided integer Default 0 NOT NULL
 );
 
 CREATE TABLE Donations (

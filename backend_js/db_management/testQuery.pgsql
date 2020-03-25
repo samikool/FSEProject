@@ -11,11 +11,14 @@
 
 SELECT * from disasters;
 SELECT * FROM users;
-SELECT * FROM items;
--- SELECT * FROM requesters;
--- SELECT * FROM requests;
--- SELECT * FROM donations;
--- SELECT * FROM donors;
+SELECT * FROM items WHERE NAME='*paper*' ;
+SELECT * FROM requesters;
+SELECT * FROM requests;
+SELECT * FROM donations;
+SELECT * FROM donors;
+
+insert into requests (requester_id, disaster_id, item_id, num_needed,num_provided)
+VALUES(1,1,1,20,5);
 
 -- insert into items (name,type,keywords)
 -- VALUES(

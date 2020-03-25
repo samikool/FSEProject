@@ -4,6 +4,31 @@ class dbApi{
   constructor(pool){
     this.pool = pool;
   }
+  
+/**
+ * 
+ * @param {*} requester 
+ * @param {*} item 
+ * @param {*} disaster 
+ * @param {*} quantity 
+ */
+  async ManualRequest(requester_id, item_id, disaster_id, quantity){
+    // insert request to req table
+    var query_str = `INSERT INTO REQUESTS (requester_id, disaster_id, item_id, num_needed)
+    VALUES(${requester_id},
+      ${disaster_id},
+      ${item_id},
+      ${quantity});`
+
+    let res;
+    try{ 
+      res = await this.pool.query(query_str)
+    }
+    catch(e){
+      res = e
+    }
+    return res
+  }
 
   /**
    * Return contents of user table
@@ -53,9 +78,41 @@ class dbApi{
         '[${queryformat_keywords}]')`
     // console.log(query_str)
     this.pool.query(query_str)
-      .then(res=>console.log(res))
+      .then(res=>console.log(/*res*/"item insert"))
   }
-
+/**
+ * Here you can search for an item based on a pattern in the name
+ * @param {*} pattern 
+ */
+  async SearchItemContains(pattern){
+    let res;
+    const query_str = `SELECT * FROM items WHERE NAME like '%${pattern}%'`;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows;
+    }
+    catch(e){
+      res = false;
+    }
+    return res;
+  }
+  
+/**
+ * Here you can search for an item based on a pattern in the name
+ * @param {*} pattern 
+ */
+async SearchItemStartsWith(pattern){
+  let res;
+  const query_str = `SELECT * FROM items WHERE NAME like '${pattern}%'`;
+  try{
+    res = await this.pool.query(query_str);
+    res = res.rows;
+  }
+  catch(e){
+    res = false;
+  }
+  return res;
+}
 
 /**
  * 
@@ -119,10 +176,10 @@ class dbApi{
               '${JSON.stringify(location)}',
               '${JSON.stringify(keywords)}');`;
 
-      console.log(query_str);
+      // console.log(query_str);
       this.pool
           .query(query_str)
-          .then(res => console.log(res))
+          .then(res => console.log("disaster insert"))
           .catch(e => {
               console.error(e.detail)
               // this.pool.query("SELECT * FROM USERS;")
@@ -181,27 +238,76 @@ class dbApi{
   }
   * @param {Boolean} isAdmin This will be true if user is an admin (else false).
   */
-  async NewUser( fname,lname,pword,email,location,isAdmin){
+  async NewUser( fname,lname,pword,email,location,isAdmin,isDon,isReq){
     var enc_pword = await bcrypt.hash(pword,10);
-    var query_str = `INSERT INTO Users (First_Name, Last_Name, Email, Password, Location, isadmin)
+    let user_id;
+    let res;
+    var query_str = `INSERT INTO Users (First_Name, Last_Name, Email, Password, Location, isadmin,isDonor,isRequester)
     VALUES( '${fname}',
             '${lname}',
             '${email}',
             '${enc_pword}',
             '${JSON.stringify(location)}',
-            '${isAdmin}');`;
-    //console.log(query_str);
-    this.pool
-        .query(query_str)
-        .then(res => {
-            // this.pool.query("SELECT * FROM USERS;")
-            //     .then(res_2 => console.log(res_2.rows))
-        })
-        .catch(e => {
-            console.error(e.detail)
-            this.pool.query("SELECT * FROM USERS;")
-                // .then(res_2 => console.log(res_2.rows))
-        })
+            '${isAdmin}',
+            '${isDon}',
+            '${isReq}');`;
+    // console.log(query_str);
+    try{
+      //attempt insert
+      res = await this.pool.query(query_str);
+      // console.log(`New User: Original Result ${JSON.stringify(res)}`);
+
+      //successful insert of new user
+      query_str = `SELECT user_id FROM USERS WHERE EMAIL = '${email}';`
+      res = await this.pool.query(query_str);
+      user_id = res.rows[0].user_id
+      console.log(user_id);
+      if(isReq){
+          query_str = `INSERT INTO REQUESTERS(user_id) VALUES(${user_id});`
+          await this.pool.query(query_str);
+      }
+
+      if(isDon){
+          query_str = `INSERT INTO DONORS(user_id) VALUES(${user_id});`
+          await this.pool.query(query_str);
+      }
+    }
+    catch(e){
+      console.error(e);
+    }
+
+
+    // this.pool
+    //     .query(query_str)
+    //     .then(res => {
+    //       console.log(`New User: Original Result ${res}`);
+    //       //successful insert of new user
+    //       user_id = await this.pool.query(`SELECT user_id FROM USERS WHERE EMAIL='${email};'`);
+    //       console.log(`-----------\nNew User: User ID Result ${user_id}`);
+    //       try{
+    //         if(isReq){
+    //           query_str = `INSERT INTO REQUESTERS(user_id) VALUES(${user_id});`
+    //           this.pool.query(query_str);
+    //         }
+
+    //         if(isDon){
+    //           query_str = `INSERT INTO DONORS(user_id) VALUES(${user_id});`
+    //           this.pool.query(query_str);
+    //         }
+    //       }
+    //       catch(e){
+    //         console.error(e);
+    //       }
+
+
+    //     })
+    //     .catch(e => {
+    //         console.error(e.detail)
+    //         this.pool.query("SELECT * FROM USERS;")
+    //             // .then(res_2 => console.log(res_2.rows))
+    //     })
+
+
     }
 
     /**
