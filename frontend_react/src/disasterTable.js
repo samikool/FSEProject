@@ -27,12 +27,6 @@ export default class DisasterTable extends React.Component{
   }
 
   async componentDidMount(){
-    await this.createData('Frozen yogurt', 159, 6.0, 24, 4.0);
-    await this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3);
-    await this.createData('Eclair', 262, 16.0, 24, 6.0);
-    await this.createData('Cupcake', 305, 3.7, 67, 4.3);
-    await this.createData('Gingerbread', 356, 16.0, 49, 3.9);
-
     let response = await fetch('http://localhost:5000/disasters', {
       method: 'GET',
       headers: { 'Authentication': window.sessionStorage.accessToken},
@@ -55,13 +49,13 @@ export default class DisasterTable extends React.Component{
   }
 
   async handleRowClick(id){
-    console.log(id);
+    //console.log(id);
     let currentDisasters = this.state.disasters;
-    console.log(currentDisasters);
+    //console.log(currentDisasters);
     let index = -1;
     for (let i=0; i<currentDisasters.length; i++) {
-      console.log('currentDisaster: ' + currentDisasters[i].id);
-      console.log('id: ' + id);
+      //console.log('currentDisaster: ' + currentDisasters[i].id);
+      //console.log('id: ' + id);
       if(currentDisasters[i].id === id){
         index = i;
         break;
@@ -69,24 +63,13 @@ export default class DisasterTable extends React.Component{
     }
 
     if(index !== -1){
-      console.log('index' + index);
-      console.log('disaster' + currentDisasters[index]);
+      //console.log('index' + index);
+      //console.log('disaster' + currentDisasters[index]);
       currentDisasters.splice(index, 1)
     }
 
-    console.log(currentDisasters);
+    //console.log(currentDisasters);
     this.setState({disasters: currentDisasters})
-  }
-
-
-
-  async createData(name, calories, fat, carbs, protein){
-    //console.log("creating data")
-    //console.log(this.state.rows)
-    this.setState(
-      {rows: [...this.state.rows, {name, calories, fat, carbs, protein}]}
-    );
-    console.log(this.state.rows)
   }
 
   render(){
