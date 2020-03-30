@@ -5,20 +5,25 @@
 -- UPDATE disasters SET keywords = jsonb_set(keywords, '{type}','["fire"]') WHERE location='{"city":"Chicago","state":"Illinois","country":"USA"}';
 -- UPDATE disasters SET keywords = jsonb_set(keywords, '{type}','["fire"]') WHERE location='{"city":"Chicago","state":"Illinois","country":"USA"}';
 -- SELECT disaster_id from disasters WHERE location='{"city":"Chicago","state":"Illinois","country":"USA"}';
+-- SELECT * FROM items WHERE NAME='*paper*' ;
+
+
 
 -- UPDATE users SET tags = tags || array['admin'];
 -- UPDATE users SET data = jsonb_set(data, '{name}', '"John"');
 
 SELECT * from disasters;
 SELECT * FROM users;
-SELECT * FROM items WHERE NAME='*paper*' ;
+SELECT * FROM items;
 SELECT * FROM requesters;
 SELECT * FROM requests;
 SELECT * FROM donations;
 SELECT * FROM donors;
 
-insert into requests (requester_id, disaster_id, item_id, num_needed,num_provided)
-VALUES(1,1,1,20,5);
+
+
+-- insert into requests (requester_id, disaster_id, item_id, num_needed,num_provided)
+-- VALUES(1,1,1,20,5);
 
 -- insert into items (name,type,keywords)
 -- VALUES(
