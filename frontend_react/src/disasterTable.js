@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 export default class DisasterTable extends React.Component{
   constructor(props){
     super(props);
-    this.state = {rows: [], classes: this.useStyles(), disasters: []};
+    this.state = {classes: this.useStyles(), disasters: []};
 
     // use .then(), this is a promise
     this.useStyles()
