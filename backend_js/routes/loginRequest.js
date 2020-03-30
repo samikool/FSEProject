@@ -13,13 +13,23 @@ router.post('/', async function (req, res) {
     res.status(200).json({
       access: false, 
 	    reason: response.failure_reason
-	});
+	  });
   }
   else if(response.access == true){
-	const accessToken = await jwt.sign(
-		{email: email, isAdmin: response.isAdmin},
-		 process.env.ACCESS_TOKEN_SECRET);
-    res.json({accessToken: accessToken})
+    const accessToken = await jwt.sign(
+      {email: email, isAdmin: response.isAdmin},
+        process.env.ACCESS_TOKEN_SECRET, 
+        {expiresIn: '20m'}
+    );
+
+    const refreshToken = await jwt.sign(
+      {email: email, isAdmin: response.isAdmin},
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    await database.StoreToken(email, refreshToken);
+
+    res.json({accessToken: accessToken, refreshToken: refreshToken})
   }
 });
 

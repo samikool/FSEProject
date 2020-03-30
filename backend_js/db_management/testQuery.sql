@@ -20,6 +20,15 @@ SELECT * FROM requests;
 SELECT * FROM donations;
 SELECT * FROM donors;
 
+--Test Querys for messing with tokens
+--store
+--UPDATE USERS SET TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOnRydWUsImVtYWlsIjoic2Vub3J0b25pdG9AZ21haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNTg1NjA2MzA0LCJleHAiOjE1ODU2MDYzMzR9.o4yzjI1ZGIK9qJSXgXH95iqUxtZdVZjnme40eQPYBuY' 
+--WHERE EMAIL = 'senortonito@gmail.com';
+--verify
+--SELECT TOKEN FROM USERS WHERE EMAIL = 'senortonito@gmail.com';
+--delete
+ --UPDATE USERS SET TOKEN = '' WHERE EMAIL = 'senortonito@gmail.com'
+
 
 
 -- insert into requests (requester_id, disaster_id, item_id, num_needed,num_provided)

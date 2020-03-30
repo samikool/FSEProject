@@ -30,20 +30,25 @@ export default function ButtonAppBar(props) {
     console.log('isAdmin: ' + isAdmin);
 
     //these are not actually errors
-    const handleLogin = (event: React.MouseEvent<HTMLElement>) => {
+    const handleLogin = async (event: React.MouseEvent<HTMLElement>) => {
         if(!isLoggedIn){
             history.push('/login');
         } else{
+            let refreshToken = await window.sessionStorage.refreshToken;
+            await fetch('http://localhost:5000/authorize', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({token: refreshToken})
+            });
             window.sessionStorage.accessToken = null;
             window.location.reload();
         }
     };
 
-    const handleAddDisaster = (event: React.MouseEvent<HTMLElement>) => {
+    const handleAddDisaster = async (event: React.MouseEvent<HTMLElement>) => {
         history.push('/disasters');
         //window.location.reload();
     };
-
 
     if(isLoggedIn && isAdmin){
         return(

@@ -10,7 +10,7 @@ CREATE TABLE Users (
   isAdmin bool Default false,
   isRequester bool Default false,
   isDonor bool Default false,
-  token jsonb
+  token varchar(255)
 );
 
 CREATE TABLE Donors (

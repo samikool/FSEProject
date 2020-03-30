@@ -33,10 +33,10 @@ export default class Main extends React.Component{
 
   async componentDidMount(){
     let authorization = await authorize();
-    console.log(authorization);
-    console.log(authorization['access']);
-    console.log(authorization['email']);
-    console.log(authorization['admin']);
+    // console.log(authorization);
+    // console.log(authorization['access']);
+    // console.log(authorization['email']);
+    // console.log(authorization['admin']);
     this.setState({
       loggedIn: authorization['access'],
       user: authorization['email'],

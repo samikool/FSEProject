@@ -343,6 +343,32 @@ async SearchItemStartsWith(pattern){
       var query_str = `DELETE FROM USERS WHERE EMAIL = '${email}'`
       let res = await this.pool.query(query_str);
     }
+
+    async StoreToken(email, token){
+      //console.log('Store: ' + email + ' ' + token)
+      var query_str = `UPDATE USERS SET TOKEN = '${token}' WHERE EMAIL = '${email}'`
+      let res = await this.pool.query(query_str);
+    }
+
+    async ValidateToken(email, token){
+      //console.log('Validate: ' + email + ' ' + token)
+      var query_str = `SELECT TOKEN FROM USERS WHERE EMAIL = '${email}'`
+      let res = await this.pool.query(query_str);
+      let retreivedToken = res.rows[0].token;
+      //console.log('Validate ' + retreivedToken)
+      if(token == retreivedToken){
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    async RemoveToken(email, token){
+      var query_str = `UPDATE USERS SET TOKEN = '' WHERE EMAIL = '${email}'`
+      let res = await this.pool.query(query_str);
+    }
+
+
     
     Disconnect(){
       this.pool.end()

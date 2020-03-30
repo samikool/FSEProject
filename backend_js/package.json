@@ -7,7 +7,7 @@
     "test": "mocha",
     "start": "node server.js",
     "devStart": "nodemon server.js",
-    "fillDb": "node .\\db_management\\dbApiTester.js"
+    "filldb": "node .\\db_management\\populateDb.js"
   },
   "repository": {
     "type": "git",

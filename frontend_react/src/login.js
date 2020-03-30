@@ -44,7 +44,8 @@ class Login extends React.Component{
 
 	if(response['accessToken']){
 		//console.log(response['accessToken'])
-		window.sessionStorage.accessToken = await response['accessToken'];
+    window.sessionStorage.accessToken = await response['accessToken'];
+    window.sessionStorage.refreshToken = await response['refreshToken'];
 		//console.log(await window.sessionStorage.accessToken)
     this.props.history.push('/');
 	}
