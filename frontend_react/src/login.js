@@ -26,22 +26,33 @@ class Login extends React.Component{
     this.setState({[name]: value});
   }
 
-  handleSubmit(event){
+  async handleSubmit(event){
     event.preventDefault();
     console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
-    fetch('http://localhost:5000/loginRequest', {
+    let response = await fetch('http://localhost:5000/loginRequest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({username: this.state.username, password: this.state.password}),
     })
-    .then(res => res.text())
-    .then(res => {
-      this.setState({resp: res});
-      console.log(res);
-    });
+    // .then(res => res.text())
+    // .then(res => {
+    //   this.setState({resp: res});
+    //   console.log(res);
+    // });
 
+    response = await response.json();
+
+	if(response['accessToken']){
+		//console.log(response['accessToken'])
+		window.sessionStorage.accessToken = await response['accessToken']
+		//console.log(await window.sessionStorage.accessToken)
+    this.props.history.push('/');
+	}
+	else{
+		this.setState({resp: "Could not login because " + response['reason'] + " was incorrect"})
+	}
     //this changes us to the main route which is defiend in the index
-    this.props.history.push('/main');
+    
   }
 
   render(){
@@ -49,7 +60,7 @@ class Login extends React.Component{
     <div style={{'padding':10}}>
      <h4>Welcome</h4>
      <Clock/>
-      <div style={{ padding: 100 }}>
+      <div style={{height: '88vh', padding: 100 }}>
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="uname">Email Address:</label>
           <InputGroup className="mb-3">
@@ -99,5 +110,4 @@ class Login extends React.Component{
     );
   }
 }
-
 export default Login;

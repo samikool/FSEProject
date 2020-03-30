@@ -52,7 +52,7 @@ const user_array = [
   {"first_name":"Babu","last_name":"Slapps","password":"password", "email":"babu.slapps@tmail.com", "location":{"Address":"111 Illiois Rd", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60563}, "isadmin":false,"isDonor":true, "isRequester":true},
   {"first_name":"Gordon","last_name":"Ramstein","password":"password", "email":"gordon.gluten@tmail.com", "location":{"Address":"001 Big Road Ln", "Country":"United States", "State":"Illinois", "City":"Naperville", "Zipcode":60560}, "isadmin":false,"isDonor":true, "isRequester":true},
 ];
-// FillUsers(user_array);
+FillUsers(user_array);
 
 const dis_array = [
   {"name":"Katrina","location":{"country":"USA","state":"Texas","city":"Dallas"},"keywords":{"type":["fire"],"items_need":["towels","food"]}},
@@ -60,7 +60,7 @@ const dis_array = [
   {"name":"San Jose","location":{"country":"USA","state":"California","city":"San Jose"},"keywords":{"type":["earthquake"],"items_need":["construction"]}},
   {"name":"Jenny","location":{"country":"USA","state":"Iowa","city":"Iowa City"},"keywords":{"type":["tornado"],"items_need":["food"]}}
 ]
-// FillDisasters(dis_array);
+FillDisasters(dis_array);
 
 const item_array = [
   {"name":"paper towels","type":"cleaning","keywords":["large","paper"]},
@@ -69,7 +69,7 @@ const item_array = [
   {"name":"canned soup","type":"food","keywords":["soup","vegetable"]},
   {"name":"vegetables","type":"food","keywords":["carrot","broccoli"]}
 ]
-// FillItems(item_array);
+FillItems(item_array);
 
 db.SearchItemContains("er").then(res=>{console.log(res)})
 

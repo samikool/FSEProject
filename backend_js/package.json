@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "devStart": "nodemon server.js",
+    "fillDb": "node .\\db_management\\dbApiTester.js"
   },
   "repository": {
     "type": "git",

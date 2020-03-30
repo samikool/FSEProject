@@ -30,7 +30,14 @@ var loginRequest = require('./routes/loginRequest');
 app.use('/loginRequest', loginRequest);
 
 var main = require('./routes/main');
-app.use('/main', loginRequest);
+app.use('/main', main);
+
+var authorize = require('./routes/authorize');
+app.use('/authorize', authorize);
+
+var disaster = require('./routes/disaster');
+app.use('/disasters', disaster)
+
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listeing on Port %d', port)});

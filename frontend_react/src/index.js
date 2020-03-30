@@ -13,16 +13,20 @@ import {
 
 import Login from "./login";
 import Main from "./main";
+import DisasterTable from "./disasterTable";
 
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route exact path="/" component={Login}/>
-      <Route exact path="/main" component={Main}/>
+      <Route path="/login" component={Login}/>
+      <Route path="/disasters" component={DisasterTable} />
+      <Route path="/" component={Main}/>
     </Switch>
   </Router>,
   document.getElementById('root')
 );
+
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

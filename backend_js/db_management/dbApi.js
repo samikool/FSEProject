@@ -189,6 +189,16 @@ async SearchItemStartsWith(pattern){
   }
 
   /**
+   * Gets all disasters from the table
+   */
+  async getAllDisasters(){
+    var query_str = `SELECT * FROM DISASTERS;`
+    let disasters = await this.pool.query(query_str);
+    
+    return disasters.rows;
+  }
+
+  /**
    * Check if given email and password combination matches db archives
    * @param {string} email Search db for email user
    * @param {string} pword Match password (unencryption)
@@ -205,7 +215,11 @@ async SearchItemStartsWith(pattern){
       //console.log(golden_pw_enc)
       if(bcrypt.compareSync(pword,golden_pw_enc)){
         // console.log("Access Granted... In theory");
-        res = {"access":true};
+        query_str = `SELECT isadmin FROM USERS where email='${email}'`
+        let isAdmin = await this.pool.query(query_str)
+        isAdmin =  isAdmin.rows[0].isadmin
+        console.log('isAdmin DB: ' + isAdmin)
+        res = {"access":true, "isAdmin":isAdmin};
       }
       else{
           // console.log("Error: Password does not match");
@@ -214,7 +228,7 @@ async SearchItemStartsWith(pattern){
       }
     }
     catch(e){
-    //   console.log(e)
+      console.log(e)
       res = {"access":false, "failure_reason":"email"};
     }
 

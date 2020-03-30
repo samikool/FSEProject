@@ -5,3 +5,14 @@ Content-Type: application/json
     "username": "babu.slapps@tmail.com",
     "password": "password"
 }
+
+###
+
+get http://localhost:5000/authorize HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhYnUuc2xhcHBzQHRtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE1ODU1MTYxOTd9.0Bw8Nyq65Lx2rBUWeeRlvaov9cHPMeMNA_CZDhfUcBo
+
+###
+
+
+get http://localhost:5000/disasters HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhYnUuc2xhcHBzQHRtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE1ODU1MTYxOTd9.0Bw8Nyq65Lx2rBUWeeRlvaov9cHPMeMNA_CZDhfUcBo
