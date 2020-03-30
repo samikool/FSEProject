@@ -23,7 +23,6 @@ class SimpleMap extends Component {
           <DisasterMarker
             lat={0.955413}
             lng={0.337844}
-
           />
         </GoogleMapReact>
       </div>

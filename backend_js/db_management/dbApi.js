@@ -344,12 +344,23 @@ async SearchItemStartsWith(pattern){
       let res = await this.pool.query(query_str);
     }
 
+    /**
+     * Adds the token to the users entry by searching with the provoided email
+     * @param {string} email email of the user to associate with token 
+     * @param {string} token token to assosciate with the user 
+     */
     async StoreToken(email, token){
       //console.log('Store: ' + email + ' ' + token)
       var query_str = `UPDATE USERS SET TOKEN = '${token}' WHERE EMAIL = '${email}'`
       let res = await this.pool.query(query_str);
     }
 
+    /**
+     * Finds the user by email and enesures the token stored matches the token provided
+     * @param {string} email email of the user to validate with token
+     * @param {string} token token to validate with user
+     * @returns {boolean} true if token and user match false if not
+     */
     async ValidateToken(email, token){
       //console.log('Validate: ' + email + ' ' + token)
       var query_str = `SELECT TOKEN FROM USERS WHERE EMAIL = '${email}'`
@@ -363,9 +374,19 @@ async SearchItemStartsWith(pattern){
       }
     }
 
+    /**
+     * First validates the token is associated with the user then deletes it
+     * @param {string} email of the user that is logging out and wanted the token deleted 
+     * @param {string} token token that needs to be deleted
+     * @returns {boolean} true if delete was successful false if not
+     */
     async RemoveToken(email, token){
       var query_str = `UPDATE USERS SET TOKEN = '' WHERE EMAIL = '${email}'`
-      let res = await this.pool.query(query_str);
+      if(this.ValidateToken(email, token)){
+        let res = await this.pool.query(query_str);
+        return true;
+      }
+      return false;
     }
 
 
