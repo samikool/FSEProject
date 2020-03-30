@@ -5,7 +5,7 @@ export default async function authorize(){
     let response = await fetch('http://localhost:5000/authorize', {
         method: 'GET',
         headers: {'Authorization' : 'Bearer ' + token},
-    })
+    });
 
     response = await response.json();
     // console.log(response['access'])
