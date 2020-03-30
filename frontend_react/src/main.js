@@ -42,6 +42,7 @@ export default class Main extends React.Component{
       user: authorization['email'],
       admin: authorization['admin']
     })
+    console.log(process.env)
   }
 
   render(){

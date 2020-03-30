@@ -14,6 +14,9 @@ import {
 import Login from "./login";
 import Main from "./main";
 import DisasterTable from "./disasterTable";
+require('dotenv').config()
+
+
 
 ReactDOM.render(
   <Router>

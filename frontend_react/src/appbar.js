@@ -31,7 +31,6 @@ export default function ButtonAppBar(props) {
 
     //these are not actually errors
     const handleLogin = (event: React.MouseEvent<HTMLElement>) => {
-
         if(!isLoggedIn){
             history.push('/login');
         } else{
@@ -42,7 +41,7 @@ export default function ButtonAppBar(props) {
 
     const handleAddDisaster = (event: React.MouseEvent<HTMLElement>) => {
         history.push('/disasters');
-        window.location.reload();
+        //window.location.reload();
     };
 
 

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import Button from '@material-ui/core/Button';
 
-
-const AnyReactComponent = () =>
+const Marker = () =>
   <div>
     <Button onClick = {SimpleMap.handleClick} color="inherit">
       Marker
@@ -14,6 +13,7 @@ class SimpleMap extends Component {
   constructor(props){
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    console.log(process.env)
   }
 
   handleClick(event){
@@ -26,12 +26,12 @@ class SimpleMap extends Component {
       // Important! Always set the container height explicitly
       <div style={{ height: '93vh', width: '100%'}}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: 'AIzaSyAkAmnr11Ra89mVHvrmRHu0WG1GhfKuBlg'}}
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY}}
           defaultCenter={{lat: 20, lng: 0}}
           defaultZoom={1}
           yesIWantToUseGoogleMapApiInternals
         >
-          <AnyReactComponent
+          <Marker
             lat={0.955413}
             lng={0.337844}
           />
