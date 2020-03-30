@@ -7,37 +7,36 @@ import authorize from './authorize';
 const useStyles = makeStyles(theme => ({
 	root: {
     flexGrow: 1,
-    
 	},
 	paper: {
 	  padding: theme.spacing(2),
 	  textAlign: 'center',
 	  color: theme.palette.text.secondary,
 	},
-  }));
+}));
 
 async function getDisasters(){
   let response = await fetch('http://localhost:5000/disasters',{
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify() 
+    body: JSON.stringify()
   })
 }
 
 export default class Main extends React.Component{
   constructor(props){
-    super(props)
+    super(props);
     this.state = {loggedIn: false, admin: false}
   }
 
   async componentDidMount(){
-    let authorization = await authorize()
+    let authorization = await authorize();
     console.log(authorization);
-    console.log(authorization['access'])
-    console.log(authorization['email'])
-    console.log(authorization['admin'])
+    console.log(authorization['access']);
+    console.log(authorization['email']);
+    console.log(authorization['admin']);
     this.setState({
-      loggedIn: authorization['access'], 
+      loggedIn: authorization['access'],
       user: authorization['email'],
       admin: authorization['admin']
     })
@@ -56,12 +55,12 @@ export default class Main extends React.Component{
 // export default function Main(){
 //   const classes = useStyles();
 //   return(
-    
+
 //   );
 // }
 
 
-   
+
 
 /*{ <div style={{height: "99vh", width: "99vw"}} className={classes.root}>
       <Grid container spacing={2} direction="column" alignItems="stretch">
@@ -70,5 +69,5 @@ export default class Main extends React.Component{
         </Grid>
       </Grid>
       <SimpleMap />
-      
+
     </div> }*/

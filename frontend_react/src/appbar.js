@@ -31,70 +31,76 @@ export default function ButtonAppBar(props) {
 
     //these are not actually errors
     const handleLogin = (event: React.MouseEvent<HTMLElement>) => {
+
         if(!isLoggedIn){
             history.push('/login');
-        }
-        else{
+        } else{
             window.sessionStorage.accessToken = null;
             window.location.reload();
         }
-    }
+    };
 
     const handleAddDisaster = (event: React.MouseEvent<HTMLElement>) => {
-        history.push('/disasters')
+        history.push('/disasters');
         window.location.reload();
-    }
+    };
 
 
     if(isLoggedIn && isAdmin){
         return(
             <div className={classes.root}>
-            <AppBar position="static">
+              <AppBar position="static">
                 <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                  <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
+                  </IconButton>
+                  <Typography variant="h6" className={classes.title}>
                     First Aid
-                </Typography>
-                    <Button onClick={handleAddDisaster}color="inherit">Add Disaster</Button>
-                    <Button onClick={handleLogin}color="inherit">Logout</Button>
+                  </Typography>
+                  <Button onClick={handleAddDisaster}color="inherit">
+                    Add Disaster
+                  </Button>
+                  <Button onClick={handleLogin}color="inherit">
+                    Logout
+                  </Button>
                 </Toolbar>
-            </AppBar>
+              </AppBar>
             </div>
         );
-    }
-    else if(isLoggedIn && !isAdmin){
+    } else if(isLoggedIn && !isAdmin){
         return(
             <div className={classes.root}>
-            <AppBar position="static">
+              <AppBar position="static">
                 <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                  <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
+                  </IconButton>
+                  <Typography variant="h6" className={classes.title}>
                     First Aid
-                </Typography>
-                <Button onClick={handleLogin}color="inherit">Logout</Button>
+                  </Typography>
+                  <Button onClick={handleLogin}color="inherit">
+                    Logout
+                  </Button>
                 </Toolbar>
-            </AppBar>
+              </AppBar>
             </div>
         );
-    }
-    else{
+    } else{
         return(
             <div className={classes.root}>
-            <AppBar position="static">
+              <AppBar position="static">
                 <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                  <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
+                  </IconButton>
+                  <Typography variant="h6" className={classes.title}>
                     First Aid
-                </Typography>
-                <Button onClick={handleLogin}color="inherit">Login</Button>
+                  </Typography>
+                  <Button onClick={handleLogin}color="inherit">
+                    Login
+                  </Button>
                 </Toolbar>
-            </AppBar>
+              </AppBar>
             </div>
         );
     }

@@ -6,15 +6,15 @@ import {
   Route,
   BrowserRouter as Router,
   Redirect,
-  useHistory 
+  useHistory
 } from "react-router-dom";
 
 import Clock from "./clock"
 
 class Login extends React.Component{
   constructor(props){
-    super(props)
-    this.state = {username: '', password: '', resp: '', token: ''}
+    super(props);
+    this.state = {username: '', password: '', resp: '', token: ''};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -33,7 +33,7 @@ class Login extends React.Component{
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({username: this.state.username, password: this.state.password}),
-    })
+    });
     // .then(res => res.text())
     // .then(res => {
     //   this.setState({resp: res});
@@ -44,7 +44,7 @@ class Login extends React.Component{
 
 	if(response['accessToken']){
 		//console.log(response['accessToken'])
-		window.sessionStorage.accessToken = await response['accessToken']
+		window.sessionStorage.accessToken = await response['accessToken'];
 		//console.log(await window.sessionStorage.accessToken)
     this.props.history.push('/');
 	}
@@ -52,7 +52,7 @@ class Login extends React.Component{
 		this.setState({resp: "Could not login because " + response['reason'] + " was incorrect"})
 	}
     //this changes us to the main route which is defiend in the index
-    
+
   }
 
   render(){
@@ -62,7 +62,9 @@ class Login extends React.Component{
      <Clock/>
       <div style={{height: '88vh', padding: 100 }}>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor="uname">Email Address:</label>
+          <label htmlFor="uname">
+            Email Address:
+          </label>
           <InputGroup className="mb-3">
             <FormControl
               placeholder="Email Address"
@@ -74,34 +76,39 @@ class Login extends React.Component{
               onChange={this.handleChange}
             />
             <InputGroup.Append>
-              <InputGroup.Text id="basic-addon2">@example.com</InputGroup.Text>
+              <InputGroup.Text id="basic-addon2">
+                @example.com
+              </InputGroup.Text>
             </InputGroup.Append>
           </InputGroup>
-          <label htmlFor="pass">Password:</label>
+          <label htmlFor="pass">
+            Password:
+          </label>
             <InputGroup className="mb-3">
-            <FormControl
-              placeholder="Password"
-              aria-label="Password"
-              aria-describedby="basic-addon2"
-              id="pass"
-              value={this.state.password}
-              name="password"
-              onChange={this.handleChange}
-            />
-          </InputGroup>
+              <FormControl
+                type="password"
+                placeholder="Password"
+                aria-label="Password"
+                aria-describedby="basic-addon2"
+                id="pass"
+                value={this.state.password}
+                name="password"
+                onChange={this.handleChange}
+              />
+            </InputGroup>
           <ButtonGroup>
-          <Button
-            variant="secondary"
-            type="submit" 
-            value="Submit">
+            <Button
+              variant="secondary"
+              type="submit"
+              value="Submit">
               Login
-          </Button>
-          <Button
-            variant="secondary"
-            type="register" 
-            value="register">
+            </Button>
+            <Button
+              variant="secondary"
+              type="register"
+              value="register">
               Register
-          </Button>
+            </Button>
           </ButtonGroup>
         </form>
         <h4>{this.state.resp}</h4>
@@ -110,4 +117,5 @@ class Login extends React.Component{
     );
   }
 }
+
 export default Login;
