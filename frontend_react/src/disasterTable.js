@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 export default class DisasterTable extends React.Component{
     constructor(props){
         super(props);
-        this.state = {rows: [], classes: this.useStyles(), disasters: []}
+        this.state = {classes: this.useStyles(), disasters: []}
         this.useStyles()
     }
 
@@ -24,12 +24,6 @@ export default class DisasterTable extends React.Component{
     }
 
     async componentDidMount(){
-        await this.createData('Frozen yoghurt', 159, 6.0, 24, 4.0);
-        await this.createData('Ice cream sandwich', 237, 9.0, 37, 4.3);
-        await this.createData('Eclair', 262, 16.0, 24, 6.0);
-        await this.createData('Cupcake', 305, 3.7, 67, 4.3);
-        await this.createData('Gingerbread', 356, 16.0, 49, 3.9);
-        
         let response = await fetch('http://localhost:5000/disasters', {
             method: 'GET',
             headers: { 'Authentication': window.sessionStorage.accessToken},
@@ -74,17 +68,6 @@ export default class DisasterTable extends React.Component{
         }
         console.log(currentDisasters)
         this.setState({disasters: currentDisasters})
-    }
-
-    
-      
-    async createData(name, calories, fat, carbs, protein){
-        //console.log("creating data")
-        //console.log(this.state.rows)
-        this.setState(
-            {rows: [...this.state.rows, {name, calories, fat, carbs, protein}]}
-        )
-        console.log(this.state.rows)
     }
 
     render(){

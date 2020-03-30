@@ -24,6 +24,8 @@ async function getDisasters(){
   })
 }
 
+
+
 export default class Main extends React.Component{
   constructor(props){
     super(props)
@@ -46,7 +48,7 @@ export default class Main extends React.Component{
   render(){
     return(
       <div style={{ height: '93vh', width: '100%'}}>
-        <ButtonAppBar isLoggedIn={this.state.loggedIn} isAdmin = {this.state.admin}/>
+        <ButtonAppBar isLoggedIn={this.state.loggedIn} isAdmin = {this.state.admin} />
         <SimpleMap />
       </div>
     );

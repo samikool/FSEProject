@@ -218,7 +218,7 @@ async SearchItemStartsWith(pattern){
         query_str = `SELECT isadmin FROM USERS where email='${email}'`
         let isAdmin = await this.pool.query(query_str)
         isAdmin =  isAdmin.rows[0].isadmin
-        console.log('isAdmin DB: ' + isAdmin)
+        // console.log('isAdmin DB: ' + isAdmin)
         res = {"access":true, "isAdmin":isAdmin};
       }
       else{
@@ -228,7 +228,7 @@ async SearchItemStartsWith(pattern){
       }
     }
     catch(e){
-      console.log(e)
+      //aconsole.log(e)
       res = {"access":false, "failure_reason":"email"};
     }
 

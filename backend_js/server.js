@@ -29,9 +29,6 @@ database = new DB(pool)
 var loginRequest = require('./routes/loginRequest');
 app.use('/loginRequest', loginRequest);
 
-var main = require('./routes/main');
-app.use('/main', main);
-
 var authorize = require('./routes/authorize');
 app.use('/authorize', authorize);
 

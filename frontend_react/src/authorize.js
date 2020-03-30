@@ -10,6 +10,6 @@ export default async function authorize(){
     response = await response.json();
     // console.log(response['access'])
     // console.log(response['admin'])
-
+    
     return response;
 }

@@ -9,12 +9,14 @@ router.get('/', async function (req, res) {
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if(err){
-            console.log(err);
+            console.log('error verifying token');
             res.sendStatus(403);
         }
-        console.log(user.email)
-        console.log(user.isAdmin)
-        res.json({access: true, email: user.email ,admin: user.isAdmin});
+        else{
+            console.log(user.email)
+            console.log(user.isAdmin)
+            res.json({access: true, email: user.email, admin: user.isAdmin});
+        }
     });
 });
 

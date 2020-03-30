@@ -28,10 +28,13 @@ describe('Database', function(){
           response.failure_reason.should.be.a('string');
         });
 
-        it('responds with {access:true} if correct password',
+        it('responds with {access:true isadmin:boolean} if correct password',
         async function(){
           var response = await database.VerifyUser('babu.slapps@tmail.com', 'password');
+          console.log(response)
           response.access.should.equal(true);
+          response.isAdmin.should.be.a('boolean');
+          response.isAdmin.should.equal(false);
         });
         
         it('responds with {access:false failure_reason:password} if wrong password',
@@ -93,10 +96,9 @@ describe('Database', function(){
     describe('#NewUser', function(){
       it('adds a user to the database', 
       async function(){
-        tempUser = {"first_name":"Guy","last_name":"fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false};
-        await database.NewUser(tempUser.first_name,tempUser.last_name,tempUser.password,tempUser.email,tempUser.location,tempUser.isadmin);
+        tempUser = {"first_name":"Guy","last_name":"fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false, "isdonor":true, "isrequester":true};
+        await database.NewUser(tempUser.first_name,tempUser.last_name,tempUser.password,tempUser.email,tempUser.location,tempUser.isadmin, tempUser.isdonor, tempUser.isrequester );
         let user = await database.GetUser(tempUser.email);
-
         //need to delete values that can't match
         delete user.user_id;
         delete user.password;
