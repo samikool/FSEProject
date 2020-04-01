@@ -5,6 +5,8 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Popover from '@material-ui/core/Popover'
+import theme from './index.js'
+import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
 
 export default class LoginDropdown extends React.Component{
@@ -74,6 +76,7 @@ export default class LoginDropdown extends React.Component{
 
     render(){
         return(
+
             <Popover
                 id={this.props.id}
                 open={this.props.open}
@@ -81,40 +84,51 @@ export default class LoginDropdown extends React.Component{
                 onClose={this.props.onClose}
                 anchorOrigin ={{
                     vertical: 'bottom',
-                    horizontal: 'right',
+                    horizontal: 'left',
                 }}
                 transformOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
+
             >
-              <Paper>
-                <Box px ={1} pt={2}>
+              <ThemeProvider theme={theme}>
+              <Box bgcolor="secondary.dark" p={2}>
+                <Box pt={1}>
                   <TextField 
                     id="userField" 
-
                     label='Email' 
                     onChange={this.handleEmail}/>
                 </Box>
-                <Box px={1} pt={2}>
+                <Box pt={2}>
                   <TextField 
                     id="passwordField" 
                     type="password" 
-                    label='Password' 
+                    label='Password'                
                     onChange={this.handlePassword}/>
                 </Box>
-                <Box p={2}>
+                <Box pb={1} pt={2}>
                 <Grid justify="space-evenly" alignItems="center" container spacing={1}>
                   <Grid item>
-                    <Button onClick={this.handleLogin}> Login </Button>
+                    <Button 
+                      color='primary' 
+                      variant='contained' 
+                      onClick={this.handleLogin}
+                      > Login </Button>
                   </Grid>
                   <Grid item>
-                    <Button onClick={this.handleRegister}> Register </Button>
+                    <Button 
+                      color='primary' 
+                      variant='contained'  
+                      onClick={this.handleRegister}> 
+                      Register </Button>
                   </Grid>
                 </Grid>
                 </Box>
-              </Paper>
+                </Box>
+                </ThemeProvider>
             </Popover>
+          
         );
 
     }
