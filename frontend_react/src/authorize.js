@@ -8,7 +8,7 @@ export default async function authorize(){
         method: 'GET',
         headers: {'Authorization' : 'Bearer ' + accessToken},
     });
-
+ 
     response = await response.json();
 
     //if has expired call refreshToken()

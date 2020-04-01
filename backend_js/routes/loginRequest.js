@@ -19,7 +19,7 @@ router.post('/', async function (req, res) {
     const accessToken = await jwt.sign(
       {email: email, isAdmin: response.isAdmin},
         process.env.ACCESS_TOKEN_SECRET, 
-        {expiresIn: '20m'}
+        {expiresIn: '5s'}
     );
 
     const refreshToken = await jwt.sign(

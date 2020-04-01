@@ -40,10 +40,10 @@ class Login extends React.Component{
     //   console.log(res);
     // });
 
-    response = await response.json();
+  response = await response.json();
 
 	if(response['accessToken']){
-		//console.log(response['accessToken'])
+		//console.log(response['accessToken'])a
     window.sessionStorage.accessToken = await response['accessToken'];
     window.sessionStorage.refreshToken = await response['refreshToken'];
 		//console.log(await window.sessionStorage.accessToken)

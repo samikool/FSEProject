@@ -42,8 +42,22 @@ export default class Main extends React.Component{
       user: authorization['email'],
       admin: authorization['admin']
     })
-    console.log(process.env)
+    console.log('main: mounted')
   }
+
+  // async componentDidUpdate(){
+  //   let authorization = await authorize();
+  //   // console.log(authorization);
+  //   // console.log(authorization['access']);
+  //   // console.log(authorization['email']);
+  //   // console.log(authorization['admin']);
+  //   this.setState({
+  //     loggedIn: authorization['access'],
+  //     user: authorization['email'],
+  //     admin: authorization['admin']
+  //   })
+  //   console.log('main: will update')
+  // }
 
   render(){
     return(
