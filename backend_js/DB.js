@@ -1,5 +1,6 @@
-const {Pool, Client} = require('pg')
+const {Pool, Client} = require('pg');
 const bcrypt = require('bcrypt');
+
 class DB{
   pool;
   bcrypt;
@@ -15,26 +16,23 @@ class DB{
   }
 
   async login(email, password){
-
     var hashedPassword = await this.pool
-    .query(`SELECT PASSWORD FROM USERS where email='${email}'`)
-    .then( res => {
-      console.log("result: " + res.rows[0].password);
-      return res.rows[0].password;
-    })
-    .catch(err => {
-      return -1;
-    })
+      .query(`SELECT PASSWORD FROM USERS where email='${email}'`)
+      .then( res => {
+        console.log("result: " + res.rows[0].password);
+        return res.rows[0].password;
+      }).catch(err => {
+        return -1;
+      });
 
-    if(hashedPassword == -1){
+    if(hashedPassword === -1){
       return -1;
     }
 
     if(await bcrypt.compare(password, hashedPassword)){
       console.log("password same");
       return 1;
-    }
-    else{
+    } else{
       console.log("wrong password");
       return 0;
     }

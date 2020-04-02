@@ -1,8 +1,9 @@
 //import dbApi from './dbApi'
-var express = require('express');
+const express = require('express');
 const app = require('express')();
-var server = require('http').Server(app);
-var cors = require('cors');
+const server = require('http')
+  .Server(app);
+const cors = require('cors');
 jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -25,11 +26,15 @@ database = new DB(pool);
 
 // database = new DB.DB();
 
-
-
 //routes
 var loginRequest = require('./routes/loginRequest');
 app.use('/loginRequest', loginRequest);
+
+var authorize = require('./routes/authorize');
+app.use('/authorize', authorize);
+
+var disaster = require('./routes/disaster');
+app.use('/disasters', disaster);
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listening on Port %d', port)});

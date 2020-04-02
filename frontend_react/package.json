@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.7",
+    "@material-ui/icons": "^4.9.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
@@ -10,11 +12,17 @@
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "bootstrap": "^4.4.1",
+    "dotenv": "^8.2.0",
+    "google-map-react": "^1.1.7",
     "jsonwebtoken": "^8.5.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
+<<<<<<< HEAD
     "react-google-maps": "^9.4.5",
+=======
+    "react-router-dom": "^5.1.2",
+>>>>>>> a1b03f9a7a852155ed32fffe57a7dffa15ed9302
     "react-scripts": "3.4.0"
   },
   "scripts": {

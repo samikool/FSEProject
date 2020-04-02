@@ -4,4 +4,11 @@
 *.class
 */node_modules/*
 */package-lock.json
+<<<<<<< HEAD
 *.env
+=======
+*/coverage/*
+*/.nyc_output/*
+*./.vscode/*
+*/.env
+>>>>>>> a1b03f9a7a852155ed32fffe57a7dffa15ed9302

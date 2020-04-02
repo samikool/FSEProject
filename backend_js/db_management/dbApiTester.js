@@ -20,7 +20,7 @@ let test_user;
 async function FillDisasters(array){
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    db.AddDisaster(element.name,element.location,element.keywords)
+    await db.AddDisaster(element.name, element.location, element.keywords)
   }
 }
 
@@ -42,10 +42,7 @@ async function FillItems(array){
 async function FillUsers(array){
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    db.NewUser(element.first_name, element.last_name,
-      element.password, element.email,
-      element.location, element.isadmin,
-      element.isDonor, element.isRequester)
+    await db.NewUser(element.first_name, element.last_name, element.password, element.email, element.location, element.isadmin, element.isDonor, element.isRequester)
   }
 }
 
@@ -133,7 +130,7 @@ const dis_array = [
         "type": ["fire"],
         "items_need": ["towels", "food"]
       }
-  },
+      },
   {
     "name": "Brookfield",
     "location":
@@ -147,7 +144,7 @@ const dis_array = [
         "type":["fire"],
         "items_need":["food"]
       }
-  },
+      },
   {"name": "San Jose",
     "location":
       {
@@ -160,7 +157,7 @@ const dis_array = [
         "type":["earthquake"],
         "items_need":["construction"]
       }
-  },
+      },
   {
     "name": "Jenny",
     "location":
@@ -208,3 +205,12 @@ const item_array = [
 ];
 
 FillItems(item_array);
+
+db.SearchItemContains("er").then(res=>{console.log(res)});
+
+const return_location = {"country": "USA", "state": "Illinois", "city": "Chicago"};
+db.ReturnDisaster(return_location)
+  .then(res=>{
+    console.log(res)
+  })
+;

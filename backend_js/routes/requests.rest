@@ -2,6 +2,27 @@ post http://localhost:5000/loginRequest HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "babu.sllapps@tmail.com",
-    "password": "password"
+  "username": "senortonito@gmail.com",
+  "password": "password"
 }
+
+###
+
+get http://localhost:5000/authorize HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOnRydWUsImVtYWlsIjoic2Vub3J0b25pdG9AZ21haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNTg1NjA2MzA0LCJleHAiOjE1ODU2MDYzMzR9.o4yzjI1ZGIK9qJSXgXH95iqUxtZdVZjnme40eQPYBuY
+
+###
+
+post http://localhost:5000/authorize HTTP/1.1
+Content-Type: application/json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlbm9ydG9uaXRvQGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTU4NTYwNTg4MX0.GuEsRSKRdWSrHQLDYszL4Q4hPm9SHJqcU1nk2AfuosA"
+}
+
+###
+
+get http://localhost:5000/disasters HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhYnUuc2xhcHBzQHRtYWlsLmNvbSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE1ODU1MTYxOTd9.0Bw8Nyq65Lx2rBUWeeRlvaov9cHPMeMNA_CZDhfUcBo
+
+###

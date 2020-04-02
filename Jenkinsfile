@@ -4,14 +4,32 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
-                bat 'mvn compile'
+                dir('backend_js'){
+                    echo 'Installing Backend...'
+                    bat 'npm install'
+                    echo 'Starting Backend...'
+                    bat 'start npm start'
+                    sleep 1
+                    echo 'Stopping Backend...'
+                    bat 'taskkill /IM \"node.exe\" /f'
+                }
+                dir('frontend_react'){
+                    echo 'Installing Frontend...'
+                    bat 'npm install'
+                    echo 'Starting Frontend...'
+                    bat 'start npm start'
+                    sleep 1
+                    echo 'Stopping Frontend'
+                    bat 'taskkill /IM \"node.exe\" /f'
+                }
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
-                bat 'mvn test'
+                dir('backend_js'){
+                    echo "Running test"
+                    bat 'npm test'
+                }
             }
         }
         stage('Deploy') {
