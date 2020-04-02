@@ -111,7 +111,7 @@ export default function ButtonAppBar(props) {
               </Typography>
             </Box>                 
             <Box>                   
-              <Button onClick={handleLogin} variant="contained" color='primary'>
+              <Button onClick={handleLogout} variant="contained" color='primary'>
                 <Typography variant="button"> Logout </Typography>
               </Button>
             </Box>

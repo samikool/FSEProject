@@ -24,7 +24,6 @@ export default class LoginDropdown extends React.Component{
         this.handlePassword = this.handlePassword.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleRegister = this.handleRegister(this);
-        this.handleShowPassword = this.handleShowPassword(this);
     }
 
     async handleLogin(){
