@@ -7,17 +7,24 @@ import TextField from '@material-ui/core/TextField'
 import Popover from '@material-ui/core/Popover'
 import theme from './index.js'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
+import Typography from '@material-ui/core/Typography'
+import { InputAdornment, IconButton } from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Input from '@material-ui/core/Input'
+
 
 
 export default class LoginDropdown extends React.Component{
     constructor(props){
         super(props)
-        this.state = {email: '', password: ''}
+        this.state = {email: '', password: '', showPassword: false}
 
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleRegister = this.handleRegister(this);
+        this.handleShowPassword = this.handleShowPassword(this);
     }
 
     async handleLogin(){
@@ -51,6 +58,14 @@ export default class LoginDropdown extends React.Component{
       let newPassword = event.target.value
       await this.setState({password: newPassword})
       console.log(this.state.password)
+    }
+
+    async handleShowPassword(){
+      if(this.state.showPassword){
+        await this.setState({showPassword: false})
+      }else{
+        await this.setState({showPassword: true})
+      }
     }
 
     async handleLogin(event){
@@ -90,44 +105,50 @@ export default class LoginDropdown extends React.Component{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
-
             >
               <ThemeProvider theme={theme}>
-              <Box bgcolor="secondary.dark" p={2}>
-                <Box pt={1}>
-                  <TextField 
-                    id="userField" 
-                    label='Email' 
-                    onChange={this.handleEmail}/>
+                <Box bgcolor="secondary.dark" p={2}>
+                  <Box pt={1}>
+                    <TextField 
+                      id="userField" 
+                      label="Email"
+                      autoFocus={true}
+                      variant='filled'
+                      onChange={this.handleEmail}/>
+                  </Box>
+                  <Box pt={2}>
+                    <TextField 
+                      id="passwordField" 
+                      type='password'
+                      label="Password"        
+                      variant='filled'
+                      onChange={this.handlePassword}
+                    />
+                  </Box>
+                  <Box pb={1} pt={2}>
+                    <Grid justify="space-evenly" alignItems="center" container spacing={1}>
+                      <Grid item>
+                        <Button 
+                          color='secondary' 
+                          variant='contained' 
+                          onClick={this.handleLogin}
+                        >  
+                          <Typography variant="button"> Login </Typography> 
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button 
+                          color='secondary' 
+                          variant='contained'  
+                          onClick={this.handleRegister}> 
+                        <Typography variant="button">  Register </Typography> 
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
                 </Box>
-                <Box pt={2}>
-                  <TextField 
-                    id="passwordField" 
-                    type="password" 
-                    label='Password'                
-                    onChange={this.handlePassword}/>
-                </Box>
-                <Box pb={1} pt={2}>
-                <Grid justify="space-evenly" alignItems="center" container spacing={1}>
-                  <Grid item>
-                    <Button 
-                      color='primary' 
-                      variant='contained' 
-                      onClick={this.handleLogin}
-                      > Login </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button 
-                      color='primary' 
-                      variant='contained'  
-                      onClick={this.handleRegister}> 
-                      Register </Button>
-                  </Grid>
-                </Grid>
-                </Box>
-                </Box>
-                </ThemeProvider>
-            </Popover>
+            </ThemeProvider>
+          </Popover>
           
         );
 
