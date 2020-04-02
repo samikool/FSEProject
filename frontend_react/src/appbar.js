@@ -7,43 +7,31 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useHistory} from "react-router-dom";
+import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Popover from '@material-ui/core/Popover'
 import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import LoginDropdown from './loginDropdown';
+import theme from './index.js'
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+
 
 
 export default function ButtonAppBar(props) {
-  const classes = useStyles();
   let isLoggedIn = props.isLoggedIn;
   let isAdmin = props.isAdmin;
   let history = useHistory();
   console.log('LoggedIn: ' + isLoggedIn);
   console.log('isAdmin: ' + isAdmin);
+  console.log(theme)
 
   //variables to keep track of Login Dropdown
   const[anchorEl, setAnchorE1] = React.useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'LoginDropdown' : undefined;
 
-    //these are not actually errors
-
-
-  
 
   //if not logged in open dropdown
   const handleLogin = async (event) => {
@@ -76,66 +64,99 @@ export default function ButtonAppBar(props) {
 
   if(isLoggedIn && isAdmin){
       return(
-          <div className={classes.root}>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        <ThemeProvider theme={theme}>
+        <AppBar color="transparent" position="static">
+          <ThemeProvider theme={theme}>
+            <Toolbar>     
+              <Box>
+                <IconButton edge="start" color="primary" aria-label="menu">
                   <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" className={classes.title}>
+              </Box>
+              <Box flexGrow={1}>
+                <Typography color="primary" variant="h6" >
                   First Aid
                 </Typography>
-                <Button onClick={handleAddDisaster}color="inherit">
-                  Add Disaster
+              </Box>         
+              <Box px={1}>
+                  <Button onClick={handleAddDisaster} variant="contained" color="primary">
+                  <Typography variant="button"> Add Disaster </Typography>
+                  </Button>
+                </Box>        
+              <Box>                   
+                <Button onClick={handleLogout} variant="contained" color="primary">
+                  <Typography variant="button"> Logout </Typography>
                 </Button>
-                <Button onClick={handleLogout}color="inherit">
-                  Logout
-                </Button>
+              </Box>
               </Toolbar>
-            </AppBar>
-          </div>
-      );
+          </ThemeProvider>
+        </AppBar>
+       </ThemeProvider>
+    );
+      
   } else if(isLoggedIn && !isAdmin){
       return(
-          <div className={classes.root}>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                  First Aid
-                </Typography>
-                <Button onClick={handleLogout}color="inherit">
-                  Logout
-                </Button>
-              </Toolbar>
-            </AppBar>
-          </div>
+        <ThemeProvider theme={theme}>
+        <AppBar color="transparent" position="static">
+        <ThemeProvider theme={theme}>
+          <Toolbar>     
+            <Box>
+              <IconButton edge="start" color="primary" aria-label="menu">
+                <MenuIcon />
+              </IconButton>
+            </Box>
+            <Box flexGrow={1}>
+              <Typography color="primary" variant="h6" >
+                First Aid
+              </Typography>
+            </Box>                 
+            <Box>                   
+              <Button onClick={handleLogout} variant="contained" color='primary'>
+                <Typography variant="button"> Logout </Typography>
+              </Button>
+            </Box>
+            <LoginDropdown 
+              id={id} 
+              open={open} 
+              anchorEl={anchorEl} 
+              setAnchorE1={setAnchorE1} 
+              onClose={handleClose}/>
+            </Toolbar>
+          </ThemeProvider>
+        </AppBar>
+    </ThemeProvider>
       );
   } else{
       return(
-          <div className={classes.root}>
-            <AppBar position="static">
-              <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                  <MenuIcon />
-                </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                  First Aid
-                </Typography>
-                <Button onClick={handleLogin}color="inherit">
-                  Login
-                </Button>
-                <LoginDropdown 
-                  id={id} 
-                  open={open} 
-                  anchorEl={anchorEl} 
-                  setAnchorE1={setAnchorE1} 
-                  onClose={handleClose}/>
-              </Toolbar>
-            </AppBar>
-          </div>
+          <ThemeProvider theme={theme}>
+              <AppBar color="transparent" position="static">
+              <ThemeProvider theme={theme}>
+                <Toolbar>     
+                  <Box>
+                    <IconButton edge="start" color="primary" aria-label="menu">
+                      <MenuIcon />
+                    </IconButton>
+                  </Box>
+                  <Box flexGrow={1}>
+                    <Typography color="primary" variant="h6" >
+                      First Aid
+                    </Typography>
+                  </Box>                 
+                  <Box>                   
+                    <Button onClick={handleLogin} variant="contained" color='primary'>
+                      <Typography variant="button"> Login </Typography>
+                    </Button>
+                  </Box>
+                  <LoginDropdown 
+                    id={id} 
+                    open={open} 
+                    anchorEl={anchorEl} 
+                    setAnchorE1={setAnchorE1} 
+                    onClose={handleClose}/>
+                  </Toolbar>
+                </ThemeProvider>
+              </AppBar>
+          </ThemeProvider>
       );
     }
 }

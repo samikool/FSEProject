@@ -5,12 +5,20 @@ import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Popover from '@material-ui/core/Popover'
+import theme from './index.js'
+import ThemeProvider from '@material-ui/styles/ThemeProvider'
+import Typography from '@material-ui/core/Typography'
+import { InputAdornment, IconButton } from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import Input from '@material-ui/core/Input'
+
 
 
 export default class LoginDropdown extends React.Component{
     constructor(props){
         super(props)
-        this.state = {email: '', password: ''}
+        this.state = {email: '', password: '', showPassword: false}
 
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
@@ -51,6 +59,14 @@ export default class LoginDropdown extends React.Component{
       console.log(this.state.password)
     }
 
+    async handleShowPassword(){
+      if(this.state.showPassword){
+        await this.setState({showPassword: false})
+      }else{
+        await this.setState({showPassword: true})
+      }
+    }
+
     async handleLogin(event){
       console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
       let response = await fetch('http://localhost:5000/loginRequest', {
@@ -74,6 +90,7 @@ export default class LoginDropdown extends React.Component{
 
     render(){
         return(
+
             <Popover
                 id={this.props.id}
                 open={this.props.open}
@@ -81,40 +98,57 @@ export default class LoginDropdown extends React.Component{
                 onClose={this.props.onClose}
                 anchorOrigin ={{
                     vertical: 'bottom',
-                    horizontal: 'right',
+                    horizontal: 'left',
                 }}
                 transformOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
                 }}
             >
-              <Paper>
-                <Box px ={1} pt={2}>
-                  <TextField 
-                    id="userField" 
-
-                    label='Email' 
-                    onChange={this.handleEmail}/>
+              <ThemeProvider theme={theme}>
+                <Box bgcolor="secondary.dark" p={2}>
+                  <Box pt={1}>
+                    <TextField 
+                      id="userField" 
+                      label="Email"
+                      autoFocus={true}
+                      variant='filled'
+                      onChange={this.handleEmail}/>
+                  </Box>
+                  <Box pt={2}>
+                    <TextField 
+                      id="passwordField" 
+                      type='password'
+                      label="Password"        
+                      variant='filled'
+                      onChange={this.handlePassword}
+                    />
+                  </Box>
+                  <Box pb={1} pt={2}>
+                    <Grid justify="space-evenly" alignItems="center" container spacing={1}>
+                      <Grid item>
+                        <Button 
+                          color='secondary' 
+                          variant='contained' 
+                          onClick={this.handleLogin}
+                        >  
+                          <Typography variant="button"> Login </Typography> 
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button 
+                          color='secondary' 
+                          variant='contained'  
+                          onClick={this.handleRegister}> 
+                        <Typography variant="button">  Register </Typography> 
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Box>
                 </Box>
-                <Box px={1} pt={2}>
-                  <TextField 
-                    id="passwordField" 
-                    type="password" 
-                    label='Password' 
-                    onChange={this.handlePassword}/>
-                </Box>
-                <Box p={2}>
-                <Grid justify="space-evenly" alignItems="center" container spacing={1}>
-                  <Grid item>
-                    <Button onClick={this.handleLogin}> Login </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button onClick={this.handleRegister}> Register </Button>
-                  </Grid>
-                </Grid>
-                </Box>
-              </Paper>
-            </Popover>
+            </ThemeProvider>
+          </Popover>
+          
         );
 
     }
