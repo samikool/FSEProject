@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,18 +7,14 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import {useHistory} from "react-router-dom";
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
-import Popover from '@material-ui/core/Popover'
-import Paper from '@material-ui/core/Paper'
 import Box from '@material-ui/core/Box'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@material-ui/core/TextField'
 import LoginDropdown from './loginDropdown';
 import theme from './index.js'
 
 
 
 
-export default function ButtonAppBar(props) {
+export default function MainAppbar(props) {
   let isLoggedIn = props.isLoggedIn;
   let isAdmin = props.isAdmin;
   let history = useHistory();
@@ -59,6 +54,10 @@ export default function ButtonAppBar(props) {
       //window.location.reload();
   };
 
+  const handleDisaster = async (event: React.MouseEvent<HTMLElement>) => {
+    history.push('/disaster');
+  };
+
   
 
 
@@ -77,12 +76,17 @@ export default function ButtonAppBar(props) {
                 <Typography color="primary" variant="h6" >
                   First Aid
                 </Typography>
-              </Box>         
+              </Box>
+              <Box>
+                <Button onClick={handleDisaster} variant="contained" color="primary">
+                <Typography variant="button"> Disaster </Typography>
+                </Button>
+              </Box>           
               <Box px={1}>
-                  <Button onClick={handleAddDisaster} variant="contained" color="primary">
-                  <Typography variant="button"> Add Disaster </Typography>
-                  </Button>
-                </Box>        
+                <Button onClick={handleAddDisaster} variant="contained" color="primary">
+                <Typography variant="button"> Add Disaster </Typography>
+                </Button>
+              </Box>        
               <Box>                   
                 <Button onClick={handleLogout} variant="contained" color="primary">
                   <Typography variant="button"> Logout </Typography>

@@ -2,13 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 import { Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
-import {
-  Route,
-  BrowserRouter as Router,
-  Redirect,
-  useHistory
-} from "react-router-dom";
-
 import Clock from "./clock"
 
 class Login extends React.Component{

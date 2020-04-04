@@ -1,19 +1,8 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import ButtonAppBar from './appbar.js';
+import MainAppbar from './MainAppbar.js';
 import SimpleMap from './map.js'
 import authorize from './authorize';
-
-const useStyles = makeStyles(theme => ({
-	root: {
-    flexGrow: 1,
-	},
-	paper: {
-	  padding: theme.spacing(2),
-	  textAlign: 'center',
-	  color: theme.palette.text.secondary,
-	},
-}));
+import theme from './index';
 
 async function getDisasters(){
   let response = await fetch('http://localhost:5000/disasters',{
@@ -62,7 +51,7 @@ export default class Main extends React.Component{
   render(){
     return(
       <div style={{ height: '93vh', width: '100%'}}>
-        <ButtonAppBar isLoggedIn={this.state.loggedIn} isAdmin = {this.state.admin} />
+        <MainAppbar isLoggedIn={this.state.loggedIn} isAdmin = {this.state.admin} />
         <SimpleMap />
       </div>
     );

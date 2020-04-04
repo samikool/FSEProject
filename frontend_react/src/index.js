@@ -13,6 +13,7 @@ import {
 
 import Login from "./login";
 import Main from "./main";
+import Disaster from "./disaster";
 import DisasterTable from "./disasterTable";
 
 //Theme creation
@@ -36,6 +37,7 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route path="/login" component={Login}/>
+      <Route path="/disaster" component={Disaster}/>
       <Route path="/disasters" component={DisasterTable} />
       <Route path="/" component={Main}/>
     </Switch>
