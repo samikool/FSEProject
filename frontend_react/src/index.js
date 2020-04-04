@@ -7,8 +7,6 @@ import {
   Route,
   BrowserRouter as Router,
   Switch,
-  Redirect,
-  useHistory 
 } from "react-router-dom";
 
 import Login from "./login";
