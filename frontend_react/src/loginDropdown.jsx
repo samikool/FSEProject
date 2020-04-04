@@ -7,40 +7,28 @@ import Popover from '@material-ui/core/Popover'
 import theme from './index.js'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Typography from '@material-ui/core/Typography'
-
+import RegisterForm from './registerForm'
 
 
 
 export default class LoginDropdown extends React.Component{
     constructor(props){
         super(props)
-        this.state = {email: '', password: '', showPassword: false}
+        this.state = {email: '', password: '', registerOpen: false};
 
         this.handleEmail = this.handleEmail.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
-        this.handleRegister = this.handleRegister(this);
+        this.handleRegisterClose = this.handleRegisterClose.bind(this)
+        this.handleRegisterOpen = this.handleRegisterOpen.bind(this)
     }
 
-    async handleLogin(){
-      // if(!isLoggedIn){
-      //     history.push('/login');
-      // } else{
-      //     let refreshToken = await window.sessionStorage.refreshToken;
-      //     await fetch('http://localhost:5000/authorize', {
-      //         method: 'DELETE',
-      //         headers: { 'Content-Type': 'application/json' },
-      //         body: JSON.stringify({token: refreshToken})
-      //     });
-      //     window.sessionStorage.accessToken = null;
-      //     window.location.reload();
-      // }
-
-
+    async handleRegisterOpen(){
+      this.setState({registerOpen: true})
     }
 
-    async handleRegister(){
-
+    async handleRegisterClose(){
+      this.setState({registerOpen: false})
     }
 
     async handleEmail(event){
@@ -55,16 +43,8 @@ export default class LoginDropdown extends React.Component{
       console.log(this.state.password)
     }
 
-    async handleShowPassword(){
-      if(this.state.showPassword){
-        await this.setState({showPassword: false})
-      }else{
-        await this.setState({showPassword: true})
-      }
-    }
-
     async handleLogin(event){
-      console.log("Submitted: Username: '" + this.state.username + "' Password: '" + this.state.password + "'");
+      console.log("Submitted: Username: '" + this.state.email + "' Password: '" + this.state.password + "'");
       let response = await fetch('http://localhost:5000/loginRequest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -107,8 +87,9 @@ export default class LoginDropdown extends React.Component{
                     <TextField 
                       id="userField" 
                       label="Email"
+                      type="email"
                       autoFocus={true}
-                      variant='filled'
+                      variant='outlined'
                       onChange={this.handleEmail}/>
                   </Box>
                   <Box pt={2}>
@@ -116,7 +97,7 @@ export default class LoginDropdown extends React.Component{
                       id="passwordField" 
                       type='password'
                       label="Password"        
-                      variant='filled'
+                      variant='outlined'
                       onChange={this.handlePassword}
                     />
                   </Box>
@@ -135,9 +116,10 @@ export default class LoginDropdown extends React.Component{
                         <Button 
                           color='secondary' 
                           variant='contained'  
-                          onClick={this.handleRegister}> 
+                          onClick={this.handleRegisterOpen}> 
                         <Typography variant="button">  Register </Typography> 
                         </Button>
+                        <RegisterForm open={this.state.registerOpen} onClose={this.handleRegisterClose} />
                       </Grid>
                     </Grid>
                   </Box>
