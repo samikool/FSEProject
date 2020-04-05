@@ -17,8 +17,14 @@ import DisasterTable from "./disasterTable";
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const palette = {
-  primary: { main: '#B71C1C', contrastText: '#ffffff' },
-  secondary: { main: '#EEEEEE', contrastText: '#B71C1C' }
+  primary: {
+    main: '#B71C1C',
+    contrastText: '#ffffff'
+  },
+  secondary: {
+    main: '#EEEEEE',
+    contrastText: '#B71C1C'
+  }
 };
 const themeName = 'first_aid';
 
@@ -28,7 +34,7 @@ const theme = createMuiTheme({palette, themeName});
 export default theme;
 console.log(theme);
 
-require('dotenv').config()
+require('dotenv').config();
 
 ReactDOM.render(
   <Router>
@@ -40,8 +46,6 @@ ReactDOM.render(
   </Router>,
   document.getElementById('root')
 );
-
-
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

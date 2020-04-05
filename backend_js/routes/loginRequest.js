@@ -9,31 +9,37 @@ router.post('/', async function (req, res) {
   console.log(pw);
 
   let response = await database.VerifyUser(email, pw);
-  
+
   console.log(response);
-  console.log(response.access)
+  console.log(response.access);
 
   if(!response.access){
     res.status(200).json({
-      access: false, 
+      access: false,
 	    reason: response.failure_reason
 	  });
   }
   else if(response.access){
     const accessToken = await jwt.sign(
-      {email: email, isAdmin: response.isAdmin},
-        process.env.ACCESS_TOKEN_SECRET, 
-        {expiresIn: '5s'}
+      {
+        email: email,
+        isAdmin: response.isAdmin
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: '5s'
+      }
     );
 
     const refreshToken = await jwt.sign(
-      {email: email, isAdmin: response.isAdmin},
+      {
+        email: email,
+        isAdmin: response.isAdmin
+      },
       process.env.REFRESH_TOKEN_SECRET
     );
 
     await database.StoreToken(email, refreshToken);
-
-    
     res.json({accessToken: accessToken, refreshToken: refreshToken});
   }
 });

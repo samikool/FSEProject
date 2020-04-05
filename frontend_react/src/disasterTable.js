@@ -29,7 +29,9 @@ export default class DisasterTable extends React.Component{
   async componentDidMount(){
     let response = await fetch('http://localhost:5000/disasters', {
       method: 'GET',
-      headers: { 'Authentication': window.sessionStorage.accessToken},
+      headers: {
+        'Authentication': window.sessionStorage.accessToken
+      },
     });
 
     response = await response.json();
@@ -43,7 +45,17 @@ export default class DisasterTable extends React.Component{
       let country = disaster['location']['country'];
 
       this.setState(
-        {disasters: [...this.state.disasters,{id, name, type, items, city, state, country}]}
+        {
+          disasters: [...this.state.disasters, {
+            id,
+            name,
+            type,
+            items,
+            city,
+            state,
+            country
+          }]
+        }
       )
     });
   }
@@ -53,7 +65,7 @@ export default class DisasterTable extends React.Component{
     let currentDisasters = this.state.disasters;
     //console.log(currentDisasters);
     let index = -1;
-    for (let i=0; i<currentDisasters.length; i++) {
+    for (let i=0; i < currentDisasters.length; i++) {
       //console.log('currentDisaster: ' + currentDisasters[i].id);
       //console.log('id: ' + id);
       if(currentDisasters[i].id === id){
@@ -69,7 +81,10 @@ export default class DisasterTable extends React.Component{
     }
 
     //console.log(currentDisasters);
-    this.setState({disasters: currentDisasters})
+    this.setState(
+      {
+        disasters: currentDisasters
+      })
   }
 
   render(){
@@ -78,13 +93,27 @@ export default class DisasterTable extends React.Component{
         <Table className = {this.state.classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Type&nbsp;</TableCell>
-              <TableCell align="right">Items&nbsp;</TableCell>
-              <TableCell align="right">City&nbsp;</TableCell>
-              <TableCell align="right">State&nbsp;</TableCell>
-              <TableCell align="right">Country&nbsp;</TableCell>
+              <TableCell>
+                Id
+              </TableCell>
+              <TableCell align="right">
+                Name
+              </TableCell>
+              <TableCell align="right">
+                Type&nbsp;
+              </TableCell>
+              <TableCell align="right">
+                Items&nbsp;
+              </TableCell>
+              <TableCell align="right">
+                City&nbsp;
+              </TableCell>
+              <TableCell align="right">
+                State&nbsp;
+              </TableCell>
+              <TableCell align="right">
+                Country&nbsp;
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -107,7 +136,8 @@ export default class DisasterTable extends React.Component{
                 </TableCell>
                 <TableCell align="right">
                   {row.city}</TableCell>
-                <TableCell align="right">{row.state}
+                <TableCell align="right">
+                  {row.state}
                 </TableCell>
                 <TableCell align="right">
                   {row.country}

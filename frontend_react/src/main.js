@@ -7,7 +7,9 @@ import theme from './index';
 async function getDisasters(){
   let response = await fetch('http://localhost:5000/disasters',{
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify()
   })
 }
@@ -17,7 +19,10 @@ async function getDisasters(){
 export default class Main extends React.Component{
   constructor(props){
     super(props);
-    this.state = {loggedIn: false, admin: false}
+    this.state = {
+      loggedIn: false,
+      admin: false
+    }
   }
 
   async componentDidMount(){
@@ -30,7 +35,7 @@ export default class Main extends React.Component{
       loggedIn: authorization['access'],
       user: authorization['email'],
       admin: authorization['admin']
-    })
+    });
     console.log('main: mounted')
   }
 

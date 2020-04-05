@@ -6,21 +6,21 @@ import { Marker, GoogleMap, LoadScript  } from '@react-google-maps/api';
 
 const onLoad = marker => {
   console.log('marker: ', marker);
-}
+};
 
 const position = {
   lat:0.955413,
   lng:0.337844
-}
+};
 const mapContainerStyle = {
   height: "400px",
   width: "800px"
-}
+};
 
 const center = {
   lat: 0,
   lng: -180
-}
+};
 
 
 class SimpleMap extends Component {
@@ -40,12 +40,15 @@ class SimpleMap extends Component {
     hover: false,
     currentPosition: false,
     infoBox: false
-  }
+  };
 
   static defaultProps = {
-    center: {lat: 40.73, lng: -73.93}, 
+    center: {
+      lat: 40.73,
+      lng: -73.93
+    },
     zoom: 12
-  }
+  };
 
   render() {
     return (
