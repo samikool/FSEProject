@@ -1,4 +1,4 @@
-const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg');
 
 const pool = new Pool({
   user: 'postgres',
@@ -6,10 +6,10 @@ const pool = new Pool({
   database: 'first_aid',
   password: 'password',
   port: 5432,
-})
+});
 
-const dbApi = require('./dbApi')
-const db = new dbApi(pool)
+const dbApi = require('./dbApi');
+const db = new dbApi(pool);
 let test_user;
 
 
@@ -192,4 +192,4 @@ const item_array = [
   }
 ];
 
-FillItems(item_array);:
+FillItems(item_array);
