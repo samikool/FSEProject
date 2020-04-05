@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css'
 
 class Clock extends React.Component{
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {date: new Date()}
   }
@@ -11,7 +11,7 @@ class Clock extends React.Component{
   componentDidMount(){
     this.timerID = setInterval(
       () => this.tick(),
-        1000
+      1000
     )
   }
 
@@ -19,16 +19,18 @@ class Clock extends React.Component{
     clearInterval(this.timerID);
   }
 
-  tick(){
+  tick() {
     this.setState({
       date: new Date()
     });
   }
 
-  render(){
+  render() {
     return(
       <div style={{padding:10}}>
-        <h4>{this.state.date.toLocaleTimeString()}</h4>
+        <h4>
+          {this.state.date.toLocaleTimeString()}
+        </h4>
       </div>
     );
   }
