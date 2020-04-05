@@ -1,36 +1,34 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css'
 
-class Clock extends React.Component{
+class Clock extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {date: new Date()}
+    this.state = { date: new Date() };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.timerID = setInterval(
       () => this.tick(),
-      1000
-    )
+      1000,
+    );
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.timerID);
   }
 
   tick() {
     this.setState({
-      date: new Date()
+      date: new Date(),
     });
   }
 
   render() {
-    return(
-      <div style={{padding:10}}>
-        <h4>
-          {this.state.date.toLocaleTimeString()}
-        </h4>
+    return (
+    // eslint-disable-next-line react/jsx-filename-extension
+      <div style={{ padding: 10 }}>
+        {/* eslint-disable-next-line react/destructuring-assignment */}
+        <h4>{this.state.date.toLocaleTimeString()}</h4>
       </div>
     );
   }
