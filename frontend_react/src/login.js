@@ -4,6 +4,10 @@ import './index.css'
 import { Button, ButtonGroup, InputGroup, FormControl } from 'react-bootstrap';
 import Clock from "./clock"
 
+/*********************/
+/* Depreciated *******/
+/*********************/
+
 class Login extends React.Component{
   constructor(props){
     super(props);

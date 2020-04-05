@@ -35,6 +35,9 @@ app.use('/authorize', authorize);
 var disaster = require('./routes/disaster');
 app.use('/disasters', disaster)
 
+var register = require('./routes/register');
+app.use('/register', register)
+
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listeing on Port %d', port)});

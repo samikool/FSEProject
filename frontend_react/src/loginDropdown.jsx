@@ -82,7 +82,7 @@ export default class LoginDropdown extends React.Component{
                 }}
             >
               <ThemeProvider theme={theme}>
-                <Box bgcolor="secondary.dark" p={2}>
+                <Box bgcolor="secondary" p={2}>
                   <Box pt={1}>
                     <TextField 
                       id="userField" 
