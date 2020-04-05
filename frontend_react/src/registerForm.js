@@ -46,11 +46,11 @@ export default class RegisterForm extends React.Component{
     }
 
     async handlePlaceSelect(suggestion){
-        console.log(suggestion)
+        // console.log(suggestion)
         let response = await geocodeByAddress(suggestion)
-        console.log(response)
-        console.log(response[0])
-        console.log(response[0].address_components)
+        // console.log(response)
+        // console.log(response[0])
+        // console.log(response[0].address_components)
 
         //house number and street
         let streetAddress = response[0].formatted_address.split(',')[0]
@@ -58,7 +58,7 @@ export default class RegisterForm extends React.Component{
 
         let addressParts=response[0].address_components;
         addressParts.forEach(part => {
-            console.log(part)
+            //console.log(part)
             part.types.forEach(type => {
                 //city
                 if(type=="locality"){
@@ -222,25 +222,10 @@ export default class RegisterForm extends React.Component{
                             (
                             <Box>
                                 <Box>
-                                {/* <FormControl variant="outlined" fullWidth>
-                                    <InputLabel htmlFor="streetAddress"> Street Address </InputLabel>
-                                    <OutlinedInput
-                                    id="streetAddress"
-                                    //variant="outlined"
-                                    //label="Street Address"
-                                    type="text"
-                                    autoComplete="none"
-                                    //fullWidth={true}
-                                    //onChange={this.handleChange}
-                                    labelWidth={97}
-                                />
-                                </FormControl> */}
                                     <FormControl fullWidth  variant="outlined">
                                     <InputLabel htmlFor="streetAddress"> Street Address </InputLabel>
                                     <OutlinedInput {...getInputProps()}
                                         id="streetAddress"
-                                        //fullWidth={true}
-                                        //label="Street Address"
                                         autoComplete="none"
                                         labelWidth={94}
                                     />
