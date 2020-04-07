@@ -4,15 +4,7 @@ import SimpleMap from './map.js'
 import authorize from './authorize';
 import theme from './index';
 
-async function getDisasters(){
-  let response = await fetch('http://localhost:5000/disasters',{
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify()
-  })
-}
+
 
 
 
@@ -21,9 +13,12 @@ export default class Main extends React.Component{
     super(props);
     this.state = {
       loggedIn: false,
-      admin: false
+      admin: false,
+      
     }
   }
+
+
 
   async componentDidMount(){
     let authorization = await authorize();
@@ -36,28 +31,25 @@ export default class Main extends React.Component{
       user: authorization['email'],
       admin: authorization['admin']
     });
-    console.log('main: mounted')
-  }
 
-  // async componentDidUpdate(){
-  //   let authorization = await authorize();
-  //   // console.log(authorization);
-  //   // console.log(authorization['access']);
-  //   // console.log(authorization['email']);
-  //   // console.log(authorization['admin']);
-  //   this.setState({
-  //     loggedIn: authorization['access'],
-  //     user: authorization['email'],
-  //     admin: authorization['admin']
-  //   })
-  //   console.log('main: will update')
-  // }
+    
+    // disasterList.forEach(disaster => {
+    //     let id = disaster.disaster_id;
+    //     let items_needed = disaster.keywords.items_need;
+    //     let type = disaster.keywords.type;
+    //     let location = disaster.location;
+    //     let name = disaster.name;
+
+
+        
+    // });
+  }
 
   render(){
     return(
       <div style={{ height: '93vh', width: '100%'}}>
         <MainAppbar isLoggedIn={this.state.loggedIn} isAdmin = {this.state.admin} />
-        <SimpleMap />
+        <SimpleMap disasterList={this.state.disasterList} />
       </div>
     );
   }
