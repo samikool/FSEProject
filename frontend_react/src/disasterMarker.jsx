@@ -11,7 +11,8 @@ import 'semantic-ui-css/semantic.min.css';
 
 const pinStyle={
   borderRadius: '10px',
-  transform: 'matrix(-1, 0, 0, 1, 10, 0)'
+  transform: 'translate(-50%,-50%)',
+  position: "absolute",
 };
 
 

@@ -108,9 +108,10 @@ class SimpleMap extends Component {
           <DisasterMarker 
             lat={marker.lat}
             lng={marker.lng}
-          />)
+          />
+          )
+        })
         }
-        )}
         </GoogleMapReact>
       </div>
     );
