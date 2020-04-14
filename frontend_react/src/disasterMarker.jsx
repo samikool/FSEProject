@@ -9,11 +9,16 @@ import 'semantic-ui-less/semantic.less'
 import 'semantic-ui-css/semantic.min.css';
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
+import TableContainer from '@material-ui/core/TableContainer'
+import Table from '@material-ui/core/Table'
+import TableHead from '@material-ui/core/TableHead'
+import TableCell from '@material-ui/core/TableCell'
+
 
 
 const pinStyle={
   borderRadius: '10px',
-  transform: 'translate(-50%,-50%)',
+  transform: 'translate(-50%,-50%)', //keeps markers from moving during zoom
   position: "absolute",
 };
 
@@ -59,16 +64,27 @@ export default class DisasterMarker extends Component{
               <p>
                 Location: {this.props.disaster.formatted_address}
               </p>
-              <p>
-                Keywords: Example Keywords
-              </p>
             </Modal.Description>
           </Modal.Content>
           <Modal.Content>
           <Box>
+            {console.log(this.props.disaster)}
               <Typography variant='h6'> 
-                Items Needed
+                Items Needed:
               </Typography>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableCell>
+                      Item
+                    </TableCell>
+                    <TableCell>
+                      Quantity Needed
+                    </TableCell>
+                  </TableHead>
+                </Table>
+              </TableContainer>
+              {/*Probably put a table here */}
             </Box>
           </Modal.Content>
         </Modal>

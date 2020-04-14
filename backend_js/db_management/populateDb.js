@@ -123,7 +123,7 @@ const dis_array = [
       "city": "Dallas"
     },
     "keywords": {
-      "type": ["fire"],
+      "type": ["Fire"],
       "items_need": ["towels","food"]
     } },
   {
@@ -134,7 +134,7 @@ const dis_array = [
       "city": "Chicago"
     },
     "keywords": {
-      "type": ["fire"],
+      "type": ["Fire"],
       "items_need": ["food"]
     } },
   {
@@ -145,7 +145,7 @@ const dis_array = [
       "city": "San Jose"
     },
     "keywords": {
-      "type": ["earthquake"],
+      "type": ["Earthquake"],
       "items_need": ["construction"]
     } },
   {
@@ -156,7 +156,7 @@ const dis_array = [
       "city": "Iowa City"
     },
     "keywords": {
-      "type": ["tornado"],
+      "type": ["Tornado"],
       "items_need":["food"]
     }
   }
