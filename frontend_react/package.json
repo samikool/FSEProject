@@ -14,6 +14,7 @@
     "bootstrap": "^4.4.1",
     "dotenv": "^8.2.0",
     "google-map-react": "^1.1.7",
+    "indicative": "^7.4.4",
     "jsonwebtoken": "^8.5.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
