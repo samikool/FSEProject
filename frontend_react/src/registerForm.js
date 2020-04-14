@@ -116,73 +116,78 @@ export default class RegisterForm extends React.Component{
 
   async handleRegister(){
 
-    const rules = {
-      firstName: 'required|alpha',
-      lastName: 'required|alpha',
-      email: 'required|email',
-      password: 'required|string|min:6|confirmed'
-    };
-
-    const data = this.state;
-
-    const messages = {
-      required: (field) => `${field} is required`,
-      'firstName': 'First name contains unallowed characters',
-      'lastName': 'Last name contains unallowed characters',
-      'email.email': 'Please enter a valid email address',
-      'password.min': 'Password is too short',
-    }
-
-    validate(data, rules, messages)
-      .then({
-        let response = await fetch("http://localhost:5000/register", {
-          method: 'Post',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(
-            {
-              firstName: this.state.firstName,
-              lastName: this.state.lastName,
-              email: this.state.email,
-              password: this.state.password,
-              streetAddress: this.state.streetAddress,
-              city: this.state.city,
-              state: this.state.state,
-              zipcode: this.state.zipcode,
-              country: this.state.country,
-              donor: this.state.donorChecked,
-              requester: this.state.requesterChecked,
-            })
-        })
-      })
-      .catch(errors => {
-        console.log(errors);
-        const formattedErrors = {};
-        errors.forEach( error => formattedErrors[error.field] = error.message);
-        this.setState({errors: formattedErrors})
-      })
-
-    // let response = await fetch("http://localhost:5000/register", {
-    //   method: 'Post',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(
-    //     {
-    //       firstName: this.state.firstName,
-    //       lastName: this.state.lastName,
-    //       email: this.state.email,
-    //       password: this.state.password,
-    //       streetAddress: this.state.streetAddress,
-    //       city: this.state.city,
-    //       state: this.state.state,
-    //       zipcode: this.state.zipcode,
-    //       country: this.state.country,
-    //       donor: this.state.donorChecked,
-    //       requester: this.state.requesterChecked,
+    // const rules = {
+    //   firstName: 'required|alpha',
+    //   lastName: 'required|alpha',
+    //   email: 'required|email',
+    //   password: 'required|string|min:6|confirmed'
+    // };
+    //
+    // const data = {
+    //   firstName: this.state.firstName,
+    //   lastName: this.state.lastName,
+    //   email: this.state.email,
+    //   password: this.state.password
+    // };
+    //
+    // const messages = {
+    //   required: (field) => `${field} is required`,
+    //   'firstName': 'First name contains unallowed characters',
+    //   'lastName': 'Last name contains unallowed characters',
+    //   'email.email': 'Please enter a valid email address',
+    //   'password.min': 'Password is too short',
+    // };
+    //
+    // validate(data, rules, messages)
+    //   .then(() => {
+    //     let response = await fetch("http://localhost:5000/register", {
+    //       method: 'Post',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(
+    //         {
+    //           firstName: this.state.firstName,
+    //           lastName: this.state.lastName,
+    //           email: this.state.email,
+    //           password: this.state.password,
+    //           streetAddress: this.state.streetAddress,
+    //           city: this.state.city,
+    //           state: this.state.state,
+    //           zipcode: this.state.zipcode,
+    //           country: this.state.country,
+    //           donor: this.state.donorChecked,
+    //           requester: this.state.requesterChecked,
+    //         })
     //     })
-    // })
+    //   )
+    //   .catch(errors => {
+    //     console.log(errors);
+    //     const formattedErrors = {};
+    //     errors.forEach( error => formattedErrors[error.field] = error.message);
+    //     this.setState({errors: formattedErrors})
+    //   })
+
+    let response = await fetch("http://localhost:5000/register", {
+      method: 'Post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        {
+          firstName: this.state.firstName,
+          lastName: this.state.lastName,
+          email: this.state.email,
+          password: this.state.password,
+          streetAddress: this.state.streetAddress,
+          city: this.state.city,
+          state: this.state.state,
+          zipcode: this.state.zipcode,
+          country: this.state.country,
+          donor: this.state.donorChecked,
+          requester: this.state.requesterChecked,
+        })
+    })
 
     //if register successful, probably try to login then reload window
     //else show error, which should only be email is in use for us
