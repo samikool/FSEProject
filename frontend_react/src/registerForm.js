@@ -16,7 +16,7 @@ import Grid from '@material-ui/core/Grid'
 import theme from './index.js'
 import PlacesAutoComplete, {geocodeByAddress} from 'react-places-autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'
-import { validate } from 'indicative/validator';
+//import { validate } from 'indicative/validator';
 
 
 export default class RegisterForm extends React.Component{
