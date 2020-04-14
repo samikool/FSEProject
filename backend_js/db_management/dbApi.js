@@ -109,6 +109,7 @@ class dbApi{
     return res;
   }
 
+
   /**
    *
    * @param {string} name This is the name of the disaster. Field can be null
@@ -128,6 +129,9 @@ class dbApi{
    */
   async AddDisaster(name,location,keywords){
     //check if disaster already has a disaster at the given location
+    console.log(name)
+    console.log(location)
+    console.log(keywords)
     var query_str = `SELECT keywords FROM disasters where location='${JSON.stringify(location)}';`
     var exists = await this.pool
       .query(query_str)
@@ -162,10 +166,10 @@ class dbApi{
             .query(query_str)
         }
       });
-
+      console.log(exists)
     if (exists === false){
       query_str = `INSERT INTO disasters (name,location,keywords) VALUES( '${name}',
-      ${JSON.stringify(location)}',
+      '${JSON.stringify(location)}',
     '${JSON.stringify(keywords)}');`;
 
       // console.log(query_str);

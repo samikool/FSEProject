@@ -7,6 +7,8 @@ import GoogleMapReact from 'google-map-react';
 import { Button, Header, Image, Icon, Modal } from 'semantic-ui-react'
 import 'semantic-ui-less/semantic.less'
 import 'semantic-ui-css/semantic.min.css';
+import Typography from '@material-ui/core/Typography'
+import Box from '@material-ui/core/Box'
 
 
 const pinStyle={
@@ -41,29 +43,33 @@ export default class DisasterMarker extends Component{
                 style={pinStyle}
                 onClick={this.handleClick}
           />}>
-          <Modal.Header>Disaster</Modal.Header>
+          <Modal.Header>{this.props.disaster.type} {this.props.disaster.name}</Modal.Header>
           <Modal.Content image>
             <Icon name="fire" size='massive'></Icon>
             <Modal.Description>
               <Header>
-                Disaster Properties
+                 Info
               </Header>
-              <p>
-                Name: Example Name
-              </p>
               <p>
                 Desciption: Brief description of the disaster
               </p>
               <p>
-                Type: Example Type (ie. Fire)
+                Type: {this.props.disaster.type}
               </p>
               <p>
-                Location: Example Location (ie. Chicago, IL)
+                Location: {this.props.disaster.formatted_address}
               </p>
               <p>
                 Keywords: Example Keywords
               </p>
             </Modal.Description>
+          </Modal.Content>
+          <Modal.Content>
+          <Box>
+              <Typography variant='h6'> 
+                Items Needed
+              </Typography>
+            </Box>
           </Modal.Content>
         </Modal>
       </div>

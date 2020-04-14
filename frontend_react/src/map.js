@@ -74,6 +74,7 @@ class SimpleMap extends Component {
         marker.lat=lat;
         marker.lng=lng;
         marker.resolvedAddress = resolvedAddress;
+        marker.formatted_address = resolvedAddress[0].formatted_address;
         markerList.push(marker)
     }
     await this.setState({markerList: markerList})
@@ -108,6 +109,7 @@ class SimpleMap extends Component {
           <DisasterMarker 
             lat={marker.lat}
             lng={marker.lng}
+            disaster={marker}
           />
           )
         })
