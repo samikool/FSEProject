@@ -11,8 +11,11 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import TableContainer from '@material-ui/core/TableContainer'
 import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableRow from '@material-ui/core/TableRow'
 import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
+import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
 
 
@@ -67,6 +70,7 @@ export default class DisasterMarker extends Component{
             </Modal.Description>
           </Modal.Content>
           <Modal.Content>
+          <ThemeProvider>
           <Box>
             {console.log(this.props.disaster)}
               <Typography variant='h6'> 
@@ -75,17 +79,34 @@ export default class DisasterMarker extends Component{
               <TableContainer>
                 <Table>
                   <TableHead>
-                    <TableCell>
+                    <TableCell key={1}>
                       Item
                     </TableCell>
-                    <TableCell>
+                    <TableCell key={2} align='right'>
                       Quantity Needed
                     </TableCell>
                   </TableHead>
+                  <TableBody>
+                    {
+                      this.props.disaster.items_needed.map((item) => {
+                        return(
+                          <TableRow>
+                            <TableCell key={1}>
+                              {item}
+                            </TableCell>
+                            <TableCell key={2} align='right'>
+                                5
+                            </TableCell>
+                          </TableRow>
+                        ) 
+                      })
+                    }
+                  </TableBody>
                 </Table>
               </TableContainer>
               {/*Probably put a table here */}
             </Box>
+            </ThemeProvider>
           </Modal.Content>
         </Modal>
       </div>
