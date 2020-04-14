@@ -18,8 +18,7 @@ router.post('/', async function (req, res) {
       access: false,
 	    reason: response.failure_reason
 	  });
-  }
-  else if(response.access){
+  } else if(response.access){
     const accessToken = await jwt.sign(
       {
         email: email,
@@ -40,7 +39,11 @@ router.post('/', async function (req, res) {
     );
 
     await database.StoreToken(email, refreshToken);
-    res.json({accessToken: accessToken, refreshToken: refreshToken});
+    res.json(
+      {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      });
   }
 });
 

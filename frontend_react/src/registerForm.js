@@ -16,6 +16,7 @@ import Grid from '@material-ui/core/Grid'
 import theme from './index.js'
 import PlacesAutoComplete, {geocodeByAddress} from 'react-places-autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'
+import { validate } from 'indicative/validator';
 
 
 export default class RegisterForm extends React.Component{
@@ -87,7 +88,6 @@ export default class RegisterForm extends React.Component{
               country: part.long_name
             })
         }
-
       })
     });
 
@@ -107,17 +107,67 @@ export default class RegisterForm extends React.Component{
   }
 
   async handleChange(event){
-    // console.log(event)
     const name = event.target.id;
     const value = event.target.value;
-    // console.log(name)
-    // console.log(value)
     await this.setState({
       [name]: value
     })
   }
 
   async handleRegister(){
+
+    // const rules = {
+    //   firstName: 'required|alpha',
+    //   lastName: 'required|alpha',
+    //   email: 'required|email',
+    //   password: 'required|string|min:6|confirmed'
+    // };
+    //
+    // const data = {
+    //   firstName: this.state.firstName,
+    //   lastName: this.state.lastName,
+    //   email: this.state.email,
+    //   password: this.state.password
+    // };
+    //
+    // const messages = {
+    //   required: (field) => `${field} is required`,
+    //   'firstName': 'First name contains unallowed characters',
+    //   'lastName': 'Last name contains unallowed characters',
+    //   'email.email': 'Please enter a valid email address',
+    //   'password.min': 'Password is too short',
+    // };
+    //
+    // validate(data, rules, messages)
+    //   .then(() => {
+    //     let response = await fetch("http://localhost:5000/register", {
+    //       method: 'Post',
+    //       headers: {
+    //         'Content-Type': 'application/json'
+    //       },
+    //       body: JSON.stringify(
+    //         {
+    //           firstName: this.state.firstName,
+    //           lastName: this.state.lastName,
+    //           email: this.state.email,
+    //           password: this.state.password,
+    //           streetAddress: this.state.streetAddress,
+    //           city: this.state.city,
+    //           state: this.state.state,
+    //           zipcode: this.state.zipcode,
+    //           country: this.state.country,
+    //           donor: this.state.donorChecked,
+    //           requester: this.state.requesterChecked,
+    //         })
+    //     })
+    //   )
+    //   .catch(errors => {
+    //     console.log(errors);
+    //     const formattedErrors = {};
+    //     errors.forEach( error => formattedErrors[error.field] = error.message);
+    //     this.setState({errors: formattedErrors})
+    //   })
+
     let response = await fetch("http://localhost:5000/register", {
       method: 'Post',
       headers: {
@@ -161,8 +211,10 @@ export default class RegisterForm extends React.Component{
                 </Typography>
               </Box>
               <Box pt={1}>
-                <Typography color="primary" variant='h5'>Account Info</Typography>
-              </Box>
+                <Typography color="primary" variant='h5'>
+                  Account Info
+                </Typography>
+              </Box>sole.logconsole.log
 
               <Box pt={1}>
                 <Grid container spacing={1}>
@@ -244,7 +296,9 @@ export default class RegisterForm extends React.Component{
                           <Box>
                             <Box>
                               <FormControl fullWidth  variant="outlined">
-                                <InputLabel htmlFor="streetAddress"> Street Address </InputLabel>
+                                <InputLabel htmlFor="streetAddress">
+                                  Street Address
+                                </InputLabel>
                                 <OutlinedInput {...getInputProps()}
                                                id="streetAddress"
                                                autoComplete="none"
