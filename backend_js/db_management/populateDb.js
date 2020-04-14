@@ -46,6 +46,8 @@ async function FillUsers(array){
   }
 }
 
+db.InitializeDB()
+
 const user_array = [
   {
     "first_name": "Antonio",
