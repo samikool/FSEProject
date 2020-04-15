@@ -14,6 +14,8 @@ export default class Main extends React.Component{
     this.state = {
       loggedIn: false,
       admin: false,
+      donor: false,
+      requester: false,
       
     }
   }
@@ -22,14 +24,16 @@ export default class Main extends React.Component{
 
   async componentDidMount(){
     let authorization = await authorize();
-    // console.log(authorization);
+    console.log(authorization);
     // console.log(authorization['access']);
     // console.log(authorization['email']);
     // console.log(authorization['admin']);
     this.setState({
       loggedIn: authorization['access'],
       user: authorization['email'],
-      admin: authorization['admin']
+      admin: authorization['admin'],
+      donor: authorization['donor'],
+      requester: authorization['requester'],
     });
 
     
@@ -48,7 +52,12 @@ export default class Main extends React.Component{
   render(){
     return(
       <div style={{ height: '93vh', width: '100%'}}>
-        <MainAppbar isLoggedIn={this.state.loggedIn} isAdmin = {this.state.admin} />
+        <MainAppbar
+         isLoggedIn={this.state.loggedIn} 
+         isAdmin = {this.state.admin} 
+         isDonor = {this.state.donor}
+         isRequester = {this.state.requester}
+        />
         <SimpleMap disasterList={this.state.disasterList} />
       </div>
     );

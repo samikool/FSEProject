@@ -22,7 +22,9 @@ router.post('/', async function (req, res) {
     const accessToken = await jwt.sign(
       {
         email: email,
-        isAdmin: response.isAdmin
+        isAdmin: response.isAdmin,
+        isDonor: response.isDonor,
+        isRequester: response.isRequester,
       },
       process.env.ACCESS_TOKEN_SECRET,
       {
@@ -33,7 +35,9 @@ router.post('/', async function (req, res) {
     const refreshToken = await jwt.sign(
       {
         email: email,
-        isAdmin: response.isAdmin
+        isAdmin: response.isAdmin,
+        isDonor: response.isDonor,
+        isRequester: response.isRequester,
       },
       process.env.REFRESH_TOKEN_SECRET
     );

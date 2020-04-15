@@ -16,8 +16,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
-
-
+import theme from './index'
 
 const pinStyle={
   borderRadius: '10px',
@@ -70,7 +69,7 @@ export default class DisasterMarker extends Component{
             </Modal.Description>
           </Modal.Content>
           <Modal.Content>
-          <ThemeProvider>
+          <ThemeProvider theme={theme}>
           <Box>
             {console.log(this.props.disaster)}
               <Typography variant='h6'> 

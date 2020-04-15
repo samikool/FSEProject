@@ -17,10 +17,14 @@ import theme from './index.js'
 export default function MainAppbar(props) {
   let isLoggedIn = props.isLoggedIn;
   let isAdmin = props.isAdmin;
+  let isDonor = props.isDonor;
+  let isRequester = props.isRequester;
   let history = useHistory();
-  console.log('LoggedIn: ' + isLoggedIn);
-  console.log('isAdmin: ' + isAdmin);
-  console.log(theme);
+  // console.log('LoggedIn: ' + isLoggedIn);
+  // console.log('isAdmin: ' + isAdmin);
+  // console.log('isDonor: ' + isDonor);
+  // console.log('isRequester: ' + isRequester);
+  // console.log(theme);
 
   //variables to keep track of Login Dropdown
   const[anchorEl, setAnchorE1] = React.useState(null);

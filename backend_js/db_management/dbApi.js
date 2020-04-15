@@ -214,10 +214,21 @@ class dbApi{
         query_str = `SELECT isadmin FROM USERS where email='${email}'`;
         let isAdmin = await this.pool.query(query_str);
         isAdmin =  isAdmin.rows[0].isadmin;
+
+        query_str = `SELECT isdonor FROM USERS where email='${email}'`;
+        let isDonor = await this.pool.query(query_str);
+        isDonor =  isDonor.rows[0].isdonor;
+
+        query_str = `SELECT isrequester FROM USERS where email='${email}'`;
+        let isRequester = await this.pool.query(query_str);
+        isRequester =  isRequester.rows[0].isrequester;
+
         // console.log('isAdmin DB: ' + isAdmin)
         res = {
           "access": true,
-          "isAdmin": isAdmin
+          "isAdmin": isAdmin,
+          "isDonor": isDonor,
+          "isRequester": isRequester,
         };
       } else{
           // console.log("Error: Password does not match");

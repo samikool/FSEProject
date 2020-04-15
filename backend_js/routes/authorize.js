@@ -29,7 +29,9 @@ router.get('/', async function (req, res) {
         {
           access: true,
           email: user.email,
-          admin: user.isAdmin
+          admin: user.isAdmin,
+          donor: user.isDonor,
+          requester: user.isRequester,
         });
     }
   });
@@ -42,14 +44,20 @@ router.post('/', async function(req, res) {
     if(err) res.sendStatus(403);
     let email = user.email;
     let isAdmin = user.isAdmin;
+    let isDonor = user.isDonor;
+    let isRequester = user.isRequester;
     //second verify token is valid according to our database
     if(await database.ValidateToken(email, refreshToken)){
       //finally issue new access token
+      console.log("refreshing token")
       const accessToken = await jwt.sign(
         {
           access: true,
           email: email,
-          isAdmin: isAdmin},
+          isAdmin: isAdmin,
+          isDonor: isDonor,
+          isRequester: isRequester,
+        },
         process.env.ACCESS_TOKEN_SECRET,
         {
           expiresIn: '20m'
@@ -62,6 +70,7 @@ router.post('/', async function(req, res) {
 
 router.delete('/', async function(req, res){
   refreshToken = req.body['token'];
+  console.log("removing token")
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async function(err, user){
     if(err) res.sendStatus(403);
 
