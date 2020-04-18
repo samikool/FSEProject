@@ -35,7 +35,7 @@ pipeline {
         stage('Analyze'){
             steps{
                 echo 'Analyzing with SonarQube'
-                bat 'sonar-scanner.bat -D"sonar.projectKey=FSEProject" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=001c5895238239ba5cf737fba4e3a706d72c0560"'
+                bat 'sonar-scanner.bat -D"sonar.projectKey=FSEProject" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=9b47ef59dc4b08502e92f04a49aaf291a458e597"'
             }
         }
         stage('Deploy') {
