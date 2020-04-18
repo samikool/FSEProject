@@ -88,7 +88,7 @@ describe('Database', function(){
             element.password.should.be.a('string');
             element.location.should.be.jsonSchema(locationScheme);
             element.isadmin.should.be.a('boolean');
-            expect(element.token).to.be.null || expect(element.token).to.be.an('object')
+            element.token.should.be.a('string');
           });
         });
     });
@@ -136,7 +136,9 @@ describe('Database', function(){
         user.password.should.be.a('string');
         user.location.should.be.jsonSchema(locationScheme);
         user.isadmin.should.be.a('boolean');
-        expect(user.token).to.be.null || expect(user.token).to.be.an('object')
+        user.isdonor.should.be.a('boolean');
+        user.isrequester.should.be.a('boolean');
+        user.token.should.be.a('string');
       })
       //returns what if not found
     })

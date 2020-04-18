@@ -346,6 +346,19 @@ class dbApi{
    * @param {string} email email of the user to be dropped
    */
   async DropUser(email){
+    let user = await this.GetUser(email);
+    let id = user.user_id;
+
+    if(user.isdonor){
+      var query_str = `DELETE FROM DONORS WHERE USER_ID = '${id}'`;
+      let res = await this.pool.query(query_str);
+    }
+    
+    if(user.isrequester){
+      var query_str = `DELETE FROM REQUESTERS WHERE USER_ID = '${id}'`;
+      let res = await this.pool.query(query_str);
+    }
+
     var query_str = `DELETE FROM USERS WHERE EMAIL = '${email}'`;
     let res = await this.pool.query(query_str);
   }
@@ -405,7 +418,7 @@ class dbApi{
           isAdmin bool Default false,
           isRequester bool Default false,
           isDonor bool Default false,
-          token varchar(255)
+          token varchar(255) Default ''
         );
 
         CREATE TABLE Donors (

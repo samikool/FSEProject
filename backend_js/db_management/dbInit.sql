@@ -10,7 +10,7 @@ CREATE TABLE Users (
   isAdmin bool Default false,
   isRequester bool Default false,
   isDonor bool Default false,
-  token varchar(255)
+  token varchar(255) Default ''
 );
 
 CREATE TABLE Donors (
