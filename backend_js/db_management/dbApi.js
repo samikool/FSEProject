@@ -343,7 +343,7 @@ class dbApi{
 
   /**
    * Drops a user from the table with the given email
-   * @param {string} email email of the user to be dropped
+   * @param {string} email email of the user to be droppedd
    */
   async DropUser(email){
     let user = await this.GetUser(email);
