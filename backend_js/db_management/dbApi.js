@@ -375,7 +375,7 @@ class dbApi{
   }
 
   /**
-   * Finds the user by email and enesures the token stored matches the token provided
+   * Finds the user by email and enesures the token stored matches the token providedd
    * @param {string} email email of the user to validate with token
    * @param {string} token token to validate with user
    * @returns {boolean} true if token and user match false if not
