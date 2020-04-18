@@ -8,4 +8,4 @@
 */.nyc_output/*
 *./.vscode/*
 */.env
-*/.scannerwork/*
+.scannerwork/*
