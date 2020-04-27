@@ -19,13 +19,13 @@ class dbApi{
       ${disaster_id},
       ${item_id},
       ${quantity});`;
-
-    let res;
-    try{
-      res = await this.pool.query(query_str)
-    } catch(e){
-      res = e
-    }
+    
+      let res;
+      try{
+        res = await this.pool.query(query_str);
+      }catch(e) {
+        res = e;
+      }
     return res
   }
 
@@ -35,7 +35,7 @@ class dbApi{
   */
   async ReturnUsers(){
     let res;
-    const query_str = 'SELECT * FROM USERS';
+    const query_str = `SELECT * FROM USERS;`;
     try{
       res = await this.pool.query(query_str);
       res = res.rows
@@ -43,6 +43,50 @@ class dbApi{
       res = e
     }
     return res
+  }
+  
+  /**
+   * Function gets all the currently requested items 
+   * @param {*}  
+   */
+  async GetDisasterItems(){
+    var query_str = `SELECT * FROM requests WHERE num_needed != 0;`
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows;
+      let itemMap = {}
+      for (let i=0; i<res.length; i++) {
+        const element = res[i];
+        const item = await this.GetItem(element.item_id);
+        const disaster_id = element.disaster_id;
+
+        //check if disaster_id not in map then add it
+        if(itemMap[disaster_id] == null){
+          itemMap[disaster_id] = {};
+        }
+
+        if (itemMap[disaster_id][element.item_id] == null){
+          let tempMap = itemMap[disaster_id];
+          tempMap[element.item_id] = 
+          {
+            item_id : item.item_id,
+            name : item.name,
+            type : item.type,
+            keywords : item.keywords,
+            num_needed : element.num_needed,
+          }; 
+          itemMap[disaster_id] = tempMap
+        }else{
+          //duplicate item found so merge num_needed
+          itemMap[disaster_id][element.item_id].num_needed += element.num_needed;
+        }
+      }
+      res = itemMap;
+    }catch(e){
+      res = e
+    }
+    return res;
   }
 
   /**
@@ -66,7 +110,7 @@ class dbApi{
    * @param {*} type
    * @param {*} keywords
    */
-  AddItem(name,type,keywords){
+  async AddItem(name,type,keywords){
     var queryformat_keywords = keywords.length === 0 ? "" : "\"" + keywords.join("\",\"") + "\"";
     var query_str = `insert into items (name,type,keywords)
     VALUES(
@@ -74,8 +118,24 @@ class dbApi{
         '${type}',
         '[${queryformat_keywords}]')`;
     // console.log(query_str)
-    this.pool.query(query_str)
+    await this.pool.query(query_str)
       .then(res=>console.log(/*res*/"item insert"))
+  }
+
+  /**
+   * Gets an items information by item_id
+   * @param {*} item_id 
+   */
+  async GetItem(item_id){
+    var query_str = `SELECT * FROM items WHERE item_id='${item_id}'`
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows[0]
+    }catch(e){
+      res = e
+    }
+    return res;
   }
   /**
    * Here you can search for an item based on a pattern in the name

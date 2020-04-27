@@ -33,7 +33,10 @@ var authorize = require('./routes/authorize');
 app.use('/authorize', authorize);
 
 var disaster = require('./routes/disaster');
-app.use('/disasters', disaster);
+app.use('/disaster', disaster);
+
+var disasterItems = require('./routes/disasterItems');
+app.use('/disasterItems', disasterItems);
 
 var register = require('./routes/register');
 app.use('/register', register);

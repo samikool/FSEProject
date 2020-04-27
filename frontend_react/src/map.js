@@ -42,7 +42,7 @@ class SimpleMap extends Component {
   }
 
   async getDisasters(){
-    let response = await fetch('http://localhost:5000/disasters',{
+    let response = await fetch('http://localhost:5000/disaster',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -51,6 +51,17 @@ class SimpleMap extends Component {
     
     response = await response.json();
     await this.setState({disasterList: response})
+
+    response = await fetch('http://localhost:5000/disasterItems',{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    
+    response = await response.json();
+    await this.setState({itemsList: response})
+    console.log(response)
   }
 
   async createMarkers(){
@@ -59,7 +70,10 @@ class SimpleMap extends Component {
       const disaster = this.state.disasterList[i];
       let marker={};
         marker.id = disaster.disaster_id;
-        marker.items_needed = disaster.keywords.items_need;
+        //get items from itemList
+        marker.items_needed = this.state.itemsList[disaster.disaster_id];
+
+
         marker.type = disaster.keywords.type;
         marker.location = disaster.location;
         marker.name = disaster.name;
@@ -70,7 +84,7 @@ class SimpleMap extends Component {
         
         let resolvedAddress = await geocodeByAddress(address);
         let {lat,lng} = await getLatLng(resolvedAddress[0]);
-        console.log(lat,lng)
+        //console.log(lat,lng)
         marker.lat=lat;
         marker.lng=lng;
         marker.resolvedAddress = resolvedAddress;
@@ -110,6 +124,10 @@ class SimpleMap extends Component {
             lat={marker.lat}
             lng={marker.lng}
             disaster={marker}
+            isLoggedIn={this.props.isLoggedIn} 
+            isAdmin = {this.props.isAdmin} 
+            isDonor = {this.props.isDonor}
+            isRequester = {this.props.isRequester}
           />
           )
         })

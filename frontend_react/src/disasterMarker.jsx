@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 // import { Button } from 'react-bootstrap';
 import GoogleMapReact from 'google-map-react';
-import { Button, Header, Image, Icon, Modal } from 'semantic-ui-react'
+import { Header, Image, Icon, Modal } from 'semantic-ui-react'
 import 'semantic-ui-less/semantic.less'
 import 'semantic-ui-css/semantic.min.css';
 import Typography from '@material-ui/core/Typography'
@@ -15,8 +15,12 @@ import TableBody from '@material-ui/core/TableBody'
 import TableRow from '@material-ui/core/TableRow'
 import TableHead from '@material-ui/core/TableHead'
 import TableCell from '@material-ui/core/TableCell'
+import Grid from '@material-ui/core/Grid'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import theme from './index'
+import Button from '@material-ui/core/Button'
+import { TablePagination } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper'
 
 const pinStyle={
   borderRadius: '10px',
@@ -30,8 +34,17 @@ export default class DisasterMarker extends Component{
     super(props);
     this.state = {
       "isShown": false,
-      "setIsShown":false
+      "setIsShown":false,
+      page:0,
+      rowsPerPage:5,
     };
+
+    this.handleDonate = this.handleDonate.bind(this);
+    this.handleRequest = this.handleRequest.bind(this);
+    this.renderDonate = this.renderDonate.bind(this);
+    this.renderRequest = this.renderRequest.bind(this);
+    this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
   }
 
   async onLoad(){
@@ -39,6 +52,68 @@ export default class DisasterMarker extends Component{
   }
   async handleClick(){
     console.log('here');
+  }
+  async handleDonate(){
+    console.log('heredonate');
+  }
+
+  async handleRequest(){
+    console.log('hererequest');
+  }
+
+  async handleChangePage(event, newPage){
+    await this.setState({page: newPage})
+  };
+
+  async handleChangeRowsPerPage(event)
+  {
+    this.setState({page: 0, rowsPerPage: event.target.value})
+  };
+
+
+  renderDonate(){
+    if(!this.props.isLoggedIn){
+      return(
+        <Typography variant='h6'> 
+          Sign up today so you can start donating to people in need!
+        </Typography>
+      )
+    }
+
+    if(this.props.isDonor){
+      return(
+        <Button onClick={this.handleDonate} variant="contained" color='primary'>
+          <Typography variant="button"> Donate </Typography>
+        </Button>
+      )
+    }
+
+    return(
+      <Button onClick={this.handleRequest} disabled variant="contained" color='primary'>
+        <Typography variant="button"> Donate </Typography>
+      </Button>
+    )
+
+    
+  }
+
+  renderRequest(){
+    if(!this.props.isLoggedIn){
+      return
+    }
+
+    if(this.props.isRequester){
+      return(
+          <Button onClick={this.handleRequest} variant="contained" color='primary'>
+            <Typography variant="button"> Request </Typography>
+          </Button>
+      )
+    }
+
+    return(
+    <Button onClick={this.handleRequest} disabled variant="contained" color='primary'>
+      <Typography variant="button"> Request </Typography>
+    </Button>)
   }
 
   render(){
@@ -70,31 +145,43 @@ export default class DisasterMarker extends Component{
           </Modal.Content>
           <Modal.Content>
           <ThemeProvider theme={theme}>
-          <Box>
-            {console.log(this.props.disaster)}
+
               <Typography variant='h6'> 
                 Items Needed:
               </Typography>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableCell key={1}>
-                      Item
-                    </TableCell>
-                    <TableCell key={2} align='right'>
-                      Quantity Needed
-                    </TableCell>
+              
+              <Box maxHeight='60vh' overflow='auto'>
+              <TableContainer >
+                <Table stickyHeader={true}>
+                  <TableHead >
+                    <TableRow>
+                      <TableCell>
+                        Item
+                      </TableCell>
+                      <TableCell align='right'>
+                        Quantity Needed
+                      </TableCell>
+                    </TableRow>
                   </TableHead>
                   <TableBody>
                     {
-                      this.props.disaster.items_needed.map((item) => {
+                      Object.keys(this.props.disaster.items_needed)
+                      //.slice(
+                      //  this.state.page * this.state.rowsPerPage, 
+                      //  this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
+                      .map(key => {
+                        //console.log(this.props.disaster.items_needed[key].name)
+                        //console.log(this.props.disaster.items_needed[key].num_needed)
+                        let itemName = this.props.disaster.items_needed[key].name
+                        itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1);
+                        let numNeeded = this.props.disaster.items_needed[key].num_needed
                         return(
-                          <TableRow>
-                            <TableCell key={1}>
-                              {item}
+                          <TableRow key={key}>
+                            <TableCell>
+                              {itemName}
                             </TableCell>
-                            <TableCell key={2} align='right'>
-                                5
+                            <TableCell align='right'>
+                              {numNeeded}
                             </TableCell>
                           </TableRow>
                         ) 
@@ -103,8 +190,23 @@ export default class DisasterMarker extends Component{
                   </TableBody>
                 </Table>
               </TableContainer>
-              {/*Probably put a table here */}
-            </Box>
+              </Box>
+      
+            
+            <Box pt={2} >
+              <Grid container
+                direction="row"
+                justify="space-evenly"
+                alignItems="center"
+              >
+                <Grid item>
+                  {this.renderDonate()}
+                </Grid>
+                <Grid item>
+                  {this.renderRequest()}
+                </Grid>
+              </Grid>
+              </Box>
             </ThemeProvider>
           </Modal.Content>
         </Modal>

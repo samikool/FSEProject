@@ -53,12 +53,17 @@ export default class Main extends React.Component{
     return(
       <div style={{ height: '93vh', width: '100%'}}>
         <MainAppbar
-         isLoggedIn={this.state.loggedIn} 
-         isAdmin = {this.state.admin} 
-         isDonor = {this.state.donor}
-         isRequester = {this.state.requester}
+          isLoggedIn={this.state.loggedIn} 
+          isAdmin = {this.state.admin} 
+          isDonor = {this.state.donor}
+          isRequester = {this.state.requester}
         />
-        <SimpleMap disasterList={this.state.disasterList} />
+        <SimpleMap 
+          isLoggedIn={this.state.loggedIn} 
+          isAdmin = {this.state.admin} 
+          isDonor = {this.state.donor}
+          isRequester = {this.state.requester}
+        />
       </div>
     );
   }
