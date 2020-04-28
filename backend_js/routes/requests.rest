@@ -9,7 +9,7 @@ Content-Type: application/json
 ###
 
 get http://localhost:5000/authorize HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOnRydWUsImVtYWlsIjoic2Vub3J0b25pdG9AZ21haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNTg1NjA2MzA0LCJleHAiOjE1ODU2MDYzMzR9.o4yzjI1ZGIK9qJSXgXH95iqUxtZdVZjnme40eQPYBuY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlbm9ydG9uaXRvQGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlzRG9ub3IiOnRydWUsImlzUmVxdWVzdGVyIjp0cnVlLCJpYXQiOjE1ODgwNTIzMTcsImV4cCI6MTU4ODA1MjMyMn0.jgv3_7fFk2MDbJi4bnKHGqX6GRYxjtikBpZF6Rs1Uuw
 
 ###
 
@@ -17,7 +17,7 @@ post http://localhost:5000/authorize HTTP/1.1
 Content-Type: application/json
 
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlbm9ydG9uaXRvQGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTU4NTYwNTg4MX0.GuEsRSKRdWSrHQLDYszL4Q4hPm9SHJqcU1nk2AfuosA"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNlbm9ydG9uaXRvQGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlzRG9ub3IiOnRydWUsImlzUmVxdWVzdGVyIjp0cnVlLCJpYXQiOjE1ODgwNTIzMzJ9.GtywSylwy2hyB2a0u0tSNSI5JGlp9YfETwtjbhZWTHo"
 }
 
 ###
@@ -29,3 +29,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhYnUuc
 ###
 
 get http://localhost:5000/disasterItems HTTP/1.1
+
+###
+
+post http://localhost:5000/donate HTTP/1.1
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOnRydWUsImVtYWlsIjoic2Vub3J0b25pdG9AZ21haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiaXNEb25vciI6dHJ1ZSwiaXNSZXF1ZXN0ZXIiOnRydWUsImlhdCI6MTU4ODA1MjM0MCwiZXhwIjoxNTg4MDUzNTQwfQ.3yUxvAfE-MX2Qj6YD5e5NlsKudmaDxPLRmCt6PUJHes",
+    "item_id":12,
+    "disaster_id":1,
+    "quantity":290
+}

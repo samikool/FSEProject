@@ -1,3 +1,4 @@
+var createToken = require('../authorizer.js').createToken;
 var express = require('express');
 var router = express.Router();
 
@@ -11,7 +12,6 @@ router.post('/', async function (req, res) {
   let response = await database.VerifyUser(email, pw);
 
   console.log(response);
-  console.log(response.access);
 
   if(!response.access){
     res.status(200).json({
@@ -19,34 +19,12 @@ router.post('/', async function (req, res) {
 	    reason: response.failure_reason
 	  });
   } else if(response.access){
-    const accessToken = await jwt.sign(
-      {
-        email: email,
-        isAdmin: response.isAdmin,
-        isDonor: response.isDonor,
-        isRequester: response.isRequester,
-      },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: '5s'
-      }
-    );
-
-    const refreshToken = await jwt.sign(
-      {
-        email: email,
-        isAdmin: response.isAdmin,
-        isDonor: response.isDonor,
-        isRequester: response.isRequester,
-      },
-      process.env.REFRESH_TOKEN_SECRET
-    );
-
-    await database.StoreToken(email, refreshToken);
+    
+    tokens = await createToken(email, response.isAdmin, response.isDonor, response.isRequester)
     res.json(
       {
-        accessToken: accessToken,
-        refreshToken: refreshToken
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken
       });
   }
 });

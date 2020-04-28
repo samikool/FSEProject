@@ -59,7 +59,7 @@ async function FillRequests(array){
 }
 
 /**
- * Needed async go function so we could wait previous inserts to be done before new ones started
+ * Needed async go function so we could wait for previous inserts to be done before new ones started
  * It was going too fast and violating foreign key restraints.
  */
 go();

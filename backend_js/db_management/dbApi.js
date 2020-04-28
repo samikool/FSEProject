@@ -14,7 +14,7 @@ class dbApi{
    */
   async ManualRequest(requester_id, item_id, disaster_id, quantity){
     // insert request to req table
-    var query_str = `INSERT INTO REQUESTS (requester_id, disaster_id, item_id, num_needed)
+    var query_str = `INSERT INTO requests (requester_id, disaster_id, item_id, num_needed)
     VALUES(${requester_id},
       ${disaster_id},
       ${item_id},
@@ -27,6 +27,26 @@ class dbApi{
         res = e;
       }
     return res
+  }
+
+  /**
+   * reutnrs the requests pertaining to a certain disaster, need to order, so that oldest requests are 'first' in the list returned
+   * @param {*} disaster_id 
+   */
+  async GetRequestsForDisaster(disaster_id){
+    var query_str = `SELECT * FROM requests 
+    WHERE disaster_id = '${disaster_id}' 
+    AND num_provided != num_needed
+    ORDER BY request_id ASC;`
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows;
+    }catch(e){
+      res = e;
+    }
+
+    return res; 
   }
 
   /**
@@ -44,13 +64,154 @@ class dbApi{
     }
     return res
   }
-  
+
   /**
-   * Function gets all the currently requested items 
+   * function takes an email and returns the donor id associated with the account
+   * @param {} email 
+   */
+  async GetDonorID(email){
+    let user = await this.GetUser(email)
+    let user_id = user.user_id;
+
+    let query_str = `SELECT donor_id FROM donors WHERE user_id='${user_id}';`
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows[0].donor_id;
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
+
+  async RecordDonation(request_id, donor_id, disaster_id, item_id, quantity){
+    let query_str = `INSERT INTO donations (request_id, donor_id, disaster_id, item_id, quantity)
+    VALUES(
+      ${request_id},
+      ${donor_id},
+      ${disaster_id},
+      ${item_id},
+      ${quantity});`;
+    
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+    }catch(e){
+      console.log(e);
+      console.log("error is here")
+      res = e;
+    }
+    return res;
+  }
+
+  /**
+   * takes a request id and the number of provided items and updates the request in the table
+   * This function could probably have a better name but I can't think of one right now
+   * @param {} request_id 
+   * @param {*} num_provided is the new value of num_provided
+   */
+  async UpdateNumNeeded(request_id, num_providing){
+    //get current number provided
+    var query_str = `SELECT num_provided FROM requests WHERE request_id='${request_id}';`
+    let res;
+    let current_num_provided;
+
+    try{
+      res = await this.pool.query(query_str);
+      current_num_provided = res.rows[0].num_provided;
+
+    }catch(e){
+      console.log(e);
+      res={success:false, donated:0}
+      return res;
+    }
+
+    /**
+     * stretch goal put check here to handle simultaneous donations to make sure things stay synchronized       
+     */
+
+    //calculate the new number and update it
+    //console.log('current_num_provided: ' + current_num_provided)
+    //console.log('num_providing: ' + num_providing)
+    let new_num_provided = +current_num_provided + +num_providing;
+    //console.log("New total: " + new_num_provided)
+    query_str = `UPDATE requests 
+                SET num_provided='${new_num_provided}' 
+                WHERE request_id='${request_id}';`
+    try{
+      res = await this.pool.query(query_str);
+    }catch(e){
+      console.log(e)
+      res={success:false, donated:0}
+    }
+
+    res = {success:true, donated:num_providing}
+    return res;
+  }
+
+  /**
+   * Takes a disaster_id item_ids and quantitys 
+   * @param {*} disaster_id 
+   * @param {*} item_ids item_ids will be an array of the items ids the user is donating
+   * @param {*} quantitys  quantities will be an array of the items quantities, indexes will be lined up
+   */
+  async DonateItem(donor_id, disaster_id, item_id, quantity){
+    let requests = await this.GetRequestsForDisaster(disaster_id)
+    //console.log(requests)
+    //console.log(item_id)
+    //console.log(quantity)
+    console.log("looking for donation...")
+    //loop goes through requests for disaster and 'donates' item
+    let finalRes = {success:false, donated:0};
+    for(let i=0; i<requests.length; i++){
+      let request = requests[i];
+      //console.log(request)
+      if(request.item_id == item_id){     
+        let request_id = request.request_id;
+        let num_needed = request.num_needed - request.num_provided;
+        
+        //probably some refactoring we can do here since code is so similar
+        //case filling entire request
+        if(quantity >= num_needed){
+          let res = await this.UpdateNumNeeded(request_id, num_needed);
+          console.log('donation found..')
+          if(res.success){
+              //RecordDonation
+              quantity -= num_needed;
+              await this.RecordDonation(request_id, donor_id, disaster_id, item_id, num_needed);
+              finalRes.donated += res.donated;
+              finalRes.success = true;
+          }else{
+            return res;
+          }
+        }
+        //case donating entire quantity
+        else{
+          let res = await this.UpdateNumNeeded(request_id, quantity)
+          console.log('donation found..')
+          if(res.success){
+            //RecordDonation
+            await this.RecordDonation(request_id, donor_id, disaster_id, item_id, quantity);
+            finalRes.donated += res.donated;
+            finalRes.success = true;
+            //return since user has no more to give
+            return finalRes;
+          }else{
+            return res;
+          }
+        }
+      }
+    }
+    return finalRes;
+  }
+  /**
+   * Function gets all the currently requested items for every disaster
    * @param {*}  
    */
-  async GetDisasterItems(){
-    var query_str = `SELECT * FROM requests WHERE num_needed != 0;`
+  async GetAllDisasterItems(){
+    var query_str = `SELECT * FROM requests WHERE num_needed != num_provided;`
     let res;
     try{
       res = await this.pool.query(query_str);
@@ -66,6 +227,7 @@ class dbApi{
           itemMap[disaster_id] = {};
         }
 
+        //check if item has been added before
         if (itemMap[disaster_id][element.item_id] == null){
           let tempMap = itemMap[disaster_id];
           tempMap[element.item_id] = 
@@ -74,16 +236,20 @@ class dbApi{
             name : item.name,
             type : item.type,
             keywords : item.keywords,
-            num_needed : element.num_needed,
+            num_needed : element.num_needed - element.num_provided,
           }; 
           itemMap[disaster_id] = tempMap
-        }else{
+        }
+        //item has already been added to just update num_needed
+        else{
           //duplicate item found so merge num_needed
-          itemMap[disaster_id][element.item_id].num_needed += element.num_needed;
+          itemMap[disaster_id][element.item_id].num_needed += 
+          (element.num_needed - element.num_provided);
         }
       }
       res = itemMap;
     }catch(e){
+      console.log(e)
       res = e
     }
     return res;
@@ -517,6 +683,7 @@ class dbApi{
 
         CREATE TABLE Donations (
           Donation_ID SERIAL PRIMARY KEY NOT NULL,
+          Request_ID SERIAL NOT NULL,
           Disaster_ID SERIAL NOT NULL,
           Item_ID SERIAL NOT NULL,
           Quantity integer NOT NULL,

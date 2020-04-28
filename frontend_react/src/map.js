@@ -39,6 +39,10 @@ class SimpleMap extends Component {
       markerList: [],
       disasterList: []
     };
+    this.getDisasters = this.getDisasters.bind(this);
+    this.getItemsList = this.getItemsList.bind(this);
+    this.createMarkers = this.createMarkers.bind(this);
+    this.setState = this.setState.bind(this);
   }
 
   async getDisasters(){
@@ -50,18 +54,21 @@ class SimpleMap extends Component {
     })
     
     response = await response.json();
-    await this.setState({disasterList: response})
+    await this.setState({disasterList: response});
+  }
 
-    response = await fetch('http://localhost:5000/disasterItems',{
+  async getItemsList(){
+    let response = await fetch('http://localhost:5000/disasterItems',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    
+
     response = await response.json();
-    await this.setState({itemsList: response})
-    console.log(response)
+    //console.log(response)
+    await this.setState({itemsList: response});
+    //console.log(response)
   }
 
   async createMarkers(){
@@ -94,14 +101,23 @@ class SimpleMap extends Component {
     await this.setState({markerList: markerList})
   }
 
+  async updateData(){
+    await this.getDisasters();
+    await this.getItemsList();
+    await this.createMarkers();
+    //console.log('updating disasters')
+  }
+
+
   // Store the value of the current disaster?
   // this can possibly handled in the marker class
   
 
-  async componentDidMount(){
-    await this.getDisasters();
-    await this.createMarkers();
+  async componentWillMount(){
+    await this.updateData();
+    this.updateDataInterval = setInterval(() => this.updateData(), 5000)
     //this.forceUpdate();
+
   }
 
   render() {
@@ -124,6 +140,7 @@ class SimpleMap extends Component {
             lat={marker.lat}
             lng={marker.lng}
             disaster={marker}
+            items={marker.items_needed}
             isLoggedIn={this.props.isLoggedIn} 
             isAdmin = {this.props.isAdmin} 
             isDonor = {this.props.isDonor}

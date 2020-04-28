@@ -19,8 +19,12 @@ import Grid from '@material-ui/core/Grid'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import theme from './index'
 import Button from '@material-ui/core/Button'
-import { TablePagination } from '@material-ui/core';
+import { TablePagination } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
+import authorize from './authorize'
+
+
+const getToken = require('./authorize').getToken;
 
 const pinStyle={
   borderRadius: '10px',
@@ -37,6 +41,7 @@ export default class DisasterMarker extends Component{
       "setIsShown":false,
       page:0,
       rowsPerPage:5,
+      items: {}
     };
 
     this.handleDonate = this.handleDonate.bind(this);
@@ -44,8 +49,11 @@ export default class DisasterMarker extends Component{
     this.renderDonate = this.renderDonate.bind(this);
     this.renderRequest = this.renderRequest.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
-    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this)
+    this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
   }
+
+
+  
 
   async onLoad(){
     console.log("loaded")
@@ -54,7 +62,22 @@ export default class DisasterMarker extends Component{
     console.log('here');
   }
   async handleDonate(){
-    console.log('heredonate');
+    //authorize to make sure token up to date
+    await authorize()
+    //get token
+    let token = await getToken();
+ 
+    let response = await fetch('http://localhost:5000/donate',{
+      method: 'POST',
+      headers:
+      {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({token: token, item_id:12, disaster_id:1, quantity:135})
+    });
+    response = await response.json()
+
+    console.log(response);
   }
 
   async handleRequest(){
@@ -116,6 +139,7 @@ export default class DisasterMarker extends Component{
     </Button>)
   }
 
+
   render(){
     return(
       <div>
@@ -150,7 +174,7 @@ export default class DisasterMarker extends Component{
                 Items Needed:
               </Typography>
               
-              <Box maxHeight='60vh' overflow='auto'>
+              <Box maxHeight='55vh' overflow='auto'>
               <TableContainer >
                 <Table stickyHeader={true}>
                   <TableHead >
@@ -165,16 +189,16 @@ export default class DisasterMarker extends Component{
                   </TableHead>
                   <TableBody>
                     {
-                      Object.keys(this.props.disaster.items_needed)
+                      Object.keys(this.props.items)
                       //.slice(
                       //  this.state.page * this.state.rowsPerPage, 
                       //  this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                       .map(key => {
                         //console.log(this.props.disaster.items_needed[key].name)
                         //console.log(this.props.disaster.items_needed[key].num_needed)
-                        let itemName = this.props.disaster.items_needed[key].name
+                        let itemName = this.props.items[key].name
                         itemName = itemName.charAt(0).toUpperCase() + itemName.slice(1);
-                        let numNeeded = this.props.disaster.items_needed[key].num_needed
+                        let numNeeded = this.props.items[key].num_needed
                         return(
                           <TableRow key={key}>
                             <TableCell>

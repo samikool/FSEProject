@@ -41,6 +41,9 @@ app.use('/disasterItems', disasterItems);
 var register = require('./routes/register');
 app.use('/register', register);
 
+var donate = require('./routes/donate');
+app.use('/donate', donate);
+
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listening on Port %d', port)});

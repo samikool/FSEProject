@@ -28,22 +28,28 @@ export default async function authorize(){
   }
 }
 
-//refreshses tokens
+//refreshes tokens
 async function refreshToken(){
   //use refresh token to ask for new token
-  refreshToken = await window.sessionStorage.refreshToken;
+  let token = await window.sessionStorage.refreshToken;
   let response = await fetch('http://localhost:5000/authorize', {
     method: 'POST',
     headers:
       {
         'Content-Type': 'application/json'
       },
-    body: JSON.stringify({token: refreshToken})
+    body: JSON.stringify({token: token})
   });
 
   //store token then reauthorize and return result
   response = await response.json();
+  console.log(response)
   window.sessionStorage.accessToken = await response['accessToken'];
   return authorize();
+}
+
+export async function getToken(){
+  console.log('getting token for user')
+  return await window.sessionStorage.accessToken;
 }
 
