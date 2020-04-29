@@ -22,6 +22,9 @@ import Button from '@material-ui/core/Button'
 import { TablePagination } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import authorize from './authorize'
+import DonateForm from './donateForm'
+import Snackbar from '@material-ui/core/Snackbar'
+import Alert from '@material-ui/lab/Alert'
 
 
 const getToken = require('./authorize').getToken;
@@ -41,43 +44,46 @@ export default class DisasterMarker extends Component{
       "setIsShown":false,
       page:0,
       rowsPerPage:5,
-      items: {}
+      items: {},
+      donateOpen: false,
+      showSnackbar: false,
+      totalItemsDonated: 0,
     };
 
-    this.handleDonate = this.handleDonate.bind(this);
+    this.handleDonateOpen = this.handleDonateOpen.bind(this);
+    this.handleDonateClose = this.handleDonateClose.bind(this);
     this.handleRequest = this.handleRequest.bind(this);
     this.renderDonate = this.renderDonate.bind(this);
     this.renderRequest = this.renderRequest.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
+    this.handleSnackbarClose = this.handleSnackbarClose.bind(this)
   }
 
-
-  
-
-  async onLoad(){
-    console.log("loaded")
+  async handleSnackbarClose(){
+    this.setState({
+      showSnackbar: false,
+      totalItemsDonated: 0,
+    })
   }
-  async handleClick(){
-    console.log('here');
-  }
-  async handleDonate(){
-    //authorize to make sure token up to date
-    await authorize()
-    //get token
-    let token = await getToken();
- 
-    let response = await fetch('http://localhost:5000/donate',{
-      method: 'POST',
-      headers:
+
+  async handleDonateClose(totalItemsDonated){
+    this.setState(
       {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({token: token, item_id:12, disaster_id:1, quantity:135})
-    });
-    response = await response.json()
+        donateOpen: false,
+        showSnackbar: true,
+        totalItemsDonated: totalItemsDonated,
+      }
+    )
+    console.log(totalItemsDonated)
+  }
 
-    console.log(response);
+  async handleDonateOpen(){
+    //authorize to make sure token up to date
+    this.setState(
+      {donateOpen: true}
+    )
+    return;
   }
 
   async handleRequest(){
@@ -105,7 +111,7 @@ export default class DisasterMarker extends Component{
 
     if(this.props.isDonor){
       return(
-        <Button onClick={this.handleDonate} variant="contained" color='primary'>
+        <Button onClick={this.handleDonateOpen} variant="contained" color='primary'>
           <Typography variant="button"> Donate </Typography>
         </Button>
       )
@@ -141,6 +147,8 @@ export default class DisasterMarker extends Component{
 
 
   render(){
+    let verticle = 'top'
+    let horizontal = 'center'
     return(
       <div>
         <Modal size={'mini'} trigger={
@@ -149,6 +157,16 @@ export default class DisasterMarker extends Component{
                 style={pinStyle}
                 onClick={this.handleClick}
           />}>
+          <Snackbar 
+            open={this.state.showSnackbar} 
+            autoHideDuration={6000} 
+            onClose={this.handleSnackbarClose}
+
+          >
+             <Alert onClose={this.handleSnackbarClose} variant='filled' elevation={6} severity="success">
+              Thank you for your donation of {this.state.totalItemsDonated} items!
+            </Alert> 
+          </Snackbar>
           <Modal.Header>{this.props.disaster.type} {this.props.disaster.name}</Modal.Header>
           <Modal.Content image>
             <Icon name="fire" size='massive'></Icon>
@@ -228,11 +246,18 @@ export default class DisasterMarker extends Component{
                 </Grid>
                 <Grid item>
                   {this.renderRequest()}
+                  <DonateForm 
+                    open={this.state.donateOpen} 
+                    onClose={this.handleDonateClose} 
+                    items={this.props.items}
+                    disaster_id={this.props.disaster.id}
+                  />
                 </Grid>
               </Grid>
               </Box>
             </ThemeProvider>
           </Modal.Content>
+          
         </Modal>
       </div>
     );
