@@ -137,6 +137,7 @@ class SimpleMap extends Component {
         {this.state.markerList.map((marker)=>{
           return(
           <DisasterMarker 
+            key={marker.id}
             lat={marker.lat}
             lng={marker.lng}
             disaster={marker}
