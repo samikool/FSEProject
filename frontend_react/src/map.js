@@ -115,7 +115,7 @@ class SimpleMap extends Component {
 
   async componentWillMount(){
     await this.updateData();
-    this.updateDataInterval = setInterval(() => this.updateData(), 7500)
+    this.updateDataInterval = setInterval(() => this.updateData(), 15000)
     //this.forceUpdate();
 
   }

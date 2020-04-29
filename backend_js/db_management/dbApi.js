@@ -181,7 +181,7 @@ class dbApi{
               //RecordDonation
               quantity -= num_needed;
               await this.RecordDonation(request_id, donor_id, disaster_id, item_id, num_needed);
-              finalRes.donated += +res.donated;
+              finalRes.donated += + res.donated;
               finalRes.success = true;
           }else{
             return res;
@@ -282,7 +282,7 @@ class dbApi{
     VALUES(
         '${name}',
         '${type}',
-        '[${queryformat_keywords}]')`;
+        '[${queryformat_keywords}]');`;
     // console.log(query_str)
     await this.pool.query(query_str)
       .then(res=>console.log(/*res*/"item insert"))
@@ -293,16 +293,31 @@ class dbApi{
    * @param {*} item_id 
    */
   async GetItem(item_id){
-    var query_str = `SELECT * FROM items WHERE item_id='${item_id}'`
+    var query_str = `SELECT * FROM items WHERE item_id='${item_id}';`
     let res;
     try{
       res = await this.pool.query(query_str);
       res = res.rows[0]
     }catch(e){
-      res = e
+      console.log(e)
+      res = e;
     }
     return res;
   }
+
+  async GetAllItems(){
+    var query_str = `SELECT * FROM items;`
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows[0];
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
   /**
    * Here you can search for an item based on a pattern in the name
    * @param {*} pattern

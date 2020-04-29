@@ -47,13 +47,15 @@ export default class DisasterMarker extends Component{
       rowsPerPage:5,
       items: {},
       donateOpen: false,
+      requestOpen: false,
       showSnackbar: false,
       totalItemsDonated: 0,
     };
 
     this.handleDonateOpen = this.handleDonateOpen.bind(this);
     this.handleDonateClose = this.handleDonateClose.bind(this);
-    this.handleRequest = this.handleRequest.bind(this);
+    this.handleRequestOpen = this.handleRequestOpen.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     this.renderDonate = this.renderDonate.bind(this);
     this.renderRequest = this.renderRequest.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
@@ -92,8 +94,17 @@ export default class DisasterMarker extends Component{
     return;
   }
 
-  async handleRequest(){
-    console.log('hererequest');
+  async handleRequestClose(){
+    this.setState({
+      requestOpen:false,
+    })
+  }
+
+  async handleRequestOpen(){
+    this.setState(
+      {requestOpen: true}
+    )
+    return;
   }
 
   async handleChangePage(event, newPage){
@@ -124,7 +135,7 @@ export default class DisasterMarker extends Component{
     }
 
     return(
-      <Button onClick={this.handleRequest} disabled variant="contained" color='primary'>
+      <Button disabled variant="contained" color='primary'>
         <Typography variant="button"> Donate </Typography>
       </Button>
     )
@@ -139,16 +150,17 @@ export default class DisasterMarker extends Component{
 
     if(this.props.isRequester){
       return(
-          <Button onClick={this.handleRequest} variant="contained" color='primary'>
+          <Button onClick={this.handleRequestOpen} variant="contained" color='primary'>
             <Typography variant="button"> Request </Typography>
           </Button>
       )
     }
 
     return(
-    <Button onClick={this.handleRequest} disabled variant="contained" color='primary'>
-      <Typography variant="button"> Request </Typography>
-    </Button>)
+      <Button disabled variant="contained" color='primary'>
+        <Typography variant="button"> Request </Typography>
+      </Button>
+    )
   }
 
 
@@ -247,12 +259,18 @@ export default class DisasterMarker extends Component{
               >
                 <Grid item>
                   {this.renderDonate()}
-                </Grid>
-                <Grid item>
-                  {this.renderRequest()}
                   <DonateForm 
                     open={this.state.donateOpen} 
                     onClose={this.handleDonateClose} 
+                    items={this.props.items}
+                    disaster_id={this.props.disaster.id}
+                  />
+                </Grid>
+                <Grid item>
+                  {this.renderRequest()}
+                  <RequestForm 
+                    open={this.state.requestOpen} 
+                    onClose={this.handleRequestClose}   
                     items={this.props.items}
                     disaster_id={this.props.disaster.id}
                   />
@@ -261,7 +279,6 @@ export default class DisasterMarker extends Component{
               </Box>
             </ThemeProvider>
           </Modal.Content>
-          
         </Modal>
       </div>
     );
