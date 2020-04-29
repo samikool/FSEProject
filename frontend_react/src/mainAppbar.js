@@ -84,8 +84,8 @@ export default function MainAppbar(props) {
           <ThemeProvider theme={theme}>
             <Toolbar>
               <Box>
-                <IconButton edge="start" color="primary" aria-label="menu">
-                  <PersonIcon onClick={handleUserDropdown}/>
+                <IconButton edge="start" color="primary" aria-label="menu" onClick={handleUserDropdown}>
+                  <PersonIcon/>
                 </IconButton>
                 <UserDropdown
                   id={id_user}
@@ -128,8 +128,8 @@ export default function MainAppbar(props) {
           <ThemeProvider theme={theme}>
             <Toolbar>
               <Box>
-                <IconButton edge="start" color="primary" aria-label="menu">
-                  <PersonIcon onClick={handleUserDropdown}/>
+                <IconButton onClick={handleUserDropdown} edge="start" color="primary" aria-label="menu">
+                  <PersonIcon/>
                 </IconButton>
                 <UserDropdown
                   id={id_user}

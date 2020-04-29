@@ -8,7 +8,6 @@ import theme from './index.js'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Typography from '@material-ui/core/Typography'
 import RegisterForm from './registerForm'
-const getToken = require('./authorize').getToken;
 
 export default class LoginDropdown extends React.Component{
   constructor(props){
@@ -61,10 +60,9 @@ export default class LoginDropdown extends React.Component{
         }),
     });
 
-      response = await response.json();
+    response = await response.json();
 
     if(response['accessToken']){
-      //console.log(response['accessToken'])
       window.sessionStorage.accessToken = await response['accessToken'];
       window.sessionStorage.refreshToken = await response['refreshToken'];
       window.location.reload();
