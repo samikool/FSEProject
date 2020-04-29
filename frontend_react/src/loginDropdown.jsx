@@ -8,14 +8,12 @@ import theme from './index.js'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Typography from '@material-ui/core/Typography'
 import RegisterForm from './registerForm'
-
-
+const getToken = require('./authorize').getToken;
 
 export default class LoginDropdown extends React.Component{
   constructor(props){
     super(props);
     this.state = {email: '', password: '', registerOpen: false};
-
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);

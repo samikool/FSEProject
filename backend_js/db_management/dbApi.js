@@ -335,7 +335,15 @@ class dbApi{
     return res;
   }
 
-
+  /**
+   * 
+   * @param {*} id 
+   */
+  async GetDisasterInfo(id){
+      //return all disaster info
+      //ping disaster table & ping requests table
+      //name, description, type, location, items needed & quantity
+  }
   /**
    *
    * @param {string} name This is the name of the disaster. Field can be null

@@ -44,6 +44,8 @@ app.use('/register', register);
 var donate = require('./routes/donate');
 app.use('/donate', donate);
 
+var userInfo = require('./routes/userInfo');
+app.use('/userInfo', userInfo);
 
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listening on Port %d', port)});
