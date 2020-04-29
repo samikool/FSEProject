@@ -177,7 +177,8 @@ export default class DonateForm extends React.Component{
     }
 
     async handleCancel(){
-        this.props.onClose()
+        this.props.onClose(0)
+        console.log('closing')
     }
 
     render(){
@@ -238,7 +239,7 @@ export default class DonateForm extends React.Component{
                                 </Grid>
                         </DialogContent>
                         <DialogActions>
-                            <Button color="primary">
+                            <Button color="primary" onClick={this.handleCancel}>
                                 Cancel
                             </Button>
                             <Button onClick={this.handleDonate} color="primary">

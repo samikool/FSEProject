@@ -23,6 +23,7 @@ import { TablePagination } from '@material-ui/core'
 import Paper from '@material-ui/core/Paper'
 import authorize from './authorize'
 import DonateForm from './donateForm'
+import RequestForm from './requestForm'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
 
@@ -68,14 +69,19 @@ export default class DisasterMarker extends Component{
   }
 
   async handleDonateClose(totalItemsDonated){
-    this.setState(
-      {
-        donateOpen: false,
-        showSnackbar: true,
-        totalItemsDonated: totalItemsDonated,
-      }
-    )
-    console.log(totalItemsDonated)
+    if(totalItemsDonated>0){
+      this.setState(
+        {
+          donateOpen: false,
+          showSnackbar: true,
+          totalItemsDonated: totalItemsDonated,
+        }
+      )
+    }else{
+      this.setState({
+        donateOpen:false,
+      })
+    }
   }
 
   async handleDonateOpen(){
@@ -147,8 +153,6 @@ export default class DisasterMarker extends Component{
 
 
   render(){
-    let verticle = 'top'
-    let horizontal = 'center'
     return(
       <div>
         <Modal size={'mini'} trigger={
