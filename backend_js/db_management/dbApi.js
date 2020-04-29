@@ -181,7 +181,7 @@ class dbApi{
               //RecordDonation
               quantity -= num_needed;
               await this.RecordDonation(request_id, donor_id, disaster_id, item_id, num_needed);
-              finalRes.donated += res.donated;
+              finalRes.donated += +res.donated;
               finalRes.success = true;
           }else{
             return res;
@@ -194,7 +194,7 @@ class dbApi{
           if(res.success){
             //RecordDonation
             await this.RecordDonation(request_id, donor_id, disaster_id, item_id, quantity);
-            finalRes.donated += res.donated;
+            finalRes.donated += +res.donated;
             finalRes.success = true;
             //return since user has no more to give
             return finalRes;

@@ -115,7 +115,7 @@ class SimpleMap extends Component {
 
   async componentWillMount(){
     await this.updateData();
-    this.updateDataInterval = setInterval(() => this.updateData(), 5000)
+    this.updateDataInterval = setInterval(() => this.updateData(), 7500)
     //this.forceUpdate();
 
   }
@@ -137,6 +137,7 @@ class SimpleMap extends Component {
         {this.state.markerList.map((marker)=>{
           return(
           <DisasterMarker 
+            key={marker.id}
             lat={marker.lat}
             lng={marker.lng}
             disaster={marker}

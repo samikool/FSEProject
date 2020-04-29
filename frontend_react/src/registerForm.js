@@ -198,7 +198,7 @@ export default class RegisterForm extends React.Component{
     return(
       <ThemeProvider theme={theme}>
         <Box height={'100%'} width={'100%'}>
-          <Dialog open={this.props.open} onClose={this.props.onClose} aria-labelledby="form-dialog-title">
+          <Dialog open={this.props.open} onClose={this.props.onClose}>
             <DialogTitle id="register">
               <Typography color="primary" variant='h3'>
                 Register
