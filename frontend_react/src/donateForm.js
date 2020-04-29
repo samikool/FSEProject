@@ -137,7 +137,7 @@ export default class DonateForm extends React.Component{
         }
 
         return(
-            <Grid item>
+            <Grid key={item.item_id} item>
             <Box pt={1}>
             <Paper elevation={2} variant='outlined' id={item.item_id} >
             <Box px={2} py={1} bgcolor={rowColor}>
@@ -147,13 +147,13 @@ export default class DonateForm extends React.Component{
                     alignItems="center"
                 >
                     <Grid item xs={5}>
-                    <Typography color="secondary.dark" variant='h6'>
+                    <Typography variant='h6'>
                         {item.name}
                     </Typography>
                         
                     </Grid>
                     <Grid item xs={4}>
-                    <Typography color="secondary.dark" variant='h6'>
+                    <Typography variant='h6'>
                         {item.num_needed}
                     </Typography>
                     </Grid>
@@ -161,7 +161,7 @@ export default class DonateForm extends React.Component{
                     <Grid item xs={3}>
                         <Box height="75%">
                         <TextField
-                            id={item.item_id}
+                            id={item.item_id.toString()}
                             variant="outlined"
                             autoComplete="off"
                             onChange={this.handleQuantityUpdate}
@@ -191,7 +191,7 @@ export default class DonateForm extends React.Component{
                         fullWidth = {true}
                     >
                         <DialogTitle id="donate">
-                            <Typography color="primary" variant='h3'>
+                            <Typography color="primary">
                                 Donate
                             </Typography>
                         </DialogTitle>
