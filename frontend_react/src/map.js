@@ -42,7 +42,6 @@ class SimpleMap extends Component {
     this.getDisasters = this.getDisasters.bind(this);
     this.getItemsList = this.getItemsList.bind(this);
     this.createMarkers = this.createMarkers.bind(this);
-    this.setState = this.setState.bind(this);
   }
 
   async getDisasters(){
@@ -75,6 +74,7 @@ class SimpleMap extends Component {
     let markerList=[]
     for (let i=0; i < this.state.disasterList.length; i++) {
       const disaster = this.state.disasterList[i];
+
       let marker={};
         marker.id = disaster.disaster_id;
         //get items from itemList
@@ -89,8 +89,10 @@ class SimpleMap extends Component {
           + marker.location.state + " " 
           + marker.location.country;
         
+        await this.sleep(250)
         let resolvedAddress = await geocodeByAddress(address);
         let {lat,lng} = await getLatLng(resolvedAddress[0]);
+
         //console.log(lat,lng)
         marker.lat=lat;
         marker.lng=lng;
@@ -108,6 +110,15 @@ class SimpleMap extends Component {
     //console.log('updating disasters')
   }
 
+  async flip(){
+    this.setState({doesntmatter: false})
+  }
+
+  sleep(delay = 0){
+    return new Promise((resolve) =>{
+        setTimeout(resolve, delay);
+    })
+}
 
   // Store the value of the current disaster?
   // this can possibly handled in the marker class
@@ -115,9 +126,7 @@ class SimpleMap extends Component {
 
   async componentWillMount(){
     await this.updateData();
-    this.updateDataInterval = setInterval(() => this.updateData(), 7500)
-    //this.forceUpdate();
-
+    this.updateDataInterval = setInterval(() => this.updateData(), 5000)
   }
 
   render() {

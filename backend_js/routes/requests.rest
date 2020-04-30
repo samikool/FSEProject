@@ -50,3 +50,7 @@ Content-Type: application/json
     "disaster_id":1,
     "quantity":290
 }
+
+###
+
+get http://localhost:5000/items HTTP/1

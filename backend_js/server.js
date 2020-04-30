@@ -47,6 +47,12 @@ app.use('/donate', donate);
 var userInfo = require('./routes/userInfo');
 app.use('/userInfo', userInfo);
 
+var items = require('./routes/items');
+app.use('/items', items);
+
+var requests = require('./routes/requests');
+app.use('/requests', requests)
+
 var port = process.env.PORT || 5000;
 server.listen(port,()=>{console.log('Listening on Port %d', port)});
 // WARNING: app.listen(80) will NOT work here!

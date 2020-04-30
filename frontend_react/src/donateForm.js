@@ -149,8 +149,7 @@ export default class DonateForm extends React.Component{
                     <Grid item xs={5}>
                     <Typography variant='h6'>
                         {item.name}
-                    </Typography>
-                        
+                    </Typography>   
                     </Grid>
                     <Grid item xs={4}>
                     <Typography variant='h6'>
@@ -189,28 +188,24 @@ export default class DonateForm extends React.Component{
                         onClose={this.props.onClose} 
                         scroll='paper'
                         fullWidth = {true}
-                    >
-                        <DialogTitle id="donate">
-                            <Typography color="primary">
+                    >   
+                        <Box pl={4} py={2}>
+                            <Typography variant='h3' color="primary">
                                 Donate
                             </Typography>
-                        </DialogTitle>
-                        <DialogContent dividers={true} scroll='paper'>
-
-                                
+                        </Box>          
+                        <DialogContent dividers={true} scroll='paper'>      
                                 <Paper variant='outlined'>
                                 <Box px={2} py={1} bgcolor='secondary.light'>
                                 <Grid container 
                                     direction="row"
                                     justify="space-between"
-                                    alignItems="center"
-                                    
+                                    alignItems="center"                   
                                 >
                                     <Grid item>
                                     <Typography color="primary" variant='h5'>
                                         Item Name
-                                    </Typography>
-                                        
+                                    </Typography>      
                                     </Grid>
                                     <Grid item>
                                     <Typography color="primary" variant='h5'>
