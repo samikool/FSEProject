@@ -29,6 +29,26 @@ class dbApi{
     return res
   }
 
+  async MakeRequest(disaster_id, item_id, num_needed, email){
+    let requester_id = await this.GetRequesterID(email)
+
+    let query_str = `INSERT INTO requests (requester_id, disaster_id, item_id, num_needed) 
+    VALUES(
+      ${requester_id},
+      ${disaster_id},
+      ${item_id},
+      ${num_needed}
+    );`
+    let res;
+    try{
+      res = await this.pool.query(query_str)
+    }catch(e){
+      console.log(e)
+      res=e;
+    }
+    return num_needed;
+  }
+
   /**
    * reutnrs the requests pertaining to a certain disaster, need to order, so that oldest requests are 'first' in the list returned
    * @param {*} disaster_id 
@@ -78,6 +98,22 @@ class dbApi{
     try{
       res = await this.pool.query(query_str);
       res = res.rows[0].donor_id;
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
+  async GetRequesterID(email){
+    let user = await this.GetUser(email)
+    let user_id = user.user_id;
+
+    let query_str = `SELECT requester_id FROM requesters WHERE user_id='${user_id}';`
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows[0].requester_id;
     }catch(e){
       console.log(e)
       res = e;
@@ -278,14 +314,19 @@ class dbApi{
    */
   async AddItem(name,type,keywords){
     var queryformat_keywords = keywords.length === 0 ? "" : "\"" + keywords.join("\",\"") + "\"";
-    var query_str = `insert into items (name,type,keywords)
+    var query_str = `INSERT INTO items (name,type,keywords)
     VALUES(
         '${name}',
         '${type}',
         '[${queryformat_keywords}]');`;
     // console.log(query_str)
     await this.pool.query(query_str)
-      .then(res=>console.log(/*res*/"item insert"))
+    console.log('item '+ name +' inserted')
+    
+    query_str = `SELECT * FROM items WHERE name='${name}';`
+    let item = await this.pool.query(query_str);
+    item = item.rows[0];
+    return item;
   }
 
   /**
@@ -310,7 +351,7 @@ class dbApi{
     let res;
     try{
       res = await this.pool.query(query_str);
-      res = res.rows[0];
+      res = res.rows;
     }catch(e){
       console.log(e)
       res = e;
@@ -669,7 +710,7 @@ class dbApi{
 
         CREATE TABLE Items (
           Item_ID SERIAL PRIMARY KEY NOT NULL,
-          Name varchar(255) Unique NOT NULL,
+          Name varchar(255) NOT NULL,
           Type varchar(255) NOT NULL,
           Keywords jsonb
         );

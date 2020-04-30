@@ -48,8 +48,10 @@ export default class DisasterMarker extends Component{
       items: {},
       donateOpen: false,
       requestOpen: false,
-      showSnackbar: false,
+      showDonateSnackbar: false,
+      showRequestSnackbar:false,
       totalItemsDonated: 0,
+      num_requested: 0,
     };
 
     this.handleDonateOpen = this.handleDonateOpen.bind(this);
@@ -60,30 +62,22 @@ export default class DisasterMarker extends Component{
     this.renderRequest = this.renderRequest.bind(this);
     this.handleChangePage = this.handleChangePage.bind(this);
     this.handleChangeRowsPerPage = this.handleChangeRowsPerPage.bind(this);
-    this.handleSnackbarClose = this.handleSnackbarClose.bind(this)
+    this.handleDonateSnackbarClose = this.handleDonateSnackbarClose.bind(this)
+    this.handleRequestSnackbarClose = this.handleRequestSnackbarClose.bind(this)
   }
 
-  async handleSnackbarClose(){
+  async handleDonateSnackbarClose(){
     this.setState({
-      showSnackbar: false,
+      showDonateSnackbar: false,
       totalItemsDonated: 0,
     })
   }
 
-  async handleDonateClose(totalItemsDonated){
-    if(totalItemsDonated>0){
-      this.setState(
-        {
-          donateOpen: false,
-          showSnackbar: true,
-          totalItemsDonated: totalItemsDonated,
-        }
-      )
-    }else{
-      this.setState({
-        donateOpen:false,
-      })
-    }
+  async handleRequestSnackbarClose(){
+    this.setState({
+      showRequestSnackbar: false,
+      num_requested: 0,
+    })
   }
 
   async handleDonateOpen(){
@@ -94,17 +88,44 @@ export default class DisasterMarker extends Component{
     return;
   }
 
-  async handleRequestClose(){
-    this.setState({
-      requestOpen:false,
-    })
+  async handleDonateClose(totalItemsDonated){
+    if(totalItemsDonated>0){
+      this.setState(
+        {
+          donateOpen: false,
+          showDonateSnackbar: true,
+          totalItemsDonated: totalItemsDonated,
+        }
+      )
+    }else{
+      this.setState({
+        donateOpen:false,
+      })
+    }
   }
 
   async handleRequestOpen(){
-    this.setState(
-      {requestOpen: true}
-    )
+    this.setState({
+      requestOpen: true
+    })
     return;
+  }
+
+  async handleRequestClose(num_requested){
+    if(num_requested > 0){
+      this.setState(
+        {
+          requestOpen: false,
+          showRequestSnackbar: true,
+          num_requested: num_requested
+        }
+      )
+    }else{
+      this.setState({
+        requestOpen: false,
+      })
+    }
+    
   }
 
   async handleChangePage(event, newPage){
@@ -173,16 +194,35 @@ export default class DisasterMarker extends Component{
                 style={pinStyle}
                 onClick={this.handleClick}
           />}>
-          <Snackbar 
-            open={this.state.showSnackbar} 
-            autoHideDuration={6000} 
-            onClose={this.handleSnackbarClose}
+          <Box>
+            <Snackbar 
+              open={this.state.showDonateSnackbar} 
+              autoHideDuration={7500} 
+              onClose={this.handleDonateSnackbarClose}
 
-          >
-             <Alert onClose={this.handleSnackbarClose} variant='filled' elevation={6} severity="success">
-              Thank you for your donation of {this.state.totalItemsDonated} items!
-            </Alert> 
-          </Snackbar>
+            >
+              <Alert 
+                onClose={this.handleDonateSnackbarClose}
+                variant='filled'
+                elevation={6} 
+                severity="success">
+                Thank you for your donation of {this.state.totalItemsDonated} items!
+              </Alert> 
+            </Snackbar>
+            <Snackbar
+              open={this.state.showRequestSnackbar} 
+              autoHideDuration={7500} 
+              onClose={this.handleRequestSnackbarClose}
+            >
+              <Alert 
+                onClose={this.handleRequestSnackbarClose}
+                variant='filled'
+                elevation={6} 
+                severity="success">
+                Your {this.state.num_requested} items have been requested. They will be delivered as soon as they are ready. 
+              </Alert> 
+            </Snackbar>
+          </Box>
           <Modal.Header>{this.props.disaster.type} {this.props.disaster.name}</Modal.Header>
           <Modal.Content image>
             <Icon name="fire" size='massive'></Icon>
@@ -221,7 +261,8 @@ export default class DisasterMarker extends Component{
                       </TableCell>
                     </TableRow>
                   </TableHead>
-                  <TableBody>
+                  {!this.props.items ? null:
+                    <TableBody>
                     {
                       Object.keys(this.props.items)
                       //.slice(
@@ -245,7 +286,8 @@ export default class DisasterMarker extends Component{
                         ) 
                       })
                     }
-                  </TableBody>
+                    </TableBody>
+                  }
                 </Table>
               </TableContainer>
               </Box>
