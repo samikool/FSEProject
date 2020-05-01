@@ -55,13 +55,8 @@ export default function MainAppbar(props) {
     setAnchorE1(null);
   };
 
-  const handleAddDisaster = async (event: React.MouseEvent<HTMLElement>) => {
-      history.push('/disasters');
-      //window.location.reload();
-  };
-
-  const handleDisaster = async (event: React.MouseEvent<HTMLElement>) => {
-    history.push('/disaster');
+  const handleAdmin = async (event) => {
+    history.push('/admin');
   };
 
 
@@ -83,14 +78,9 @@ export default function MainAppbar(props) {
                   First Aid
                 </Typography>
               </Box>
-              <Box>
-                <Button onClick={handleDisaster} variant="contained" color="primary">
-                <Typography variant="button"> Disaster </Typography>
-                </Button>
-              </Box>
-              <Box px={1}>
-                <Button onClick={handleAddDisaster} variant="contained" color="primary">
-                <Typography variant="button"> Add Disaster </Typography>
+              <Box pr={2}>
+                <Button onClick={handleAdmin} variant="contained" color="primary">
+                <Typography variant="button"> Admin Console </Typography>
                 </Button>
               </Box>
               <Box>
