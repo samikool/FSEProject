@@ -466,14 +466,54 @@ class dbApi{
     }
   }
 
+  async GetAllRequests(){
+    var query_str = `SELECT * FROM requests;`;
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res.rows;
+  }
+
+  async GetAdminData(){
+    let res = {};
+    try{
+      let users = await this.GetAllUsers();
+      res.users = users;
+
+      let items = await this.GetAllItems();
+      res.items = items;
+
+      let disasters = await this.getAllDisasters();
+      res.disasters = disasters;
+
+      let requests = await this.GetAllRequests();
+      res.requests = requests;
+    }
+    catch(e){
+      res = e
+      console.log(e)
+
+    }
+    return res;
+  }
+
   /**
    * Gets all disasters from the table
    */
   async getAllDisasters(){
     var query_str = `SELECT * FROM DISASTERS;`;
-    let disasters = await this.pool.query(query_str);
-
-    return disasters.rows;
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res.rows;
   }
 
   /**
@@ -610,6 +650,12 @@ class dbApi{
     //         this.pool.query("SELECT * FROM USERS;")
     //             // .then(res_2 => console.log(res_2.rows))
     //     })
+  }
+
+  async GetAllUsers(){
+    var query_str = `SELECT * FROM users`;
+    let res = await this.pool.query(query_str);
+    return res.rows;
   }
 
   /**

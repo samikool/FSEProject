@@ -48,7 +48,10 @@ var items = require('./routes/items');
 app.use('/items', items);
 
 var requests = require('./routes/requests');
-app.use('/requests', requests)
+app.use('/requests', requests);
+
+var admin = require('./routes/admin');
+app.use('/admin', admin);
 
 
 var port = process.env.PORT || 5000;

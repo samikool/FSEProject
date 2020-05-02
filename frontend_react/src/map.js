@@ -55,7 +55,7 @@ class SimpleMap extends Component {
     response = await response.json();
     await this.setState({disasterList: response});
   }
-
+  
   async getItemsList(){
     let response = await fetch('http://localhost:5000/disasterItems',{
       method: 'GET',

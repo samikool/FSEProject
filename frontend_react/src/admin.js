@@ -13,8 +13,10 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import {history} from "react-router-dom/";
+
+const getToken = require('./authorize.js').getToken;
 
 
 class Admin extends React.Component{
@@ -24,22 +26,29 @@ class Admin extends React.Component{
         
         this.handleLogout = this.handleLogout.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
+        this.goBack = this.goBack.bind(this);
+        this.getData = this.getData.bind(this);
     }
 
     async handleLogout(){
         let refreshToken = await window.sessionStorage.refreshToken;
         await fetch('http://localhost:5000/authorize', {
             method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify({
                 token: refreshToken
             })
         });
         window.sessionStorage.accessToken = null;
-        this.props.history.push('/')
+        this.goBack()
     }
 
-    async componentDidMount(){
+    async goBack(){
+        this.props.history.goBack();
+    }
+
+    async getData(){
+        //reauthorize and refresh token if needed
         let authorization = await authorize();
         this.setState({
             loggedIn: authorization['access'],
@@ -48,6 +57,37 @@ class Admin extends React.Component{
             donor: authorization['donor'],
             requester: authorization['requester'],
         });
+
+        let token = await getToken();
+        //get data from admin route
+        let response = await fetch('http://localhost:5000/admin', {
+            method: 'GET',
+            headers: {'Authorization': 'Bearer ' + token}
+        });
+
+        if(!response.ok){
+            this.setState(
+                {
+                    admin: false,
+                    loggedin: false,
+                }
+            )
+        }
+
+        response = await response.json();
+        console.log(response);
+        this.setState({
+            users: response.users,
+            items: response.items,
+            disasters: response.disasters,
+            requests: response.requests,
+        })
+    }
+
+    
+
+    async componentDidMount(){
+        await this.getData();
     }
 
     async handleTabChange(event, value){
@@ -100,8 +140,8 @@ class Admin extends React.Component{
             
                 <Toolbar>
                     <Box>
-                        <IconButton edge="start" color="secondary" aria-label="menu">
-                        <MenuIcon />
+                        <IconButton onClick={this.goBack} edge="start" color="secondary" aria-label="menu">
+                        <ArrowBackIcon />
                         </IconButton>
                     </Box>
                     <Box flexGrow={1}>
