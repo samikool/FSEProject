@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import MaterialTable from 'material-table'
 import {history} from "react-router-dom/";
 
 const getToken = require('./authorize.js').getToken;
