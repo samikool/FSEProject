@@ -85,7 +85,9 @@ export default function MainAppbar(props) {
               </Box>
               <Box>
                 <Button onClick={handleLogout} variant="contained" color="primary">
-                  <Typography variant="button"> Logout </Typography>
+                  <Typography variant="button">
+                    Logout
+                  </Typography>
                 </Button>
               </Box>
               </Toolbar>

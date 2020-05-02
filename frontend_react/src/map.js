@@ -50,19 +50,19 @@ class SimpleMap extends Component {
       headers: {
         'Content-Type': 'application/json'
       }
-    })
-    
+    });
+
     response = await response.json();
     await this.setState({disasterList: response});
   }
-  
+
   async getItemsList(){
     let response = await fetch('http://localhost:5000/disasterItems',{
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
-    })
+    });
 
     response = await response.json();
     //console.log(response)
@@ -71,7 +71,7 @@ class SimpleMap extends Component {
   }
 
   async createMarkers(){
-    let markerList=[]
+    let markerList=[];
     for (let i=0; i < this.state.disasterList.length; i++) {
       const disaster = this.state.disasterList[i];
 
@@ -85,11 +85,11 @@ class SimpleMap extends Component {
         marker.location = disaster.location;
         marker.name = disaster.name;
 
-        let address = marker.location.city + " " 
-          + marker.location.state + " " 
+        let address = marker.location.city + " "
+          + marker.location.state + " "
           + marker.location.country;
-        
-        await this.sleep(250)
+
+        await this.sleep(250);
         let resolvedAddress = await geocodeByAddress(address);
         let {lat,lng} = await getLatLng(resolvedAddress[0]);
 
@@ -122,7 +122,7 @@ class SimpleMap extends Component {
 
   // Store the value of the current disaster?
   // this can possibly handled in the marker class
-  
+
 
   async componentWillMount(){
     await this.updateData();
@@ -145,14 +145,14 @@ class SimpleMap extends Component {
         >
         {this.state.markerList.map((marker)=>{
           return(
-          <DisasterMarker 
+          <DisasterMarker
             key={marker.id}
             lat={marker.lat}
             lng={marker.lng}
             disaster={marker}
             items={marker.items_needed}
-            isLoggedIn={this.props.isLoggedIn} 
-            isAdmin = {this.props.isAdmin} 
+            isLoggedIn={this.props.isLoggedIn}
+            isAdmin = {this.props.isAdmin}
             isDonor = {this.props.isDonor}
             isRequester = {this.props.isRequester}
           />

@@ -3,8 +3,8 @@ var router = express.Router();
 var veriyToken = require('../authorizer').verifyToken;
 
 router.post('/', async function (req, res) {
-    req = req.body
-    console.log(req)
+    req = req.body;
+    console.log(req);
     //first need to verify token, since this will be a guarded route
     let token = req.token;
     let response = await veriyToken(token);
@@ -19,8 +19,8 @@ router.post('/', async function (req, res) {
     //extra donation info and 'donate'
     let disaster_id = req.disaster_id;
     let item_id = req.item_id;
-    let quantity = req.quantity; 
-    response = await database.DonateItem(donor_id, disaster_id, item_id, quantity)
+    let quantity = req.quantity;
+    response = await database.DonateItem(donor_id, disaster_id, item_id, quantity);
     res.json(response)
 });
 
