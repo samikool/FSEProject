@@ -8,9 +8,9 @@ router.get('/', async function(req, res) {
 
 router.post('/', async function(req, res){
     let item = req.body;
-    console.log(item)
-    
+    console.log(item);
+
     item = await database.AddItem(item.name, item.category, '');
     res.json(item)
-})
+});
 module.exports = router;

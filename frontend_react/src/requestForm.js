@@ -40,7 +40,7 @@ export default class DonateForm extends React.Component{
             newItem: false,
             autocompleteValue: '',
             categoryValue: '',
-        }
+        };
 
         this.handleRequest = this.handleRequest.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -66,10 +66,10 @@ export default class DonateForm extends React.Component{
     async handleAutocompleteChange(event, value){
         let newItem = true;
         let item = {};
-        this.setState({autocompleteValue: value})
+        this.setState({autocompleteValue: value});
 
         for(let i=0; i<this.state.autocompleteItems.length; i++){
-            let currItem = this.state.autocompleteItems[i]
+            let currItem = this.state.autocompleteItems[i];
             if(currItem.name === value){
                 newItem = false;
                 item=currItem;
@@ -78,7 +78,7 @@ export default class DonateForm extends React.Component{
         }
         if(newItem){
             await this.setState({newItem: true});
-        }else{
+        } else{
             await this.setState({newItem: false});
         }
     }
@@ -105,10 +105,10 @@ export default class DonateForm extends React.Component{
                 disaster_id: this.props.disaster_id,
                 token: token,
             }),
-        })
+        });
         response = await response.json();
-        console.log(response)
-        this.setState({requestedItems: {}})
+        console.log(response);
+        this.setState({requestedItems: {}});
         this.props.onClose(response.num_requested);
     }
 
@@ -130,24 +130,24 @@ export default class DonateForm extends React.Component{
                       name: this.state.autocompleteValue,
                       category: this.state.categoryValue
                     }),
-                })
+                });
             await this.setState({newItem: false});
             item = await res.json();
-        }else{
+        } else{
             Object.keys(this.state.autocompleteItems).forEach((key) =>{
                 if(this.state.autocompleteItems[key].name === this.state.autocompleteValue){
                     item = this.state.autocompleteItems[key]
                 }
             })
         }
-        
+
         //add quantity
 
         // console.log(item)
 
-        //if item is not there add it 
+        //if item is not there add it
         let tempList = this.state.requestedItems;
-        if(tempList[item.item_id] == null){
+        if(tempList[item.item_id] === null){
             tempList[item.item_id] = item;
             tempList[item.item_id].quantity = +this.state.quantity;
         }
@@ -170,7 +170,7 @@ export default class DonateForm extends React.Component{
         delete tempList[item_id];
         await this.setState({requestedItems: tempList})
     }
-    
+
     sleep(delay = 0){
         return new Promise((resolve) =>{
             setTimeout(resolve, delay);
@@ -191,7 +191,7 @@ export default class DonateForm extends React.Component{
             let items = await response.json();
             await this.setState({
                 autocompleteItems: items
-            })
+            });
             console.log('done loading');
         }
         await this.setState({loading: false});
@@ -208,9 +208,9 @@ export default class DonateForm extends React.Component{
                 </Box>
                 <Paper variant='outlined'>
                 <Box px={1} py={1}>
-                    <AutoComplete 
-                        options={['Food','Cleaning','Material','Equipment','Supplies']} 
-                        getOptionLabel={(option) => option} 
+                    <AutoComplete
+                        options={['Food','Cleaning','Material','Equipment','Supplies']}
+                        getOptionLabel={(option) => option}
                         autoSelect={true}
                         autoHighlight={true}
                         onInputChange={this.handleCategoryChange}
@@ -229,7 +229,7 @@ export default class DonateForm extends React.Component{
         }else{
             return null;
         }
-        
+
     }
 
     renderAutocomplete(){
@@ -249,9 +249,9 @@ export default class DonateForm extends React.Component{
                 autoComplete={true}
                 inputValue={this.state.autocompleteValue}
                 renderInput={(params) => (
-                    <TextField {...params} 
-                        fullWidth={true} 
-                        label='Item Name' 
+                    <TextField {...params}
+                        fullWidth={true}
+                        label='Item Name'
                         variant='outlined'
                         InputProps=
                         {{
@@ -259,8 +259,8 @@ export default class DonateForm extends React.Component{
                             endAdornment: (
                             <React.Fragment>
                             {
-                                this.state.loading 
-                                ? <CircularProgress color="inherit" size={20} /> 
+                                this.state.loading
+                                ? <CircularProgress color="inherit" size={20} />
                                 : null
                             }
                               {params.InputProps.endAdornment}
@@ -271,8 +271,8 @@ export default class DonateForm extends React.Component{
                     </TextField>
                 )}
                 >
-                </AutoComplete>    
-            </Grid>      
+                </AutoComplete>
+            </Grid>
         );
     }
 
@@ -282,7 +282,7 @@ export default class DonateForm extends React.Component{
             <Box pt={1}>
             <Paper elevation={2} variant='outlined' id={item.item_id} >
             <Box px={2} py={1}>
-                <Grid container 
+                <Grid container
                     direction="row"
                     // justify="space-between"
                     alignItems="center"
@@ -290,7 +290,7 @@ export default class DonateForm extends React.Component{
                     <Grid item xs={6}>
                     <Typography variant='h6'>
                         {item.name}
-                    </Typography>   
+                    </Typography>
                     </Grid>
                     <Grid item xs={5}>
                     <Typography variant='h6'>
@@ -317,45 +317,45 @@ export default class DonateForm extends React.Component{
     render(){
         return (
             <ThemeProvider theme={theme}>
-                    <Dialog 
-                        open={this.props.open} 
-                        onClose={this.props.onClose} 
+                    <Dialog
+                        open={this.props.open}
+                        onClose={this.props.onClose}
                         scroll='paper'
                         fullWidth = {true}
-                    >   
+                    >
                         <Box pl={4} py={2}>
                             <Typography variant='h3' color="primary">
                                 Request
                             </Typography>
-                        </Box>          
+                        </Box>
                         <DialogContent dividers={true} scroll='paper'>
                             <Paper variant='outlined'>
                                 <Box px={1} py={1}>
-                                <Grid container 
+                                <Grid container
                                     direction="row"
                                     //justify="space-between"
                                     alignItems="center"
-                                    spacing={1}                   
+                                    spacing={1}
                                 >
                                     {this.renderAutocomplete()}
                                     <Grid item xs={2}>
-                                    <TextField 
+                                    <TextField
                                         fullWidth={true}
                                         label='Quantity'
                                         variant='outlined'
                                         onChange={this.handleQuantityUpdate}
                                         value={this.state.quantity}
                                     >
-                                    </TextField>    
+                                    </TextField>
                                     </Grid>
                                     <Grid item xs={2}>
-                                    <Button 
-                                        onClick={this.addItem} 
-                                        fullWidth={true} 
-                                        color="primary" 
+                                    <Button
+                                        onClick={this.addItem}
+                                        fullWidth={true}
+                                        color="primary"
                                         variant='contained'
                                     >
-                                        Add 
+                                        Add
                                     </Button>
                                     </Grid>
                                 </Grid>
@@ -369,7 +369,7 @@ export default class DonateForm extends React.Component{
                                     </Box>
                                 </Grid>
                             </Grid>
-                            
+
                             <Grid container
                                     direction="column"
                                     justify="center"
@@ -381,7 +381,7 @@ export default class DonateForm extends React.Component{
                                         return this.renderRow(item)
                                     })
                                 }
-                            </Grid>   
+                            </Grid>
                         </DialogContent>
                         <DialogActions>
                             <Button color="primary" onClick={this.props.onClose}>

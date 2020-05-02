@@ -19,7 +19,7 @@ class dbApi{
       ${disaster_id},
       ${item_id},
       ${quantity});`;
-    
+
       let res;
       try{
         res = await this.pool.query(query_str);
@@ -51,7 +51,7 @@ class dbApi{
 
   /**
    * reutnrs the requests pertaining to a certain disaster, need to order, so that oldest requests are 'first' in the list returned
-   * @param {*} disaster_id 
+   * @param {*} disaster_id
    */
   async GetRequestsForDisaster(disaster_id){
     var query_str = `SELECT * FROM requests 
@@ -66,7 +66,7 @@ class dbApi{
       res = e;
     }
 
-    return res; 
+    return res;
   }
 
   /**
@@ -87,7 +87,7 @@ class dbApi{
 
   /**
    * function takes an email and returns the donor id associated with the account
-   * @param {} email 
+   * @param {} email
    */
   async GetDonorID(email){
     let user = await this.GetUser(email)
@@ -130,7 +130,7 @@ class dbApi{
       ${disaster_id},
       ${item_id},
       ${quantity});`;
-    
+
     let res;
     try{
       res = await this.pool.query(query_str);
@@ -145,7 +145,7 @@ class dbApi{
   /**
    * takes a request id and the number of provided items and updates the request in the table
    * This function could probably have a better name but I can't think of one right now
-   * @param {} request_id 
+   * @param {} request_id
    * @param {*} num_provided is the new value of num_provided
    */
   async UpdateNumNeeded(request_id, num_providing){
@@ -165,7 +165,7 @@ class dbApi{
     }
 
     /**
-     * stretch goal put check here to handle simultaneous donations to make sure things stay synchronized       
+     * stretch goal put check here to handle simultaneous donations to make sure things stay synchronized
      */
 
     //calculate the new number and update it
@@ -188,8 +188,8 @@ class dbApi{
   }
 
   /**
-   * Takes a disaster_id item_ids and quantitys 
-   * @param {*} disaster_id 
+   * Takes a disaster_id item_ids and quantitys
+   * @param {*} disaster_id
    * @param {*} item_ids item_ids will be an array of the items ids the user is donating
    * @param {*} quantitys  quantities will be an array of the items quantities, indexes will be lined up
    */
@@ -204,10 +204,10 @@ class dbApi{
     for(let i=0; i<requests.length; i++){
       let request = requests[i];
       //console.log(request)
-      if(request.item_id == item_id){     
+      if(request.item_id == item_id){
         let request_id = request.request_id;
         let num_needed = request.num_needed - request.num_provided;
-        
+
         //probably some refactoring we can do here since code is so similar
         //case filling entire request
         if(quantity >= num_needed){
@@ -244,7 +244,7 @@ class dbApi{
   }
   /**
    * Function gets all the currently requested items for every disaster
-   * @param {*}  
+   * @param {*}
    */
   async GetAllDisasterItems(){
     var query_str = `SELECT * FROM requests WHERE num_needed != num_provided;`
@@ -266,26 +266,26 @@ class dbApi{
         //check if item has been added before
         if (itemMap[disaster_id][element.item_id] == null){
           let tempMap = itemMap[disaster_id];
-          tempMap[element.item_id] = 
+          tempMap[element.item_id] =
           {
             item_id : item.item_id,
             name : item.name,
             type : item.type,
             keywords : item.keywords,
             num_needed : element.num_needed - element.num_provided,
-          }; 
+          };
           itemMap[disaster_id] = tempMap
         }
         //item has already been added to just update num_needed
         else{
           //duplicate item found so merge num_needed
-          itemMap[disaster_id][element.item_id].num_needed += 
+          itemMap[disaster_id][element.item_id].num_needed +=
           (element.num_needed - element.num_provided);
         }
       }
       res = itemMap;
-    }catch(e){
-      console.log(e)
+    } catch(e){
+      console.log(e);
       res = e
     }
     return res;
@@ -320,10 +320,10 @@ class dbApi{
         '${type}',
         '[${queryformat_keywords}]');`;
     // console.log(query_str)
-    await this.pool.query(query_str)
-    console.log('item '+ name +' inserted')
-    
-    query_str = `SELECT * FROM items WHERE name='${name}';`
+    await this.pool.query(query_str);
+    console.log('item '+ name +' inserted');
+
+    query_str = `SELECT * FROM items WHERE name='${name}';`;
     let item = await this.pool.query(query_str);
     item = item.rows[0];
     return item;
@@ -331,29 +331,29 @@ class dbApi{
 
   /**
    * Gets an items information by item_id
-   * @param {*} item_id 
+   * @param {*} item_id
    */
   async GetItem(item_id){
-    var query_str = `SELECT * FROM items WHERE item_id='${item_id}';`
+    var query_str = `SELECT * FROM items WHERE item_id='${item_id}';`;
     let res;
     try{
       res = await this.pool.query(query_str);
       res = res.rows[0]
-    }catch(e){
-      console.log(e)
+    } catch(e){
+      console.log(e);
       res = e;
     }
     return res;
   }
 
   async GetAllItems(){
-    var query_str = `SELECT * FROM items;`
+    var query_str = `SELECT * FROM items;`;
     let res;
     try{
       res = await this.pool.query(query_str);
       res = res.rows;
-    }catch(e){
-      console.log(e)
+    } catch(e){
+      console.log(e);
       res = e;
     }
     return res;
@@ -411,10 +411,10 @@ class dbApi{
    */
   async AddDisaster(name,location,keywords){
     //check if disaster already has a disaster at the given location
-    console.log(name)
-    console.log(location)
-    console.log(keywords)
-    var query_str = `SELECT keywords FROM disasters where location='${JSON.stringify(location)}';`
+    console.log(name);
+    console.log(location);
+    console.log(keywords);
+    var query_str = `SELECT keywords FROM disasters where location='${JSON.stringify(location)}';`;
     var exists = await this.pool
       .query(query_str)
       .then(res=>{
@@ -441,14 +441,14 @@ class dbApi{
 
           //check if keywords match the input keywords
           var queryformat_types = unique_types.length === 0 ? "" : "\"" + unique_types.join("\",\"") + "\"";
-          query_str = `UPDATE disasters SET keywords=jsonb_set(keywords,'{type}','[${queryformat_types}]') WHERE location='${JSON.stringify(location)}';`
+          query_str = `UPDATE disasters SET keywords=jsonb_set(keywords,'{type}','[${queryformat_types}]') WHERE location='${JSON.stringify(location)}';`;
           // console.log(query_str);
 
           this.pool
             .query(query_str)
         }
       });
-      console.log(exists)
+      console.log(exists);
     if (exists === false){
       query_str = `INSERT INTO disasters (name,location,keywords) VALUES( '${name}',
       '${JSON.stringify(location)}',
@@ -481,23 +481,18 @@ class dbApi{
   async GetAdminData(){
     let res = {};
     try{
-      let users = await this.GetAllUsers();
-      res.users = users;
+      res.users = await this.GetAllUsers();
 
-      let items = await this.GetAllItems();
-      res.items = items;
+      res.items = await this.GetAllItems();
 
-      let disasters = await this.getAllDisasters();
-      res.disasters = disasters;
+      res.disasters = await this.getAllDisasters();
 
-      let requests = await this.GetAllRequests();
-      res.requests = requests;
+      res.requests = await this.GetAllRequests();
 
-      let donations = await this.GetAllDonations();
-      res.donations = donations;
+      res.donations = await this.GetAllDonations();
     }
     catch(e){
-      res = e
+      res = e;
       console.log(e)
 
     }
@@ -699,7 +694,7 @@ class dbApi{
       var query_str = `DELETE FROM DONORS WHERE USER_ID = '${id}'`;
       let res = await this.pool.query(query_str);
     }
-    
+
     if(user.isrequester){
       var query_str = `DELETE FROM REQUESTERS WHERE USER_ID = '${id}'`;
       let res = await this.pool.query(query_str);

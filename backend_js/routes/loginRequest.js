@@ -19,8 +19,8 @@ router.post('/', async function (req, res) {
 	    reason: response.failure_reason
 	  });
   } else if(response.access){
-    
-    tokens = await createToken(email, response.isAdmin, response.isDonor, response.isRequester)
+
+    tokens = await createToken(email, response.isAdmin, response.isDonor, response.isRequester);
     res.json(
       {
         accessToken: tokens.accessToken,

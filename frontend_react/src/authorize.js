@@ -43,13 +43,13 @@ async function refreshToken(){
 
   //store token then reauthorize and return result
   response = await response.json();
-  console.log(response)
+  console.log(response);
   window.sessionStorage.accessToken = await response['accessToken'];
   return authorize();
 }
 
 export async function getToken(){
-  console.log('getting token for user')
+  console.log('getting token for user');
   return await window.sessionStorage.accessToken;
 }
 

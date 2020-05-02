@@ -5,9 +5,6 @@ import authorize from './authorize';
 import theme from './index';
 
 
-
-
-
 export default class Main extends React.Component{
   constructor(props){
     super(props);
@@ -16,7 +13,7 @@ export default class Main extends React.Component{
       admin: false,
       donor: false,
       requester: false,
-      
+
     }
   }
 
@@ -36,7 +33,7 @@ export default class Main extends React.Component{
       requester: authorization['requester'],
     });
 
-    
+
     // disasterList.forEach(disaster => {
     //     let id = disaster.disaster_id;
     //     let items_needed = disaster.keywords.items_need;
@@ -45,7 +42,7 @@ export default class Main extends React.Component{
     //     let name = disaster.name;
 
 
-        
+
     // });
   }
 
@@ -53,14 +50,14 @@ export default class Main extends React.Component{
     return(
       <div style={{ height: '93vh', width: '100%'}}>
         <MainAppbar
-          isLoggedIn={this.state.loggedIn} 
-          isAdmin = {this.state.admin} 
+          isLoggedIn={this.state.loggedIn}
+          isAdmin = {this.state.admin}
           isDonor = {this.state.donor}
           isRequester = {this.state.requester}
         />
-        <SimpleMap 
-          isLoggedIn={this.state.loggedIn} 
-          isAdmin = {this.state.admin} 
+        <SimpleMap
+          isLoggedIn={this.state.loggedIn}
+          isAdmin = {this.state.admin}
           isDonor = {this.state.donor}
           isRequester = {this.state.requester}
         />
@@ -68,23 +65,3 @@ export default class Main extends React.Component{
     );
   }
 }
-
-// export default function Main(){
-//   const classes = useStyles();
-//   return(
-
-//   );
-// }
-
-
-
-
-/*{ <div style={{height: "99vh", width: "99vw"}} className={classes.root}>
-      <Grid container spacing={2} direction="column" alignItems="stretch">
-        <Grid item xs={12}>
-          <ButtonAppBar />
-        </Grid>
-      </Grid>
-      <SimpleMap />
-
-    </div> }*/

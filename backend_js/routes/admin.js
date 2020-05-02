@@ -38,8 +38,6 @@ router.post('/', async function (req, res) {
     }
 
     console.log(req)
-    res.sendStatus(200)
-
 })
 
 //remove some table data

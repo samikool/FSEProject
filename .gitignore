@@ -9,3 +9,4 @@
 *./.vscode/*
 */.env
 .scannerwork/*
+*.DS_Store

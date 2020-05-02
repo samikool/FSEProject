@@ -121,7 +121,7 @@ class Admin extends React.Component{
         })
     }
 
-    
+
 
     async componentDidMount(){
         await this.getData();
@@ -275,7 +275,7 @@ class Admin extends React.Component{
             </ThemeProvider>
         )
     }
-    
+
     renderItems(){
         let index=1;
         return(
@@ -319,7 +319,7 @@ class Admin extends React.Component{
         return(
             <ThemeProvider theme={theme}>
             <AppBar color="primary" position="static">
-            
+
                 <Toolbar>
                     <Box>
                         <IconButton onClick={this.goBack} edge="start" color="secondary" aria-label="menu">
@@ -331,7 +331,7 @@ class Admin extends React.Component{
                             First Aid
                         </Typography>
                     </Box>
-                    
+
                     <Box pr={2}>
                         <Button variant="contained" color="secondary">
                         <Typography variant="button"> Admin Console </Typography>
@@ -345,7 +345,7 @@ class Admin extends React.Component{
                     </Toolbar>
                     <Tabs value={this.state.tab} onChange={this.handleTabChange}>
                         <Tab label="Users"/>
-                        <Tab label="Items"/> 
+                        <Tab label="Items"/>
                         <Tab label="Disasters"/>
                         <Tab label="Requests"/>
                         <Tab label="Donations"/>
