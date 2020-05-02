@@ -492,6 +492,9 @@ class dbApi{
 
       let requests = await this.GetAllRequests();
       res.requests = requests;
+
+      let donations = await this.GetAllDonations();
+      res.donations = donations;
     }
     catch(e){
       res = e
@@ -499,6 +502,21 @@ class dbApi{
 
     }
     return res;
+  }
+
+  /**
+   * Gets all disasters from the table
+   */
+  async GetAllDonations(){
+    var query_str = `SELECT * FROM donations;`;
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res.rows;
   }
 
   /**
