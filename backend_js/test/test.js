@@ -5,7 +5,7 @@ chai.should();
 expect = chai.expect;
 assert = chai.assert;
 
-const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg');
 
 const pool = new Pool({
   user: 'postgres',
@@ -13,14 +13,14 @@ const pool = new Pool({
   database: 'first_aid',
   password: 'password',
   port: 5432,
-})
+});
 
 const DB = require('../db_management/dbApi');
 database = new DB(pool);
 
 describe('Database', function(){
     describe('#VerifyUser()', function(){
-        it('responds in the form of {access:boolean failure_reason:string}', 
+        it('responds in the form of {access:boolean failure_reason:string}',
         async function(){
           var response = await database.VerifyUser('sam','sam');
           response.should.be.an('object');
@@ -31,12 +31,12 @@ describe('Database', function(){
         it('responds with {access:true isadmin:boolean} if correct password',
         async function(){
           var response = await database.VerifyUser('babu.slapps@tmail.com', 'password');
-          console.log(response)
+          console.log(response);
           response.access.should.equal(true);
           response.isAdmin.should.be.a('boolean');
           response.isAdmin.should.equal(false);
         });
-        
+
         it('responds with {access:false failure_reason:password} if wrong password',
         async function(){
           var response = await database.VerifyUser('babu.slapps@tmail.com', 'passwordddd');
@@ -94,7 +94,7 @@ describe('Database', function(){
     });
 
     describe('#NewUser', function(){
-      it('adds a user to the database', 
+      it('adds a user to the database',
       async function(){
         tempUser = {"first_name":"Guy","last_name":"fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false, "isdonor":true, "isrequester":true};
         await database.NewUser(tempUser.first_name,tempUser.last_name,tempUser.password,tempUser.email,tempUser.location,tempUser.isadmin, tempUser.isdonor, tempUser.isrequester );
@@ -111,7 +111,7 @@ describe('Database', function(){
       //returns what on email doesn't exist
 
       describe('#DropUser', function(){
-        it('deletes a user from the database', 
+        it('deletes a user from the database',
         async function(){
           tempUser = {"first_name":"Guy","last_name":"fieri","password":"password", "email":"fiery.hair@tmail.com", "location":{"Address":"001 Small Road Ln", "Country":"United States", "State":"Oregan", "City":"Dallas", "Zipcode":43203}, "isadmin":false};
           await database.DropUser(tempUser.email)
@@ -125,7 +125,7 @@ describe('Database', function(){
     });
 
     describe('#GetUser', function(){
-      it('returns a user from the database given the user\'s email', 
+      it('returns a user from the database given the user\'s email',
       async function() {
         let user = await database.GetUser('gordon.gluten@tmail.com');
 

@@ -59,9 +59,6 @@ export default function MainAppbar(props) {
     history.push('/admin');
   };
 
-
-
-
   if(isLoggedIn && isAdmin){
     return(
       <ThemeProvider theme={theme}>
@@ -145,7 +142,9 @@ export default function MainAppbar(props) {
               </Box>
               <Box>
                 <Button onClick={handleLogin} variant="contained" color='primary'>
-                  <Typography variant="button"> Login </Typography>
+                  <Typography variant="button">
+                    Login
+                  </Typography>
                 </Button>
               </Box>
               <LoginDropdown
