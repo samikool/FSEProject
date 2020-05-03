@@ -31,7 +31,7 @@ export default class DonateForm extends React.Component{
           numUniqueItemsToDonate: 0,
           numItemsDonated: 0,
           numTotalItemsDonated: 0,
-      }
+      };
 
       this.handleQuantityUpdate = this.handleQuantityUpdate.bind(this);
       this.handleDonate = this.handleDonate.bind(this);
@@ -52,7 +52,7 @@ export default class DonateForm extends React.Component{
 
     async handleDonate(){
         //authorize to potentially refresh
-        await authorize()
+        await authorize();
         //get token
         let token = await getToken();
         let tempMap = this.state.donateMap;
@@ -60,7 +60,7 @@ export default class DonateForm extends React.Component{
         await Object.keys(tempMap).forEach(async (item_id,i) => {
             // console.log(key)
             // console.log(this.state.donateMap[key])
-            console.log(item_id)
+            console.log(item_id);
             tempMap[item_id].donating = true;
             await this.setState({donateMap: tempMap});
 
@@ -73,19 +73,19 @@ export default class DonateForm extends React.Component{
             },
             body: JSON.stringify(
                 {
-                    token: token, 
-                    item_id:item_id, 
-                    disaster_id:this.props.disaster_id, 
+                    token: token,
+                    item_id:item_id,
+                    disaster_id:this.props.disaster_id,
                     quantity:tempMap[item_id].value
                 })
             });
             response = await response.json();
             console.log(response);
 
-            
+
             tempMap[item_id].donating = false;
             tempMap[item_id].donated = response.success;
-            
+
             await this.setState({donateMap: tempMap, });
 
             if(response.success){
@@ -93,29 +93,29 @@ export default class DonateForm extends React.Component{
                 let tempTotal = this.state.numTotalItemsDonated;
                 await this.setState(
                     {
-                        numItemsDonated: tempNum + 1, 
+                        numItemsDonated: tempNum + 1,
                         numTotalItemsDonated: +tempTotal + +response.donated
                     }
                 )
             }
 
-            if(this.state.numItemsDonated !=0  && this.state.numItemsDonated == this.state.numUniqueItemsToDonate){
-                this.props.onClose(this.state.numTotalItemsDonated)
+            if(this.state.numItemsDonated !== 0  && this.state.numItemsDonated === this.state.numUniqueItemsToDonate){
+                this.props.onClose(this.state.numTotalItemsDonated);
                 await this.setState({donateMap: {}, numUniqueItemsToDonate: 0, numItemsDonated: 0})
-            }    
+            }
         });
     }
 
     renderRow(item){
         //console.log(item)
-        let rowColor = ''
-        
+        let rowColor = '';
+
         if(this.state.donateMap[item.item_id] != null){
             //intending to donate
             if(this.state.donateMap[item.item_id].value > 0){
                 rowColor = 'secondary.dark'
             }
-            
+
             //donation in progress
             if(this.state.donateMap[item.item_id].donating){
                 rowColor = 'yellow'
@@ -131,8 +131,7 @@ export default class DonateForm extends React.Component{
             }
 
 
-        }
-        else{
+        } else{
             rowColor = 'secondary.light'
         }
 
@@ -141,7 +140,7 @@ export default class DonateForm extends React.Component{
             <Box pt={1}>
             <Paper elevation={2} variant='outlined' id={item.item_id} >
             <Box px={2} py={1} bgcolor={rowColor}>
-                <Grid container 
+                <Grid container
                     direction="row"
                     // justify="space-between"
                     alignItems="center"
@@ -149,7 +148,7 @@ export default class DonateForm extends React.Component{
                     <Grid item xs={5}>
                     <Typography variant='h6'>
                         {item.name}
-                    </Typography>   
+                    </Typography>
                     </Grid>
                     <Grid item xs={4}>
                     <Typography variant='h6'>
@@ -176,36 +175,36 @@ export default class DonateForm extends React.Component{
     }
 
     async handleCancel(){
-        this.props.onClose(0)
+        this.props.onClose(0);
         console.log('closing')
     }
 
     render(){
         return(
             <ThemeProvider theme={theme}>
-                    <Dialog 
-                        open={this.props.open} 
-                        onClose={this.props.onClose} 
+                    <Dialog
+                        open={this.props.open}
+                        onClose={this.props.onClose}
                         scroll='paper'
                         fullWidth = {true}
-                    >   
+                    >
                         <Box pl={4} py={2}>
                             <Typography variant='h3' color="primary">
                                 Donate
                             </Typography>
-                        </Box>          
-                        <DialogContent dividers={true} scroll='paper'>      
+                        </Box>
+                        <DialogContent dividers={true} scroll='paper'>
                                 <Paper variant='outlined'>
                                 <Box px={2} py={1} bgcolor='secondary.light'>
-                                <Grid container 
+                                <Grid container
                                     direction="row"
                                     justify="space-between"
-                                    alignItems="center"                   
+                                    alignItems="center"
                                 >
                                     <Grid item>
                                     <Typography color="primary" variant='h5'>
                                         Item Name
-                                    </Typography>      
+                                    </Typography>
                                     </Grid>
                                     <Grid item>
                                     <Typography color="primary" variant='h5'>

@@ -12,6 +12,7 @@ import {
 import Login from "./login";
 import Main from "./main";
 import DisasterTable from "./disasterTable";
+import Admin from "./admin";
 
 //Theme creation
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -40,7 +41,8 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route path="/login" component={Login}/>
-      <Route path="/disasters" component={DisasterTable} />
+      <Route path="/disasters" component={DisasterTable}/>
+      <Route path="/admin" component={Admin}/>
       <Route path="/" component={Main}/>
     </Switch>
   </Router>,

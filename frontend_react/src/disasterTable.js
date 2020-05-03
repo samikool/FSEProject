@@ -8,6 +8,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+/*********************/
+/* Depreciated *******/
+/*********************/
+
 export default class DisasterTable extends React.Component{
   constructor(props){
     super(props);
