@@ -9,10 +9,9 @@ import {useHistory} from "react-router-dom";
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Box from '@material-ui/core/Box'
 import LoginDropdown from './loginDropdown';
+import UserDropdown from './userDropdown';
 import theme from './index.js'
-
-
-
+import PersonIcon from '@material-ui/icons/Person';
 
 export default function MainAppbar(props) {
   let isLoggedIn = props.isLoggedIn;
@@ -30,6 +29,12 @@ export default function MainAppbar(props) {
   const[anchorEl, setAnchorE1] = React.useState(null);
   const open = Boolean(anchorEl);
   const id = open ? 'LoginDropdown' : undefined;
+
+  //variable to keep track of User Dropdown
+  //possible to use same variables?
+  const [anchorEl_user, setAnchorEl_user] = React.useState(null);
+  const open_user = Boolean(anchorEl_user);
+  const id_user = open_user ? 'UserDropdown' : undefined;
 
 
   //if not logged in open dropdown
@@ -59,6 +64,11 @@ export default function MainAppbar(props) {
     history.push('/admin');
   };
 
+  const handleUserDropdown = (event)=>{
+    setAnchorEl_user(event.currentTarget);
+
+  };
+
   if(isLoggedIn && isAdmin){
     return(
       <ThemeProvider theme={theme}>
@@ -66,9 +76,17 @@ export default function MainAppbar(props) {
           <ThemeProvider theme={theme}>
             <Toolbar>
               <Box>
-                <IconButton edge="start" color="primary" aria-label="menu">
-                  <MenuIcon />
+                <IconButton edge="start" color="primary" aria-label="menu" onClick={handleUserDropdown}>
+                  <PersonIcon/>
                 </IconButton>
+                <UserDropdown
+                  id={id_user}
+                  open={open_user}
+                  anchorEl={anchorEl_user}
+                  setAnchorEl={setAnchorEl_user}
+                  userName={"Antonio Washington"}
+                  email={"senortonito@gmail.com"}
+                  />
               </Box>
               <Box flexGrow={1}>
                 <Typography color="primary" variant="h6" >
@@ -99,9 +117,17 @@ export default function MainAppbar(props) {
           <ThemeProvider theme={theme}>
             <Toolbar>
               <Box>
-                <IconButton edge="start" color="primary" aria-label="menu">
-                  <MenuIcon />
+                <IconButton onClick={handleUserDropdown} edge="start" color="primary" aria-label="menu">
+                  <PersonIcon/>
                 </IconButton>
+                <UserDropdown
+                  id={id_user}
+                  open={open_user}
+                  anchorEl={anchorEl_user}
+                  setAnchorEl={setAnchorEl_user}
+                  userName={"Antonio Washington"}
+                  email={"senortonito@gmail.com"}
+                  />
               </Box>
               <Box flexGrow={1}>
                 <Typography color="primary" variant="h6" >
@@ -130,11 +156,10 @@ export default function MainAppbar(props) {
         <AppBar color="transparent" position="static">
           <ThemeProvider theme={theme}>
             <Toolbar>
-              <Box>
+              {/* <Box>
                 <IconButton edge="start" color="primary" aria-label="menu">
-                  <MenuIcon />
                 </IconButton>
-              </Box>
+              </Box> */}
               <Box flexGrow={1}>
                 <Typography color="primary" variant="h6" >
                   First Aid

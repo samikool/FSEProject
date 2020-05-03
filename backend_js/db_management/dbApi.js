@@ -391,7 +391,15 @@ class dbApi{
     return res;
   }
 
-
+  /**
+   * 
+   * @param {*} id 
+   */
+  async GetDisasterInfo(id){
+      //return all disaster info
+      //ping disaster table & ping requests table
+      //name, description, type, location, items needed & quantity
+  }
   /**
    *
    * @param {string} name This is the name of the disaster. Field can be null
@@ -488,6 +496,8 @@ class dbApi{
       res.disasters = await this.getAllDisasters();
 
       res.requests = await this.GetAllRequests();
+
+      res.donations = await this.GetAllDonations();
     }
     catch(e){
       res = e;
@@ -495,6 +505,21 @@ class dbApi{
 
     }
     return res;
+  }
+
+  /**
+   * Gets all disasters from the table
+   */
+  async GetAllDonations(){
+    var query_str = `SELECT * FROM donations;`;
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res.rows;
   }
 
   /**
@@ -529,24 +554,22 @@ class dbApi{
       //console.log(golden_pw_enc)
       if(bcrypt.compareSync(pword,golden_pw_enc)){
         // console.log("Access Granted... In theory");
-        query_str = `SELECT isadmin FROM USERS where email='${email}'`;
-        let isAdmin = await this.pool.query(query_str);
-        isAdmin =  isAdmin.rows[0].isadmin;
-
-        query_str = `SELECT isdonor FROM USERS where email='${email}'`;
-        let isDonor = await this.pool.query(query_str);
-        isDonor =  isDonor.rows[0].isdonor;
-
-        query_str = `SELECT isrequester FROM USERS where email='${email}'`;
-        let isRequester = await this.pool.query(query_str);
-        isRequester =  isRequester.rows[0].isrequester;
-
+        //changed to access the db once to receive all user info
+        query_str = `SELECT * FROM USERS where email='${email}'`;
+        let result = await this.pool.query(query_str);
+        let user_info = result.rows[0];
+        let isAdmin =  result.rows[0].isadmin;
+        let isDonor =  result.rows[0].isdonor;
+        let isRequester =  result.rows[0].isrequester;
         // console.log('isAdmin DB: ' + isAdmin)
+        // console.log(user_info);
+
         res = {
           "access": true,
           "isAdmin": isAdmin,
           "isDonor": isDonor,
           "isRequester": isRequester,
+          "user_info": user_info
         };
       } else{
           // console.log("Error: Password does not match");
@@ -556,7 +579,7 @@ class dbApi{
           };
       }
     } catch(e){
-      //aconsole.log(e)
+      console.log(e)
       res = {"access":false, "failure_reason":"email"};
     }
     return res;

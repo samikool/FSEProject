@@ -11,7 +11,8 @@ router.post('/', async function (req, res) {
 
   let response = await database.VerifyUser(email, pw);
 
-  console.log(response);
+  console.log("RESULT")
+  console.log(JSON.stringify(response.user_info));
 
   if(!response.access){
     res.status(200).json({
@@ -19,7 +20,6 @@ router.post('/', async function (req, res) {
 	    reason: response.failure_reason
 	  });
   } else if(response.access){
-
     tokens = await createToken(email, response.isAdmin, response.isDonor, response.isRequester);
     res.json(
       {
