@@ -110,10 +110,6 @@ class SimpleMap extends Component {
     //console.log('updating disasters')
   }
 
-  async flip(){
-    this.setState({doesntmatter: false})
-  }
-
   sleep(delay = 0){
     return new Promise((resolve) =>{
         setTimeout(resolve, delay);
@@ -124,9 +120,13 @@ class SimpleMap extends Component {
   // this can possibly handled in the marker class
 
 
-  async componentWillMount(){
+  async componentDidMount(){
     await this.updateData();
     this.updateDataInterval = setInterval(() => this.updateData(), 5000)
+  }
+
+  async componentWillUnmount(){
+    clearInterval(this.updateDataInterval)
   }
 
   render() {

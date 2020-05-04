@@ -14,7 +14,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import MaterialTable from 'material-table'
+import MaterialTable, { MTableToolbar } from 'material-table'
+import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore'
 import AutoComplete from '@material-ui/lab/Autocomplete'
 import TextField from '@material-ui/core/TextField'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
@@ -34,25 +35,15 @@ class Admin extends React.Component{
         super(props);
         this.state = {
             tab: 0,
-            userColumns: [
-                {title: 'ID', field: 'user_id', editable: 'never'},
-                {title: 'First Name', field: 'first_name'},
-                {title: 'Last Name', field: 'last_name'},
-                {title: 'Email', field: 'email'},
-                {title: 'Password', field: 'password'},
-                {title: 'Street Address', field: 'location.Address'},
-                {title: 'City', field: 'location.City'},
-                {title: 'Country', field: 'location.Country'},
-                {title: 'State', field: 'location.State'},
-                {title: 'Zipcode', field: 'location.Zipcode'},
-                {title: 'Admin', field: 'isadmin'},
-                {title: 'Donor', field: 'isdonor'}, 
-                {title: 'Requester', field: 'isrequester',},
-            ],
+            users: [],
+            items: [],
+            disasters: [],
+            requests: [],
+            donations: [],
             selectedRows: [],
-            selectedIDs: []
+            showSuccessSnackbar: false,
+            showFailSnackbar: false,
         }
-
 
         this.handleLogout = this.handleLogout.bind(this);
         this.handleTabChange = this.handleTabChange.bind(this);
@@ -64,6 +55,7 @@ class Admin extends React.Component{
         this.handleRowDelete = this.handleRowDelete.bind(this);
         this.handleMultipleRowDelete = this.handleMultipleRowDelete.bind(this);
         this.handleUserSelectionChange = this.handleUserSelectionChange.bind(this);
+        this.handleResetPassword = this.handleResetPassword.bind(this);
         
     }
 
@@ -118,6 +110,7 @@ class Admin extends React.Component{
             items: response.items,
             disasters: response.disasters,
             requests: response.requests,
+            donations: response.donations,
         })
     }
 
@@ -131,7 +124,7 @@ class Admin extends React.Component{
         await this.setState({tab: value})
     }
 
-    async handleRowAdd(newData, oldData){
+    async handleRowAdd(newData){
         await authorize();
         let token = await getToken()
 
@@ -160,6 +153,25 @@ class Admin extends React.Component{
                 token: token,
             })
         });
+
+        if(!response.ok){
+            //maybe show snackbar that something went wrong but probably no time
+            return;
+        }
+
+        response = await response.json();
+        console.log(response)
+        if(response.success){
+            const data = this.state[type];
+            //remove trailing s and add _id to get name of id property
+            const idPath = type.substr(0,type.length-1) + '_id';
+            newData[idPath] = response[idPath];
+            data.push(newData);
+            await this.setState({[type]: data});
+            return //this.state[type];
+        }else{
+            return;
+        }
     }
 
     async handleRowUpdate(newData, oldData){
@@ -175,6 +187,7 @@ class Admin extends React.Component{
         else if(this.state.tab === 4) type='donations'
 
         console.log('Update')
+        console.log(oldData);
         console.log(newData);
         console.log(type)
 
@@ -194,11 +207,27 @@ class Admin extends React.Component{
 
         if(!response.ok){
             //maybe show snackbar that something went wrong but probably no time
+            return;
+        }
+
+        response = await response.json();
+        console.log(response)
+        if(response.success){
+            const data = this.state[type];
+            if(type==='users') newData.password = 'classified';
+
+            data[oldData.tableData.id] = newData;
+            
+            await this.setState({[type]: data});
+            return //this.state[type];
+        }else{
+            return;
         }
     }
 
-    async handleRowDelete(newData, oldData){
+    async handleRowDelete(oldData){
         await authorize();
+        let token = await getToken()
         //find what type of data we are editing
         let type;
         if(this.state.tab === 0) type='users'
@@ -208,7 +237,7 @@ class Admin extends React.Component{
         else if(this.state.tab === 4) type='donations'
 
         console.log('delete')
-        console.log(newData);
+        console.log(oldData);
         console.log(type)
 
         let response = await fetch('http://localhost:5000/admin',{
@@ -219,49 +248,112 @@ class Admin extends React.Component{
             },
             body: JSON.stringify({
                 type: type,
-                data: newData
+                data: oldData,
+                token, token,
             })
         });
+        
+        console.log(response)
+        response = await response.json();
+
+        if(response.success){
+            const data = this.state[type];
+            data.splice(oldData.tableData.id, 1);
+            await this.setState({[type]: data});
+            return //this.state[type];
+        }else{
+            return;
+        }
     }
 
     async handleMultipleRowDelete(event, data){
+        console.log(data)
         data.forEach((rowData) => {
-            this.handleRowDelete(null, rowData);
+            this.handleRowDelete(rowData);
+        })
+        this.setState({
+            selectedRows: [],
         })
     }
 
     async handleUserSelectionChange(rows){
-        let selectedIDs=[]
-        rows.forEach((row) =>{
-            selectedIDs.push(row.user_id)
-        })
-
         this.setState({
             selectedRows: rows,
-            selectedIDs: selectedIDs
         })
+    }
+
+    async handleResetPassword(event, data){
+
     }
 
     renderUsers(){
         let index=0;
         return(
             <ThemeProvider theme={theme}>
-                <Box maxWidth='100%' hidden={this.state.tab != index}>
+                <Box 
+                    // maxHeight='75vh' 
+                    // overflow='auto' 
+                    // maxWidth='100%' 
+                >
                 <MaterialTable
                     //userComlumns defines what field to pull from data
-                    columns={this.state.userColumns}
+                    style={{
+                        maxHeight: '75vh', 
+                        overflow: 'auto', 
+                        maxWidth: '100%', 
+                    }}
+                    columns= {[
+                        {title: 'ID', field: 'user_id', editable: 'never'},
+                        {title: 'First Name', field: 'first_name'},
+                        {title: 'Last Name', field: 'last_name'},
+                        {title: 'Email', field: 'email'},
+                        {title: 'Password', field: 'password', },
+                        {title: 'Street Address', field: 'location.Address'},
+                        {title: 'City', field: 'location.City'},
+                        {title: 'State', field: 'location.State'},
+                        {title: 'Zipcode', field: 'location.Zipcode'},
+                        {title: 'Country', field: 'location.Country'},
+                        {title: 'Admin', field: 'isadmin', type:'boolean', initialEditValue: true},
+                        {title: 'Donor', field: 'isdonor', type:'boolean', initialEditValue: true}, 
+                        {title: 'Requester', field: 'isrequester', type:'boolean', initialEditValue: true},
+                    ]}
                     data={this.state.users}
-                    title='User Table'
+                    title={
+                        <Box py={1}>
+                        <Typography variant='h4' color="primary"> User Table</Typography>
+                        </Box>
+                    }
+                    components={{
+                        Toolbar: props => (
+                            <Box bgcolor={theme.palette.secondary.dark}>
+                                <MTableToolbar {...props}/>
+                            </Box>
+                        )
+                    }}
                     options={{
                         actionsColumnIndex: -1,
                         selection: true,
+                        showTextRowsSelected: false,
+                        paging: false,
+                        draggable: false,
+                        headerStyle: {
+                            backgroundColor: theme.palette.secondary.main,
+                            color: theme.palette.primary.dark,
+                        },
+                        rowStyle: rowData => ({
+                            backgroundColor: (this.state.selectedRows.includes(rowData) 
+                            ? theme.palette.secondary.dark
+                            : '#FFF'
+                            )
+                        }),
+                        selectionProps: {color: 'primary'}
                     }}
                     actions={[
                     {
                         tooltip: 'Remove All Selected Users',
                         icon: 'delete',
-                        onClick: (evt, data) => this.handleMultipleRowDelete
-                    }
+                        onClick: (evt, data) => this.handleMultipleRowDelete(evt,data)
+                    },
                     ]}
                     editable={{
                         onRowAdd: this.handleRowAdd,
@@ -279,36 +371,307 @@ class Admin extends React.Component{
     renderItems(){
         let index=1;
         return(
-            <Box hidden={this.state.tab != index}>
-                Items
-            </Box>
+            <ThemeProvider theme={theme}>
+                <Box 
+                    // maxHeight='75vh' 
+                    // overflow='auto' 
+                    // maxWidth='100%' 
+                >
+                <MaterialTable
+                    //userComlumns defines what field to pull from data
+                    style={{
+                        maxHeight: '88vh', 
+                        overflow: 'auto', 
+                        maxWidth: '100%', 
+                    }}
+                    columns= {[
+                        {title: 'ID', field: 'item_id', editable: 'never'},
+                        {title: 'Name', field: 'name'},
+                        {title: 'Type', field: 'type', lookup:{
+                                                            'cleaning':'cleaning', 
+                                                            'food':'food',
+                                                            'material':'material',
+                                                            'supplies':'supplies',
+                                                            'medical':'medical',
+                                                            'equipment':'equipment',
+                                                        }
+                    },
+                        //{title: 'Keywords', field: 'keywords'}
+                    ]}
+                    data={this.state.items}
+                    title={
+                        <Box py={1}>
+                        <Typography variant='h4' color="primary"> Item Table</Typography>
+                        </Box>
+                    }
+                    components={{
+                        Toolbar: props => (
+                            <Box bgcolor={theme.palette.secondary.dark}>
+                                <MTableToolbar {...props}/>
+                            </Box>
+                        )
+                    }}
+                    options={{
+                        actionsColumnIndex: -1,
+                        selection: true,
+                        showTextRowsSelected: false,
+                        paging: false,
+                        draggable: false,
+                        headerStyle: {
+                            backgroundColor: theme.palette.secondary.main,
+                            color: theme.palette.primary.dark,
+                        },
+                        rowStyle: rowData => ({
+                            backgroundColor: (this.state.selectedRows.includes(rowData) 
+                            ? theme.palette.secondary.dark
+                            : '#FFF'
+                            )
+                        }),
+                        selectionProps: {color: 'primary'}
+                    }}
+                    actions={[
+                    {
+                        tooltip: 'Remove All Selected Items',
+                        icon: 'delete',
+                        onClick: (evt, data) => this.handleMultipleRowDelete(evt,data)
+                    },
+                    ]}
+                    editable={{
+                        onRowAdd: this.handleRowAdd,
+                        onRowUpdate: this.handleRowUpdate,
+                        onRowDelete: this.handleRowDelete,
+                    }}
+                    onSelectionChange={(rows) => this.handleUserSelectionChange(rows)}
+                        
+                />
+                </Box>
+            </ThemeProvider>
         )
     }
 
     renderDisasters(){
         let index=2;
         return(
-            <Box hidden={this.state.tab != index}>
-                Disasters
-            </Box>
+            <ThemeProvider theme={theme}>
+                <Box 
+                    // maxHeight='75vh' 
+                    // overflow='auto' 
+                    // maxWidth='100%' 
+                >
+                <MaterialTable
+                    //userComlumns defines what field to pull from data
+                    style={{
+                        maxHeight: '88vh', 
+                        overflow: 'auto', 
+                        maxWidth: '100%', 
+                    }}
+                    columns= {[
+                        {title: 'ID', field: 'disaster_id', editable: 'never'},
+                        {title: 'Name', field: 'name'},
+                        {title: 'City', field: 'location.city'},
+                        {title: 'State', field: 'location.state'},
+                        {title: 'Country', field: 'location.country'},
+                        //{title: 'Keywords', field: 'keywords'}
+                    ]}
+                    data={this.state.disasters}
+                    title={
+                        <Box py={1}>
+                        <Typography variant='h4' color="primary"> Disaster Table</Typography>
+                        </Box>
+                    }
+                    components={{
+                        Toolbar: props => (
+                            <Box bgcolor={theme.palette.secondary.dark}>
+                                <MTableToolbar {...props}/>
+                            </Box>
+                        )
+                    }}
+                    options={{
+                        actionsColumnIndex: -1,
+                        selection: true,
+                        showTextRowsSelected: false,
+                        paging: false,
+                        draggable: false,
+                        headerStyle: {
+                            backgroundColor: theme.palette.secondary.main,
+                            color: theme.palette.primary.dark,
+                        },
+                        rowStyle: rowData => ({
+                            backgroundColor: (this.state.selectedRows.includes(rowData) 
+                            ? theme.palette.secondary.dark
+                            : '#FFF'
+                            )
+                        }),
+                        selectionProps: {color: 'primary'}
+                    }}
+                    actions={[
+                    {
+                        tooltip: 'Remove All Selected Disasters',
+                        icon: 'delete',
+                        onClick: (evt, data) => this.handleMultipleRowDelete(evt,data)
+                    },
+                    ]}
+                    editable={{
+                        onRowAdd: this.handleRowAdd,
+                        onRowUpdate: this.handleRowUpdate,
+                        onRowDelete: this.handleRowDelete,
+                    }}
+                    onSelectionChange={(rows) => this.handleUserSelectionChange(rows)}
+                        
+                />
+                </Box>
+            </ThemeProvider>
         )
     }
 
     renderRequests(){
         let index=3;
         return(
-            <Box hidden={this.state.tab != index}>
-                <div>Requests</div>
-            </Box>
+            <ThemeProvider theme={theme}>
+                <Box 
+                    // maxHeight='75vh' 
+                    // overflow='auto' 
+                    // maxWidth='100%' 
+                >
+                <MaterialTable
+                    //userComlumns defines what field to pull from data
+                    style={{
+                        maxHeight: '88vh', 
+                        overflow: 'auto', 
+                        maxWidth: '100%', 
+                    }}
+                    columns= {[
+                        {title: 'ID', field: 'request_id', editable: 'never'},
+                        {title: 'Requester ID', field: 'requester_id'},
+                        {title: 'Disaster ID', field: 'disaster_id'},
+                        {title: 'Item ID', field: 'item_id'},
+                        {title: 'Number Needed', field: 'num_needed'},
+                        {title: 'Number Provided', field: 'num_provided'}
+                        
+                    ]}
+                    data={this.state.requests}
+                    title={
+                        <Box py={1}>
+                        <Typography variant='h4' color="primary"> Requests Table</Typography>
+                        </Box>
+                    }
+                    components={{
+                        Toolbar: props => (
+                            <Box bgcolor={theme.palette.secondary.dark}>
+                                <MTableToolbar {...props}/>
+                            </Box>
+                        )
+                    }}
+                    options={{
+                        actionsColumnIndex: -1,
+                        selection: true,
+                        showTextRowsSelected: false,
+                        paging: false,
+                        draggable: false,
+                        headerStyle: {
+                            backgroundColor: theme.palette.secondary.main,
+                            color: theme.palette.primary.dark,
+                        },
+                        rowStyle: rowData => ({
+                            backgroundColor: (this.state.selectedRows.includes(rowData) 
+                            ? theme.palette.secondary.dark
+                            : '#FFF'
+                            )
+                        }),
+                        selectionProps: {color: 'primary'}
+                    }}
+                    actions={[
+                    {
+                        tooltip: 'Remove All Selected Requests',
+                        icon: 'delete',
+                        onClick: (evt, data) => this.handleMultipleRowDelete(evt,data)
+                    },
+                    ]}
+                    editable={{
+                        onRowAdd: this.handleRowAdd,
+                        onRowUpdate: this.handleRowUpdate,
+                        onRowDelete: this.handleRowDelete,
+                    }}
+                    onSelectionChange={(rows) => this.handleUserSelectionChange(rows)}
+                        
+                />
+                </Box>
+            </ThemeProvider>
         )
     }
 
     renderDonations(){
         let index=4;
         return(
-            <Box hidden={this.state.tab != index}>
-                <div>Requests</div>
-            </Box>
+            <ThemeProvider theme={theme}>
+                <Box 
+                    // maxHeight='75vh' 
+                    // overflow='auto' 
+                    // maxWidth='100%' 
+                >
+                <MaterialTable
+                    //userComlumns defines what field to pull from data
+                    style={{
+                        maxHeight: '88vh', 
+                        overflow: 'auto', 
+                        maxWidth: '100%', 
+                    }}
+                    columns= {[
+                        {title: 'ID', field: 'donation_id', editable: 'never'},
+                        {title: 'Request ID', field: 'request_id'},
+                        {title: 'Donor ID', field: 'donor_id'},
+                        {title: 'Disaster ID', field: 'disaster_id'},
+                        {title: 'Item ID', field: 'item_id'},
+                        {title: 'Number Provided', field: 'quantity'},
+                    ]}
+                    data={this.state.donations}
+                    title={
+                        <Box py={1}>
+                        <Typography variant='h4' color="primary"> Donation Table</Typography>
+                        </Box>
+                    }
+                    components={{
+                        Toolbar: props => (
+                            <Box bgcolor={theme.palette.secondary.dark}>
+                                <MTableToolbar {...props}/>
+                            </Box>
+                        )
+                    }}
+                    options={{
+                        actionsColumnIndex: -1,
+                        selection: true,
+                        showTextRowsSelected: false,
+                        paging: false,
+                        draggable: false,
+                        headerStyle: {
+                            backgroundColor: theme.palette.secondary.main,
+                            color: theme.palette.primary.dark,
+                        },
+                        rowStyle: rowData => ({
+                            backgroundColor: (this.state.selectedRows.includes(rowData) 
+                            ? theme.palette.secondary.dark
+                            : '#FFF'
+                            )
+                        }),
+                        selectionProps: {color: 'primary'}
+                    }}
+                    actions={[
+                    {
+                        tooltip: 'Remove All Selected Donations',
+                        icon: 'delete',
+                        onClick: (evt, data) => this.handleMultipleRowDelete(evt,data)
+                    },
+                    ]}
+                    editable={{
+                        onRowAdd: this.handleRowAdd,
+                        onRowUpdate: this.handleRowUpdate,
+                        onRowDelete: this.handleRowDelete,
+                    }}
+                    onSelectionChange={(rows) => this.handleUserSelectionChange(rows)}
+                        
+                />
+                </Box>
+            </ThemeProvider>
         )
     }
 
@@ -334,7 +697,7 @@ class Admin extends React.Component{
 
                     <Box pr={2}>
                         <Button variant="contained" color="secondary">
-                        <Typography variant="button"> Admin Console </Typography>
+                        <Typography onClick={this.goBack} variant="button"> Go Back </Typography>
                         </Button>
                     </Box>
                     <Box>
@@ -351,11 +714,11 @@ class Admin extends React.Component{
                         <Tab label="Donations"/>
                     </Tabs>  
             </AppBar>
-           {this.renderUsers()}
-           {this.renderItems()}
-           {this.renderDisasters()}
-           {this.renderRequests()}
-           {this.renderDonations()}
+           {this.state.tab === 0 ? this.renderUsers() : null}
+           {this.state.tab === 1 ? this.renderItems() : null}
+           {this.state.tab === 2 ? this.renderDisasters() : null}
+           {this.state.tab === 3 ? this.renderRequests() : null}
+           {this.state.tab === 4 ? this.renderDonations() : null}
         </ThemeProvider>
         );
     }

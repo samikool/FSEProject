@@ -18,16 +18,20 @@ class dbApi{
     VALUES(${requester_id},
       ${disaster_id},
       ${item_id},
-      ${quantity});`;
+      ${quantity}) RETURNING request_id;`;
 
       let res;
       try{
         res = await this.pool.query(query_str);
+        let request_id = res.rows[0].request_id
+        res={success: true, request_id: request_id};
       }catch(e) {
         res = e;
       }
     return res
   }
+
+  
 
   async MakeRequest(disaster_id, item_id, num_needed, email){
     let requester_id = await this.GetRequesterID(email)
@@ -47,6 +51,38 @@ class dbApi{
       res=e;
     }
     return num_needed;
+  }
+
+  async UpdateRequest(request_id, requester_id, item_id, disaster_id, num_needed, num_provided){
+    let query_str = `UPDATE requests set 
+      requester_id=${requester_id},
+      item_id=${item_id},
+      disaster_id=${disaster_id},
+      num_needed=${num_needed},
+      num_provided=${num_provided}
+      WHERE request_id='${request_id}';`
+      let res;
+      try{
+        await this.pool.query(query_str)
+        res = {success: true}
+      }catch(e){
+        console.log(e)
+        res=e;
+      }
+      return res;
+  }
+
+  async DropRequest(request_id){
+    let query_str = `DELETE FROM requests WHERE request_id='${request_id}'`
+    let res;
+      try{
+        await this.pool.query(query_str)
+        res = {success: true}
+      }catch(e){
+        console.log(e)
+        res=e;
+      }
+      return res;
   }
 
   /**
@@ -242,6 +278,59 @@ class dbApi{
     }
     return finalRes;
   }
+
+  async ManualDonation(request_id, donor_id, disaster_id, item_id, quantity){
+    let query_str = `INSERT INTO donations 
+    (request_id, donor_id, disaster_id, item_id, quantity)
+    VALUES(${request_id}, ${donor_id}, ${disaster_id}, ${item_id}, ${quantity}) 
+    RETURNING donation_id;`
+    
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      let donation_id = res.rows[0].donation_id;
+      res = {success: true, donation_id: donation_id};
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
+  async UpdateDonation(donation_id,request_id, donor_id, disaster_id, item_id, quantity){
+    let query_str = `UPDATE donations set 
+    request_id='${request_id}', 
+    donor_id='${donor_id}', 
+    disaster_id='${disaster_id}',
+    item_id='${item_id}', 
+    quantity='${quantity}' 
+    WHERE donation_id='${donation_id}'`
+
+    let res;
+    try{
+      await this.pool.query(query_str);
+      res = {success: true};
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
+  async DropDonation(donation_id){
+    let query_str = `DELETE FROM donations WHERE donation_id='${donation_id}'`
+
+    let res;
+    try{
+      await this.pool.query(query_str);
+      res = {success: true};
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
   /**
    * Function gets all the currently requested items for every disaster
    * @param {*}
@@ -255,7 +344,7 @@ class dbApi{
       let itemMap = {}
       for (let i=0; i<res.length; i++) {
         const element = res[i];
-        const item = await this.GetItem(element.item_id);
+        const item = await this.GetItemByID(element.item_id);
         const disaster_id = element.disaster_id;
 
         //check if disaster_id not in map then add it
@@ -320,10 +409,46 @@ class dbApi{
         '${type}',
         '[${queryformat_keywords}]');`;
     // console.log(query_str)
-    await this.pool.query(query_str);
-    console.log('item '+ name +' inserted');
+    let res;
+    try{
+      await this.pool.query(query_str);
+      console.log('item '+ name +' inserted');
+      res={success: true}
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res;
+  }
 
-    query_str = `SELECT * FROM items WHERE name='${name}';`;
+  async DropItem(item_id){
+    var query_str = `DELETE FROM items WHERE item_id='${item_id}'`
+    let res;
+    try{
+      this.pool.query(query_str);
+      res = {success: true}
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
+  async UpdateItem(item_id, name, type){
+    var query_str = `UPDATE items set name='${name}',type='${type}' WHERE item_id='${item_id}'`
+    let res;
+    try{
+      this.pool.query(query_str);
+      res = {success: true}
+    }catch(e){
+      console.log(e)
+      res = e;
+    }
+    return res;
+  }
+
+  async GetItemByName(name){
+    let query_str = `SELECT * FROM items WHERE name='${name}';`;
     let item = await this.pool.query(query_str);
     item = item.rows[0];
     return item;
@@ -333,7 +458,7 @@ class dbApi{
    * Gets an items information by item_id
    * @param {*} item_id
    */
-  async GetItem(item_id){
+  async GetItemByID(item_id){
     var query_str = `SELECT * FROM items WHERE item_id='${item_id}';`;
     let res;
     try{
@@ -455,15 +580,62 @@ class dbApi{
     '${JSON.stringify(keywords)}');`;
 
       // console.log(query_str);
-      this.pool
-        .query(query_str)
-        .then(res => console.log("disaster insert"))
-        .catch(e => {
-          console.error(e.detail)
-          // this.pool.query("SELECT * FROM USERS;")
-          //     .then(res_2 => console.log(res_2.rows))
-        })
+      let res;
+      try{
+        await this.pool.query(query_str);
+        console.log('disaster insert')
+        res = {success: true}
+
+      }catch(e){
+        res = e;
+        console.log(e)
+      }
+      return res; 
     }
+  }
+
+  async UpdateDisaster(disaster_id, name, location){
+    var query_str = `UPDATE disasters 
+    set name='${name}',
+    location='${JSON.stringify(location)}' WHERE disaster_id='${disaster_id}'`;
+    let res;
+    try{
+      await this.pool.query(query_str)
+      res = {success: true}
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res;
+  }
+
+  async DropDisaster(disaster_id){
+    var query_str = `DELETE FROM disasters WHERE disaster_id='${disaster_id}'`
+
+    let res;
+    try{
+      await this.pool.query(query_str)
+      res = {success: true}
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res;
+  }
+
+  async GetDisasterByName(name){
+    let query_str = `SELECT * FROM disasters WHERE name='${name}'`;
+    
+
+    let res;
+    try{
+      res = await this.pool.query(query_str);
+      res = res.rows[0];
+    }catch(e){
+      res = e;
+      console.log(e)
+    }
+    return res;
   }
 
   async GetAllRequests(){
@@ -618,52 +790,96 @@ class dbApi{
       //successful insert of new user
       query_str = `SELECT user_id FROM USERS WHERE EMAIL = '${email}';`;
       res = await this.pool.query(query_str);
+      console.log(res)
+      console.log(res.rows)
+      console.log(res.rows[0].user_id)
       user_id = res.rows[0].user_id;
       console.log(user_id);
       if(isReq){
-        query_str = `INSERT INTO REQUESTERS(user_id) VALUES(${user_id});`;
+        query_str = `INSERT INTO REQUESTERS(user_id) VALUES('${user_id}');`;
         await this.pool.query(query_str);
       }
 
       if(isDon){
-        query_str = `INSERT INTO DONORS(user_id) VALUES(${user_id});`;
+        query_str = `INSERT INTO DONORS(user_id) VALUES('${user_id}');`;
         await this.pool.query(query_str);
       }
     } catch(e){
       console.error(e);
+      return {success: false}
+    }
+    res={success: true}
+    return res
+  }
+
+    async UpdateUser(user_id,fname,lname,email,location,isAdmin,isDon,isReq){
+      let res;
+      var query_str = `UPDATE users SET 
+        First_Name='${fname}', 
+        Last_Name='${lname}', 
+        Email='${email}', 
+        Location='${JSON.stringify(location)}', 
+        isadmin='${isAdmin}',
+        isDonor='${isDon}',
+        isRequester='${isReq}'
+        WHERE user_id='${user_id}';`;
+      // console.log(query_str);
+      try{
+        //attempt insert
+        res = await this.pool.query(query_str);
+
+        //need to add user to donor table/do nothing if already there
+        if(isDon){
+         query_str = `INSERT INTO donors (user_id) VALUES('${user_id}')  ON CONFLICT DO NOTHING`
+        }
+        //need to remove user from donor table
+        else{
+          //let donor_id = await this.GetDonorID(email);
+          //await this.RemoveDonor(donor_id);
+          query_str = `DELETE FROM donors WHERE user_id='${user_id}'`
+        }
+
+        await this.pool.query(query_str);
+        
+        //instert id into requesters unless already there
+        if(isReq){
+          query_str = `INSERT INTO requesters (user_id) VALUES('${user_id}') ON CONFLICT DO NOTHING`
+        }
+        //need to remove user from donor table
+        else{
+          //let requester_id = await this.GetRequesterID(email);
+          //await this.RemoveRequester(requester_id);
+          query_str = `DELETE FROM requesters WHERE user_id='${user_id}'`
+        }
+
+         await this.pool.query(query_str);
+
+
+        res={success: true}
+      } catch(e){
+        res = e;
+        console.error(e);
+      }
+      return res;
     }
 
+    async UpdateUserPassword(user_id, pword){
+      var enc_pword = await bcrypt.hash(pword,10);
+      var query_str = `UPDATE users SET 
+        Password='${enc_pword}' 
+        WHERE user_id='${user_id}';`;
 
-    // this.pool
-    //     .query(query_str)
-    //     .then(res => {
-    //       console.log(`New User: Original Result ${res}`);
-    //       //successful insert of new user
-    //       user_id = await this.pool.query(`SELECT user_id FROM USERS WHERE EMAIL='${email};'`);
-    //       console.log(`-----------\nNew User: User ID Result ${user_id}`);
-    //       try{
-    //         if(isReq){
-    //           query_str = `INSERT INTO REQUESTERS(user_id) VALUES(${user_id});`
-    //           this.pool.query(query_str);
-    //         }
-
-    //         if(isDon){
-    //           query_str = `INSERT INTO DONORS(user_id) VALUES(${user_id});`
-    //           this.pool.query(query_str);
-    //         }
-    //       }
-    //       catch(e){
-    //         console.error(e);
-    //       }
-
-
-    //     })
-    //     .catch(e => {
-    //         console.error(e.detail)
-    //         this.pool.query("SELECT * FROM USERS;")
-    //             // .then(res_2 => console.log(res_2.rows))
-    //     })
-  }
+      let res;
+      try{
+        //attempt insert
+        res = await this.pool.query(query_str);
+        res={success: true}
+      } catch(e){
+        res = e;
+        console.error(e);
+      }
+      return res;
+    }
 
   async GetAllUsers(){
     var query_str = `SELECT * FROM users`;
@@ -689,19 +905,18 @@ class dbApi{
   async DropUser(email){
     let user = await this.GetUser(email);
     let id = user.user_id;
-
-    if(user.isdonor){
-      var query_str = `DELETE FROM DONORS WHERE USER_ID = '${id}'`;
-      let res = await this.pool.query(query_str);
-    }
-
-    if(user.isrequester){
-      var query_str = `DELETE FROM REQUESTERS WHERE USER_ID = '${id}'`;
-      let res = await this.pool.query(query_str);
-    }
-
     var query_str = `DELETE FROM USERS WHERE EMAIL = '${email}'`;
-    let res = await this.pool.query(query_str);
+
+    let res;
+    try{
+      
+      res = await this.pool.query(query_str);
+      res={success: true};
+    }catch(e){
+        res = {success: false};
+        console.log(e)
+    }
+    return res;
   }
 
   /**
@@ -763,8 +978,8 @@ class dbApi{
         );
 
         CREATE TABLE Donors (
-          User_ID SERIAL UNIQUE NOT NULL,
-          Donor_ID SERIAL PRIMARY KEY NOT NULL
+          Donor_ID SERIAL PRIMARY KEY NOT NULL,
+          User_ID SERIAL UNIQUE NOT NULL
         );
 
         CREATE TABLE Items (
@@ -777,14 +992,14 @@ class dbApi{
         CREATE TABLE Disasters (
           Disaster_ID SERIAL PRIMARY KEY NOT NULL,
           -- Type varchar(255) NOT NULL,
-          Name varchar(255) NOT NULL,
+          Name varchar(255) UNIQUE NOT NULL,
           Keywords jsonb,
           Location jsonb
         );
 
         CREATE TABLE Requesters (
           Requester_ID SERIAL PRIMARY KEY NOT NULL,
-          User_ID SERIAL NOT NULL
+          User_ID SERIAL UNIQUE NOT NULL
         );
 
         CREATE TABLE Requests (
@@ -805,21 +1020,21 @@ class dbApi{
           Donor_ID SERIAL NOT NULL
         );
 
-        ALTER TABLE Donors ADD FOREIGN KEY (User_ID) REFERENCES Users (User_ID);
+        ALTER TABLE Donors ADD FOREIGN KEY (User_ID) REFERENCES Users (User_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Requesters ADD FOREIGN KEY (User_ID) REFERENCES Users (User_ID);
+        ALTER TABLE Requesters ADD FOREIGN KEY (User_ID) REFERENCES Users (User_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Requests ADD FOREIGN KEY (Requester_ID) REFERENCES Requesters (Requester_ID);
+        ALTER TABLE Requests ADD FOREIGN KEY (Requester_ID) REFERENCES Requesters (Requester_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Requests ADD FOREIGN KEY (Disaster_ID) REFERENCES Disasters (Disaster_ID);
+        ALTER TABLE Requests ADD FOREIGN KEY (Disaster_ID) REFERENCES Disasters (Disaster_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Requests ADD FOREIGN KEY (Item_ID) REFERENCES Items (Item_ID);
+        ALTER TABLE Requests ADD FOREIGN KEY (Item_ID) REFERENCES Items (Item_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Donations ADD FOREIGN KEY (Disaster_ID) REFERENCES Disasters (Disaster_ID);
+        ALTER TABLE Donations ADD FOREIGN KEY (Disaster_ID) REFERENCES Disasters (Disaster_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Donations ADD FOREIGN KEY (Item_ID) REFERENCES Items (Item_ID);
+        ALTER TABLE Donations ADD FOREIGN KEY (Item_ID) REFERENCES Items (Item_ID) ON DELETE CASCADE;
 
-        ALTER TABLE Donations ADD FOREIGN KEY (Donor_ID) REFERENCES Donors (Donor_ID); 
+        ALTER TABLE Donations ADD FOREIGN KEY (Donor_ID) REFERENCES Donors (Donor_ID) ON DELETE CASCADE; 
     `
     let res = await this.pool.query(query_str);
   }
