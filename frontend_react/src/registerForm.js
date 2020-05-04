@@ -115,7 +115,7 @@ export default class RegisterForm extends React.Component{
     })
   }
 
-  validate(){
+  async validate(){
     let schema = yup.object().shape({
       first_name: yup.string().required("First name is required"),
       last_name: yup.string().required("Last name is required"),
@@ -126,7 +126,7 @@ export default class RegisterForm extends React.Component{
 
   async handleRegister(){
 
-    let isValid = validate();
+    let isValid = this.validate();
 
     let response = await fetch("http://localhost:5000/register", {
       method: 'Post',
