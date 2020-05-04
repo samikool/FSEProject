@@ -4,8 +4,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import {useHistory} from "react-router-dom";
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Box from '@material-ui/core/Box'
 import LoginDropdown from './loginDropdown';
@@ -18,7 +16,6 @@ export default function MainAppbar(props) {
   let isAdmin = props.isAdmin;
   let isDonor = props.isDonor;
   let isRequester = props.isRequester;
-  //let history = useHistory();
   // console.log('LoggedIn: ' + isLoggedIn);
   // console.log('isAdmin: ' + isAdmin);
   // console.log('isDonor: ' + isDonor);

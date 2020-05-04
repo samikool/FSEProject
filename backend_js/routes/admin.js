@@ -67,7 +67,7 @@ router.post('/', async function (req, res) {
                 req.data.isrequester,
             )
             //intending to password change
-            if(req.password !== 'classified'){
+            if(req.data.password !== 'classified'){
                 let pwResponse = await database.UpdateUserPassword(req.data.user_id, req.data.password);
                 if(!pwResponse.success){
                     response.success = false;
