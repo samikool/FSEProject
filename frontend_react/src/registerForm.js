@@ -165,11 +165,11 @@ export default class RegisterForm extends React.Component{
       <ThemeProvider theme={theme}>
         <Box height={'100%'} width={'100%'}>
           <Dialog open={this.props.open} onClose={this.props.onClose}>
-            <DialogTitle id="register">
-              <Typography color="primary" variant='h2'>
-                Register
-              </Typography>
-            </DialogTitle>
+              <Box pl={2} pt={2}>
+                <Typography variant='h3' color="primary">
+                  Register
+                </Typography>
+              </Box>
             <DialogContent>
               <Box>
                 <Typography>
