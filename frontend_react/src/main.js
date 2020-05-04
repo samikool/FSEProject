@@ -13,11 +13,8 @@ export default class Main extends React.Component{
       admin: false,
       donor: false,
       requester: false,
-
     }
   }
-
-
 
   async componentDidMount(){
     let authorization = await authorize();

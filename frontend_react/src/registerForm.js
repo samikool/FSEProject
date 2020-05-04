@@ -16,6 +16,7 @@ import Grid from '@material-ui/core/Grid'
 import theme from './index.js'
 import PlacesAutoComplete, {geocodeByAddress} from 'react-places-autocomplete'
 import Checkbox from '@material-ui/core/Checkbox'
+import * as yup from 'yup';
 //import { validate } from 'indicative/validator';
 
 
@@ -37,7 +38,7 @@ export default class RegisterForm extends React.Component{
       donorChecked: false,
       requesterChecked: false,
     };
-    this.autoComplete=null;
+    this.autoComplete = null;
     this.handleChange = this.handleChange.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
     this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
@@ -114,59 +115,18 @@ export default class RegisterForm extends React.Component{
     })
   }
 
+  validate(){
+    let schema = yup.object().shape({
+      first_name: yup.string().required("First name is required"),
+      last_name: yup.string().required("Last name is required"),
+      email: yup.string().email("Not a valid email").required("E-Mail is required."),
+      password: yup.string().min(6).required("Password must contain six characters.")
+    })
+  }
+
   async handleRegister(){
 
-    // const rules = {
-    //   firstName: 'required|alpha',
-    //   lastName: 'required|alpha',
-    //   email: 'required|email',
-    //   password: 'required|string|min:6|confirmed'
-    // };
-    //
-    // const data = {
-    //   firstName: this.state.firstName,
-    //   lastName: this.state.lastName,
-    //   email: this.state.email,
-    //   password: this.state.password
-    // };
-    //
-    // const messages = {
-    //   required: (field) => `${field} is required`,
-    //   'firstName': 'First name contains unallowed characters',
-    //   'lastName': 'Last name contains unallowed characters',
-    //   'email.email': 'Please enter a valid email address',
-    //   'password.min': 'Password is too short',
-    // };
-    //
-    // validate(data, rules, messages)
-    //   .then(() => {
-    //     let response = await fetch("http://localhost:5000/register", {
-    //       method: 'Post',
-    //       headers: {
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify(
-    //         {
-    //           firstName: this.state.firstName,
-    //           lastName: this.state.lastName,
-    //           email: this.state.email,
-    //           password: this.state.password,
-    //           streetAddress: this.state.streetAddress,
-    //           city: this.state.city,
-    //           state: this.state.state,
-    //           zipcode: this.state.zipcode,
-    //           country: this.state.country,
-    //           donor: this.state.donorChecked,
-    //           requester: this.state.requesterChecked,
-    //         })
-    //     })
-    //   )
-    //   .catch(errors => {
-    //     console.log(errors);
-    //     const formattedErrors = {};
-    //     errors.forEach( error => formattedErrors[error.field] = error.message);
-    //     this.setState({errors: formattedErrors})
-    //   })
+    let isValid = validate();
 
     let response = await fetch("http://localhost:5000/register", {
       method: 'Post',
@@ -214,13 +174,15 @@ export default class RegisterForm extends React.Component{
                 <Typography color="primary" variant='h5'>
                   Account Info
                 </Typography>
-              </Box>sole.logconsole.log
+              </Box>
 
               <Box pt={1}>
                 <Grid container spacing={1}>
                   <Grid item>
                     <TextField
                       id="firstName"
+                      autoFocus={true}
+                      required
                       variant="outlined"
                       label="First Name"
                       type="text"
@@ -230,6 +192,7 @@ export default class RegisterForm extends React.Component{
                   <Grid item>
                     <TextField
                       id="lastName"
+                      required
                       variant="outlined"
                       label="Last Name"
                       type="text"
@@ -243,6 +206,7 @@ export default class RegisterForm extends React.Component{
                   <Grid item xs={6}>
                     <TextField
                       id="email"
+                      required
                       variant="outlined"
                       label="Email"
                       type="email"
@@ -257,6 +221,8 @@ export default class RegisterForm extends React.Component{
                   <Grid item xs={4}>
                     <TextField
                       id="password"
+                      required
+                      helperText="Minimum 6 characters"
                       variant="outlined"
                       label="Password"
                       type="password"
@@ -267,6 +233,7 @@ export default class RegisterForm extends React.Component{
                   <Grid item xs={4}>
                     <TextField
                       id="verifyPassword"
+                      required
                       variant="outlined"
                       label="Verify Password"
                       type="password"
