@@ -4,7 +4,7 @@ import './index.css';
 import Box from '@material-ui/core/Box';
 import MainAppbar from './mainAppbar.js';
 import authorize from './authorize';
-import theme from './index.js'
+import theme from './theme.js'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import AppBar from '@material-ui/core/AppBar';

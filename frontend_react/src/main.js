@@ -2,7 +2,7 @@ import React from 'react';
 import MainAppbar from './mainAppbar.js';
 import SimpleMap from './map.js'
 import authorize from './authorize';
-import theme from './index';
+import theme from './theme';
 
 
 export default class Main extends React.Component{
@@ -47,6 +47,7 @@ export default class Main extends React.Component{
     return(
       <div style={{ height: '93vh', width: '100%'}}>
         <MainAppbar
+          history={this.props.history}
           isLoggedIn={this.state.loggedIn}
           isAdmin = {this.state.admin}
           isDonor = {this.state.donor}

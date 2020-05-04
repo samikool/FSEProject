@@ -10,7 +10,7 @@ import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Box from '@material-ui/core/Box'
 import LoginDropdown from './loginDropdown';
 import UserDropdown from './userDropdown';
-import theme from './index.js'
+import theme from './theme.js'
 import PersonIcon from '@material-ui/icons/Person';
 
 export default function MainAppbar(props) {
@@ -18,7 +18,7 @@ export default function MainAppbar(props) {
   let isAdmin = props.isAdmin;
   let isDonor = props.isDonor;
   let isRequester = props.isRequester;
-  let history = useHistory();
+  //let history = useHistory();
   // console.log('LoggedIn: ' + isLoggedIn);
   // console.log('isAdmin: ' + isAdmin);
   // console.log('isDonor: ' + isDonor);
@@ -61,7 +61,7 @@ export default function MainAppbar(props) {
   };
 
   const handleAdmin = async (event) => {
-    history.push('/admin');
+    props.history.push('/admin');
   };
 
   const handleUserDropdown = (event)=>{
