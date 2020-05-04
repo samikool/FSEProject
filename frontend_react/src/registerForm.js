@@ -37,6 +37,7 @@ export default class RegisterForm extends React.Component{
       autoFillAddress: '',
       donorChecked: false,
       requesterChecked: false,
+      emailInUse: false,
     };
     this.autoComplete = null;
     this.handleChange = this.handleChange.bind(this);
@@ -150,8 +151,13 @@ export default class RegisterForm extends React.Component{
     })
 
     //if register successful, probably try to login then reload window
-    //else show error, which should only be email is in use for us
-    //probably can use snackbar to show error
+    response = await response.json();
+    console.log(response)
+    if(response.success){  
+      this.props.onClose(null,null,true);
+    }else{
+      this.setState({emailInUse: true})
+    }
   }
 
   render(){
@@ -160,7 +166,7 @@ export default class RegisterForm extends React.Component{
         <Box height={'100%'} width={'100%'}>
           <Dialog open={this.props.open} onClose={this.props.onClose}>
             <DialogTitle id="register">
-              <Typography color="primary" variant='h3'>
+              <Typography color="primary" variant='h2'>
                 Register
               </Typography>
             </DialogTitle>
@@ -204,15 +210,29 @@ export default class RegisterForm extends React.Component{
               <Box pt={2}>
                 <Grid container spacing={1}>
                   <Grid item xs={6}>
-                    <TextField
-                      id="email"
-                      required
-                      variant="outlined"
-                      label="Email"
-                      type="email"
-                      fullWidth={true}
-                      onChange={this.handleChange}
-                    />
+                    {!this.state.emailInUse 
+                    ?  <TextField
+                        id="email"
+                        required
+                        variant="outlined"
+                        label="Email"
+                        type="email"
+                        fullWidth={true}
+                        onChange={this.handleChange}
+                      />
+                    : <TextField
+                        id="email"
+                        required
+                        variant="outlined"
+                        label="Email is already in use"
+                        type="email"
+                        fullWidth={true}
+                        onChange={this.handleChange}
+                        error={true}
+                      />
+                     
+                    }
+                    
                   </Grid>
                 </Grid>
               </Box>

@@ -3,7 +3,8 @@ var router = express.Router();
 
 router.post('/', async function (req, res) {
    req = req.body;
-   database.NewUser(
+   console.log('registering user')
+   response = await database.NewUser(
      req.firstName,
      req.lastName,
      req.password,
@@ -19,6 +20,8 @@ router.post('/', async function (req, res) {
      req.donor,
      req.requester
    )
+   console.log(response)
+   res.json(response)
 });
 
 module.exports = router;

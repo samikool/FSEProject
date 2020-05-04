@@ -8,16 +8,19 @@ import theme from './index.js'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import Typography from '@material-ui/core/Typography'
 import RegisterForm from './registerForm'
+import { Snackbar } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert'
 
 export default class LoginDropdown extends React.Component{
   constructor(props){
     super(props);
-    this.state = {email: '', password: '', registerOpen: false};
+    this.state = {email: '', password: '', registerOpen: false, registered: false};
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleRegisterClose = this.handleRegisterClose.bind(this);
     this.handleRegisterOpen = this.handleRegisterOpen.bind(this);
+    this.handleSnackbarClose = this.handleSnackbarClose.bind(this);
   }
 
   async handleRegisterOpen(){
@@ -26,10 +29,17 @@ export default class LoginDropdown extends React.Component{
     })
   }
 
-  async handleRegisterClose(){
+  async handleRegisterClose(event, reason, success){
+    if(success){
+      this.setState({registered: true})
+    }
     this.setState({
       registerOpen: false
     })
+  }
+
+  async handleSnackbarClose(){
+    this.setState({registered: false})
   }
 
   async handleEmail(event){
@@ -135,6 +145,11 @@ export default class LoginDropdown extends React.Component{
                 </Box>
               </Box>
           </ThemeProvider>
+          <Snackbar open={this.state.registered} autoHideDuration={6000} onClose={this.handleSnackbarClose}>
+            <Alert variant='filled' severity="success">
+              Thank you for registering. Login to start donating!
+            </Alert>
+          </Snackbar>
         </Popover>
 
       );

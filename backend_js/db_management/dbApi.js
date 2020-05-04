@@ -796,11 +796,11 @@ class dbApi{
       //successful insert of new user
       query_str = `SELECT user_id FROM USERS WHERE EMAIL = '${email}';`;
       res = await this.pool.query(query_str);
-      console.log(res)
-      console.log(res.rows)
-      console.log(res.rows[0].user_id)
+      // console.log(res)
+      // console.log(res.rows)
+      // console.log(res.rows[0].user_id)
       user_id = res.rows[0].user_id;
-      console.log(user_id);
+      // console.log(user_id);
       if(isReq){
         query_str = `INSERT INTO REQUESTERS(user_id) VALUES('${user_id}');`;
         await this.pool.query(query_str);
@@ -810,11 +810,13 @@ class dbApi{
         query_str = `INSERT INTO DONORS(user_id) VALUES('${user_id}');`;
         await this.pool.query(query_str);
       }
+
+      //if made it here successful insert
+      res = {success: true}
     } catch(e){
       console.error(e);
       return {success: false}
     }
-    res={success: true}
     return res
   }
 
