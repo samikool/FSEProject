@@ -820,74 +820,74 @@ class dbApi{
     return res
   }
 
-    async UpdateUser(user_id,fname,lname,email,location,isAdmin,isDon,isReq){
-      let res;
-      var query_str = `UPDATE users SET 
-        First_Name='${fname}', 
-        Last_Name='${lname}', 
-        Email='${email}', 
-        Location='${JSON.stringify(location)}', 
-        isadmin='${isAdmin}',
-        isDonor='${isDon}',
-        isRequester='${isReq}'
-        WHERE user_id='${user_id}';`;
-      // console.log(query_str);
-      try{
-        //attempt insert
-        res = await this.pool.query(query_str);
+  async UpdateUser(user_id,fname,lname,email,location,isAdmin,isDon,isReq){
+    let res;
+    var query_str = `UPDATE users SET 
+      First_Name='${fname}', 
+      Last_Name='${lname}', 
+      Email='${email}', 
+      Location='${JSON.stringify(location)}', 
+      isadmin='${isAdmin}',
+      isDonor='${isDon}',
+      isRequester='${isReq}'
+      WHERE user_id='${user_id}';`;
+    // console.log(query_str);
+    try{
+      //attempt insert
+      res = await this.pool.query(query_str);
 
-        //need to add user to donor table/do nothing if already there
-        if(isDon){
-         query_str = `INSERT INTO donors (user_id) VALUES('${user_id}')  ON CONFLICT DO NOTHING`
-        }
-        //need to remove user from donor table
-        else{
-          //let donor_id = await this.GetDonorID(email);
-          //await this.RemoveDonor(donor_id);
-          query_str = `DELETE FROM donors WHERE user_id='${user_id}'`
-        }
+      //need to add user to donor table/do nothing if already there
+      if(isDon){
+        query_str = `INSERT INTO donors (user_id) VALUES('${user_id}')  ON CONFLICT DO NOTHING`
+      }
+      //need to remove user from donor table
+      else{
+        //let donor_id = await this.GetDonorID(email);
+        //await this.RemoveDonor(donor_id);
+        query_str = `DELETE FROM donors WHERE user_id='${user_id}'`
+      }
+
+      await this.pool.query(query_str);
+      
+      //instert id into requesters unless already there
+      if(isReq){
+        query_str = `INSERT INTO requesters (user_id) VALUES('${user_id}') ON CONFLICT DO NOTHING`
+      }
+      //need to remove user from donor table
+      else{
+        //let requester_id = await this.GetRequesterID(email);
+        //await this.RemoveRequester(requester_id);
+        query_str = `DELETE FROM requesters WHERE user_id='${user_id}'`
+      }
 
         await this.pool.query(query_str);
-        
-        //instert id into requesters unless already there
-        if(isReq){
-          query_str = `INSERT INTO requesters (user_id) VALUES('${user_id}') ON CONFLICT DO NOTHING`
-        }
-        //need to remove user from donor table
-        else{
-          //let requester_id = await this.GetRequesterID(email);
-          //await this.RemoveRequester(requester_id);
-          query_str = `DELETE FROM requesters WHERE user_id='${user_id}'`
-        }
-
-         await this.pool.query(query_str);
 
 
-        res={success: true}
-      } catch(e){
-        res = e;
-        console.error(e);
-      }
-      return res;
+      res={success: true}
+    } catch(e){
+      res = e;
+      console.error(e);
     }
+    return res;
+  }
 
-    async UpdateUserPassword(user_id, pword){
-      var enc_pword = await bcrypt.hash(pword,10);
-      var query_str = `UPDATE users SET 
-        Password='${enc_pword}' 
-        WHERE user_id='${user_id}';`;
+  async UpdateUserPassword(user_id, pword){
+    var enc_pword = await bcrypt.hash(pword,10);
+    var query_str = `UPDATE users SET 
+      Password='${enc_pword}' 
+      WHERE user_id='${user_id}';`;
 
-      let res;
-      try{
-        //attempt insert
-        res = await this.pool.query(query_str);
-        res={success: true}
-      } catch(e){
-        res = e;
-        console.error(e);
-      }
-      return res;
+    let res;
+    try{
+      //attempt insert
+      res = await this.pool.query(query_str);
+      res={success: true}
+    } catch(e){
+      res = e;
+      console.error(e);
     }
+    return res;
+  }
 
   async GetAllUsers(){
     var query_str = `SELECT * FROM users`;

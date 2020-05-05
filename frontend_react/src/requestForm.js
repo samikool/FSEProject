@@ -88,7 +88,11 @@ export default class DonateForm extends React.Component{
     }
 
     async handleQuantityUpdate(event){
-        this.setState({quantity: event.target.value})
+        const re=/^[0-9\b]+$/
+        if(!(event.target.value === '' || re.test(event.target.value))){
+            event.target.value = 0;
+        }
+        await this.setState({quantity: event.target.value})
     }
 
     async handleRequest(){
@@ -145,14 +149,17 @@ export default class DonateForm extends React.Component{
 
         // console.log(item)
 
+
         //if item is not there add it
         let tempList = this.state.requestedItems;
-        if(tempList[item.item_id] === null){
-            tempList[item.item_id] = item;
+        if(!tempList[item.item_id]){
+            console.log('=')
+            tempList[item.item_id] = item;                                                                                                                                                                                                                                               
             tempList[item.item_id].quantity = +this.state.quantity;
         }
         //else update quantity
         else{
+            console.log('+=')
             tempList[item.item_id].quantity += +this.state.quantity;
         }
         await this.setState({
