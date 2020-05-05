@@ -1,8 +1,9 @@
 //import dbApi from './dbApi'
-var express = require('express');
+const express = require('express');
 const app = require('express')();
-var server = require('http').Server(app);
-var cors = require('cors');
+const server = require('http')
+  .Server(app);
+const cors = require('cors');
 jwt = require('jsonwebtoken');
 require('dotenv').config();
 

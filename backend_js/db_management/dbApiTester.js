@@ -1,4 +1,4 @@
-const { Pool, Client } = require('pg')
+const { Pool, Client } = require('pg');
 
 const pool = new Pool({
   user: 'postgres',
@@ -6,10 +6,10 @@ const pool = new Pool({
   database: 'first_aid',
   password: 'password',
   port: 5432,
-})
+});
 
-const dbApi = require('./dbApi')
-const db = new dbApi(pool)
+const dbApi = require('./dbApi');
+const db = new dbApi(pool);
 let test_user;
 
 
@@ -42,7 +42,15 @@ async function FillItems(array){
 async function FillUsers(array){
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    db.NewUser(element.first_name,element.last_name,element.password,element.email,element.location,element.isadmin,element.isDonor,element.isRequester)
+    db.NewUser(element.first_name,
+      element.last_name,
+      element.password,
+      element.email,
+      element.location,
+      element.isadmin,
+      element.isDonor,
+      element.isRequester
+    )
   }
 }
 

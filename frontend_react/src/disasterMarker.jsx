@@ -84,8 +84,7 @@ export default class DisasterMarker extends Component{
     //authorize to make sure token up to date
     this.setState(
       {donateOpen: true}
-    )
-    return;
+    );
   }
 
   async handleDonateClose(totalItemsDonated){
@@ -97,7 +96,7 @@ export default class DisasterMarker extends Component{
           totalItemsDonated: totalItemsDonated,
         }
       )
-    }else{
+    } else{
       this.setState({
         donateOpen:false,
       })
@@ -108,7 +107,6 @@ export default class DisasterMarker extends Component{
     this.setState({
       requestOpen: true
     })
-    return;
   }
 
   async handleRequestClose(num_requested){
@@ -120,20 +118,19 @@ export default class DisasterMarker extends Component{
           num_requested: num_requested
         }
       )
-    }else{
+    } else{
       this.setState({
         requestOpen: false,
       })
     }
-    
+
   }
 
   async handleChangePage(event, newPage){
     await this.setState({page: newPage})
   };
 
-  async handleChangeRowsPerPage(event)
-  {
+  async handleChangeRowsPerPage(event) {
     this.setState({page: 0, rowsPerPage: event.target.value})
   };
 
@@ -141,7 +138,7 @@ export default class DisasterMarker extends Component{
   renderDonate(){
     if(!this.props.isLoggedIn){
       return(
-        <Typography variant='h6'> 
+        <Typography variant='h6'>
           Sign up today so you can start donating to people in need!
         </Typography>
       )
@@ -157,11 +154,11 @@ export default class DisasterMarker extends Component{
 
     return(
       <Button disabled variant="contained" color='primary'>
-        <Typography variant="button"> Donate </Typography>
+        <Typography variant="button">
+          Donate
+        </Typography>
       </Button>
     )
-
-    
   }
 
   renderRequest(){
@@ -172,14 +169,18 @@ export default class DisasterMarker extends Component{
     if(this.props.isRequester){
       return(
           <Button onClick={this.handleRequestOpen} variant="contained" color='primary'>
-            <Typography variant="button"> Request </Typography>
+            <Typography variant="button">
+              Request
+            </Typography>
           </Button>
       )
     }
 
     return(
       <Button disabled variant="contained" color='primary'>
-        <Typography variant="button"> Request </Typography>
+        <Typography variant="button">
+          Request
+        </Typography>
       </Button>
     )
   }
@@ -195,32 +196,32 @@ export default class DisasterMarker extends Component{
                 onClick={this.handleClick}
           />}>
           <Box>
-            <Snackbar 
-              open={this.state.showDonateSnackbar} 
-              autoHideDuration={7500} 
+            <Snackbar
+              open={this.state.showDonateSnackbar}
+              autoHideDuration={7500}
               onClose={this.handleDonateSnackbarClose}
 
             >
-              <Alert 
+              <Alert
                 onClose={this.handleDonateSnackbarClose}
                 variant='filled'
-                elevation={6} 
+                elevation={6}
                 severity="success">
                 Thank you for your donation of {this.state.totalItemsDonated} items!
-              </Alert> 
+              </Alert>
             </Snackbar>
             <Snackbar
-              open={this.state.showRequestSnackbar} 
-              autoHideDuration={7500} 
+              open={this.state.showRequestSnackbar}
+              autoHideDuration={7500}
               onClose={this.handleRequestSnackbarClose}
             >
-              <Alert 
+              <Alert
                 onClose={this.handleRequestSnackbarClose}
                 variant='filled'
-                elevation={6} 
+                elevation={6}
                 severity="success">
-                Your {this.state.num_requested} items have been requested. They will be delivered as soon as they are ready. 
-              </Alert> 
+                Your {this.state.num_requested} items have been requested. They will be delivered as soon as they are ready.
+              </Alert>
             </Snackbar>
           </Box>
           <Modal.Header>{this.props.disaster.type} {this.props.disaster.name}</Modal.Header>
@@ -231,7 +232,7 @@ export default class DisasterMarker extends Component{
                  Info
               </Header>
               <p>
-                Desciption: Brief description of the disaster
+                Description: Brief description of the disaster
               </p>
               <p>
                 Type: {this.props.disaster.type}
@@ -244,10 +245,10 @@ export default class DisasterMarker extends Component{
           <Modal.Content>
           <ThemeProvider theme={theme}>
 
-              <Typography variant='h6'> 
+              <Typography variant='h6'>
                 Items Needed:
               </Typography>
-              
+
               <Box maxHeight='55vh' overflow='auto'>
               <TableContainer >
                 <Table stickyHeader={true}>
@@ -266,7 +267,7 @@ export default class DisasterMarker extends Component{
                     {
                       Object.keys(this.props.items)
                       //.slice(
-                      //  this.state.page * this.state.rowsPerPage, 
+                      //  this.state.page * this.state.rowsPerPage,
                       //  this.state.page * this.state.rowsPerPage + this.state.rowsPerPage)
                       .map(key => {
                         //console.log(this.props.disaster.items_needed[key].name)
@@ -283,7 +284,7 @@ export default class DisasterMarker extends Component{
                               {numNeeded}
                             </TableCell>
                           </TableRow>
-                        ) 
+                        )
                       })
                     }
                     </TableBody>
@@ -291,8 +292,8 @@ export default class DisasterMarker extends Component{
                 </Table>
               </TableContainer>
               </Box>
-      
-            
+
+
             <Box pt={2} >
               <Grid container
                 direction="row"
@@ -301,18 +302,18 @@ export default class DisasterMarker extends Component{
               >
                 <Grid item>
                   {this.renderDonate()}
-                  <DonateForm 
-                    open={this.state.donateOpen} 
-                    onClose={this.handleDonateClose} 
+                  <DonateForm
+                    open={this.state.donateOpen}
+                    onClose={this.handleDonateClose}
                     items={this.props.items}
                     disaster_id={this.props.disaster.id}
                   />
                 </Grid>
                 <Grid item>
                   {this.renderRequest()}
-                  <RequestForm 
-                    open={this.state.requestOpen} 
-                    onClose={this.handleRequestClose}   
+                  <RequestForm
+                    open={this.state.requestOpen}
+                    onClose={this.handleRequestClose}
                     items={this.props.items}
                     disaster_id={this.props.disaster.id}
                   />

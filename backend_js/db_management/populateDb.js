@@ -1,7 +1,7 @@
 const { Pool, Client } = require('pg');
 
 const pool = new Pool({
-  user: 'postgres',
+  user: 'josetorres',
   host: 'localhost',
   database: 'first_aid',
   password: 'password',
@@ -43,18 +43,30 @@ async function FillItems(array){
 async function FillUsers(array){
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    await db.NewUser(element.first_name,element.last_name,element.password,element.email,element.location,element.isadmin,element.isDonor,element.isRequester)
+    await db.NewUser(element.first_name,
+      element.last_name,
+      element.password,
+      element.email,
+      element.location,
+      element.isadmin,
+      element.isDonor,
+      element.isRequester
+    )
   }
 }
 
 /**
  * Test & Initialization function to fill Requests Table
- * @param {*} array 
+ * @param {*} array
  */
 async function FillRequests(array){
   for (let index = 0; index < array.length; index++) {
     const element = array[index];
-    await db.ManualRequest(element.requester_id, element.item_id, element.disaster_id, element.num_needed)
+    await db.ManualRequest(element.requester_id,
+      element.item_id,
+      element.disaster_id,
+      element.num_needed
+    )
   }
 }
 
@@ -65,7 +77,7 @@ async function FillRequests(array){
 go();
 
 async function go(){
-  await db.InitializeDB()
+  await db.InitializeDB();
 
   const user_array = [
     {
@@ -221,7 +233,7 @@ async function go(){
       "type": "material",
       "keywords": ["metal", "construction", "building"]
     },
-    
+
     {
       "name": "generator",
       "type": "equipment",
@@ -427,9 +439,7 @@ async function go(){
       "item_id": 3,
       "num_needed": 200,
     }
-  ]
-
-
+  ];
 
   await FillRequests(request_array);
 }

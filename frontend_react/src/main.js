@@ -49,15 +49,15 @@ export default class Main extends React.Component{
         <MainAppbar
           history={this.props.history}
           isLoggedIn={this.state.loggedIn}
-          isAdmin = {this.state.admin}
-          isDonor = {this.state.donor}
-          isRequester = {this.state.requester}
+          isAdmin={this.state.admin}
+          isDonor={this.state.donor}
+          isRequester={this.state.requester}
         />
         <SimpleMap
           isLoggedIn={this.state.loggedIn}
-          isAdmin = {this.state.admin}
-          isDonor = {this.state.donor}
-          isRequester = {this.state.requester}
+          isAdmin={this.state.admin}
+          isDonor={this.state.donor}
+          isRequester={this.state.requester}
         />
       </div>
     );

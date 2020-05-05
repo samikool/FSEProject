@@ -9,7 +9,7 @@ router.post('/', async function (req, res) {
 //   console.log("Token");
 //   console.log(token);
   let check = await verifyToken(token);
-  console.log("CHECK")
+  console.log("CHECK");
   console.log(check.email);
   let user_info = await database.GetUser(check.email);
   return res.json(user_info);
