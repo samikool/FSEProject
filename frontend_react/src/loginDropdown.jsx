@@ -14,7 +14,14 @@ import Alert from '@material-ui/lab/Alert'
 export default class LoginDropdown extends React.Component{
   constructor(props){
     super(props);
-    this.state = {email: '', password: '', registerOpen: false, registered: false};
+    this.state = {
+      email: '', 
+      password: '', 
+      registerOpen: false, 
+      registered: false,
+      emailProblem: false,
+      passwordProblem: false,
+    };
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -44,14 +51,20 @@ export default class LoginDropdown extends React.Component{
 
   async handleEmail(event){
     let newEmail = event.target.value;
-    await this.setState({email: newEmail});
+    await this.setState(
+      {
+        email: newEmail,
+        emailProblem: false,
+      }
+      );
     console.log(this.state.email)
   }
 
   async handlePassword(event){
     let newPassword = event.target.value;
     await this.setState({
-      password: newPassword
+      password: newPassword,
+      passwordProblem: false,
     });
     console.log(this.state.password)
   }
@@ -78,6 +91,11 @@ export default class LoginDropdown extends React.Component{
       window.location.reload();
     } else{
       console.log("Could not login because " + response['reason'] + " was incorrect")
+      if(response['reason'] === 'email'){
+        this.setState({emailProblem: true});
+      }else if(response['reason'] === 'password'){
+        this.setState({passwordProblem: true});
+      }
     }
   }
 
@@ -102,8 +120,9 @@ export default class LoginDropdown extends React.Component{
                 <Box pt={1}>
                   <TextField
                     id="userField"
-                    label="Email"
+                    label= {this.state.emailProblem ? "Email was incorrect" : "Email" }
                     type="email"
+                    error={this.state.emailProblem}
                     autoFocus={true}
                     variant='outlined'
                     onChange={this.handleEmail}/>
@@ -112,7 +131,8 @@ export default class LoginDropdown extends React.Component{
                   <TextField
                     id="passwordField"
                     type='password'
-                    label="Password"
+                    label={this.state.passwordProblem ? "Password was incorreect" : "Password"}
+                    error={this.state.passwordProblem}
                     variant='outlined'
                     onChange={this.handlePassword}
                   />
