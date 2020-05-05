@@ -43,6 +43,10 @@ export default class DonateForm extends React.Component{
         let tempDonateMap = this.state.donateMap;
         let item_id = event.target.id;
         let value = event.target.value;
+        const re=/^[0-9\b]+$/
+        if(!(value === '' || re.test(value))){
+            value = 0;
+        }
         tempDonateMap[item_id] = {};
         tempDonateMap[item_id].value = value;
         tempDonateMap[item_id].donated = null;
@@ -163,6 +167,11 @@ export default class DonateForm extends React.Component{
                             variant="outlined"
                             autoComplete="off"
                             onChange={this.handleQuantityUpdate}
+                            value={this.state.donateMap[item.item_id] 
+                                ? this.state.donateMap[item.item_id].value
+                                : ''
+                            }
+
                         />
                         </Box>
                     </Grid>
