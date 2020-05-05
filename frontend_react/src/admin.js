@@ -2,7 +2,6 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Box from '@material-ui/core/Box';
-import MainAppbar from './mainAppbar.js';
 import authorize from './authorize';
 import theme from './theme.js'
 import Tab from '@material-ui/core/Tab'
@@ -15,17 +14,6 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import MaterialTable, { MTableToolbar } from 'material-table'
-import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore'
-import AutoComplete from '@material-ui/lab/Autocomplete'
-import TextField from '@material-ui/core/TextField'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import EditIcon from '@material-ui/icons/Edit'
-import {history} from "react-router-dom/";
-import PlacesAutoComplete from 'react-places-autocomplete'
-import FormControl from '@material-ui/core/FormControl'
-import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
-import Grid from '@material-ui/core/Grid'
 
 const getToken = require('./authorize.js').getToken;
 

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 import DisasterMarker from './disasterMarker';
-import PropTypes from 'prop-types';
-import { Marker, GoogleMap, LoadScript  } from '@react-google-maps/api';
-import PlacesAutoComplete, {geocodeByAddress, getLatLng} from 'react-places-autocomplete'
+import {geocodeByAddress, getLatLng} from 'react-places-autocomplete'
 
 // const onLoad = marker => {
 //   console.log('marker: ', marker);

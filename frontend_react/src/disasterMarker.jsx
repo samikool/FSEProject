@@ -1,10 +1,6 @@
 //resources: https://react.semantic-ui.com/modules/modal
 import React, { Component } from 'react';
-// import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
-// import { Button } from 'react-bootstrap';
-import GoogleMapReact from 'google-map-react';
-import { Header, Image, Icon, Modal } from 'semantic-ui-react'
+import { Header, Icon, Modal } from 'semantic-ui-react'
 import 'semantic-ui-less/semantic.less'
 import 'semantic-ui-css/semantic.min.css';
 import Typography from '@material-ui/core/Typography'
@@ -19,16 +15,10 @@ import Grid from '@material-ui/core/Grid'
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 import theme from './theme.js'
 import Button from '@material-ui/core/Button'
-import { TablePagination } from '@material-ui/core'
-import Paper from '@material-ui/core/Paper'
-import authorize from './authorize'
 import DonateForm from './donateForm'
 import RequestForm from './requestForm'
 import Snackbar from '@material-ui/core/Snackbar'
 import Alert from '@material-ui/lab/Alert'
-
-
-const getToken = require('./authorize').getToken;
 
 const pinStyle={
   borderRadius: '10px',
