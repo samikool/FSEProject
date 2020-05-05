@@ -12,12 +12,12 @@ import {
 function App() {
   return (
     <Router>
-    <Switch>
-      <Route path="/disasters" component={DisasterTable}/>
-      <Route path="/admin" component={Admin}/>
-      <Route path="/" component={Main}/>
-    </Switch>
-  </Router>
+      <Switch>
+        <Route path="/disasters" component={DisasterTable}/>
+        <Route path="/admin" component={Admin}/>
+        <Route path="/" component={Main}/>
+      </Switch>
+    </Router>
   );
 }
 

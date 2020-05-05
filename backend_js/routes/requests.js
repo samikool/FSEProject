@@ -12,26 +12,27 @@ router.post('/', async function (req, res) {
         Object.keys(items).forEach(async function(key,i,array){
             let item = items[key];
             let num = await database.MakeRequest(
-                req.disaster_id, 
-                item.item_id, 
-                item.quantity, 
+                req.disaster_id,
+                item.item_id,
+                item.quantity,
                 access.email
             );
             processed++;
             num_requested += +num;
 
             if(processed === array.length){
-                console.log('for'+num_requested)
+                console.log('for'+num_requested);
                 res.json({num_requested: num_requested})
             }
         })
 
-        
-        
-    }else{
+
+
+    } else{
         res.sendStatus(403);
     }
-    
+
 
 });
+
 module.exports = router;

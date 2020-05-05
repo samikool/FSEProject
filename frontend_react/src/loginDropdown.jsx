@@ -14,7 +14,12 @@ import Alert from '@material-ui/lab/Alert'
 export default class LoginDropdown extends React.Component{
   constructor(props){
     super(props);
-    this.state = {email: '', password: '', registerOpen: false, registered: false};
+    this.state = {
+      email: '',
+      password: '',
+      registerOpen: false,
+      registered: false
+    };
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);

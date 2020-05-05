@@ -63,7 +63,6 @@ export default function MainAppbar(props) {
 
   const handleUserDropdown = (event)=>{
     setAnchorEl_user(event.currentTarget);
-
   };
 
   if(isLoggedIn && isAdmin){
@@ -92,7 +91,9 @@ export default function MainAppbar(props) {
               </Box>
               <Box pr={2}>
                 <Button onClick={handleAdmin} variant="contained" color="primary">
-                <Typography variant="button"> Admin Console </Typography>
+                <Typography variant="button">
+                  Admin Console
+                </Typography>
                 </Button>
               </Box>
               <Box>
@@ -133,7 +134,9 @@ export default function MainAppbar(props) {
               </Box>
               <Box>
                 <Button onClick={handleLogout} variant="contained" color='primary'>
-                  <Typography variant="button"> Logout </Typography>
+                  <Typography variant="button">
+                    Logout
+                  </Typography>
                 </Button>
               </Box>
               <LoginDropdown

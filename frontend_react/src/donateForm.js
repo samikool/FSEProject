@@ -43,7 +43,7 @@ export default class DonateForm extends React.Component{
         let tempDonateMap = this.state.donateMap;
         let item_id = event.target.id;
         let value = event.target.value;
-        tempDonateMap[item_id] = {}
+        tempDonateMap[item_id] = {};
         tempDonateMap[item_id].value = value;
         tempDonateMap[item_id].donated = null;
         tempDonateMap[item_id].donating = false;

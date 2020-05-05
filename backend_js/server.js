@@ -1,8 +1,9 @@
 //import dbApi from './dbApi'
-var express = require('express');
+const express = require('express');
 const app = require('express')();
-var server = require('http').Server(app);
-var cors = require('cors');
+const server = require('http')
+  .Server(app);
+const cors = require('cors');
 jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -13,7 +14,7 @@ app.use(cors());
 const { Pool, Client } = require('pg');
 
 const pool = new Pool({
-  user: 'postgres',
+  user: 'josetorres',
   host: 'localhost',
   database: 'first_aid',
   password: 'password',

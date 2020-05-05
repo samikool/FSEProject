@@ -11,7 +11,7 @@ async function createToken(email, admin, donor, requester){
           expiresIn: '5s'
         }
     );
-    
+
     const refreshToken = await jwt.sign(
         {
           email: email,
@@ -39,11 +39,11 @@ async function verifyToken(token){
             console.log('expired');
             return(
                   {
-                    access: false, 
+                    access: false,
                     reason: 'expired'
                   }
             );
-          } 
+          }
           else {
             console.log('invalid token');
             return(
@@ -53,7 +53,7 @@ async function verifyToken(token){
                 }
             );
           }
-    
+
         } else {
           //console.log(user.email)
           //console.log(user.isAdmin)
@@ -80,7 +80,7 @@ async function refreshToken(refreshToken){
         //second verify token is valid according to our database
         if(await database.ValidateToken(email, refreshToken)){
           //finally issue new access token
-          console.log("refreshing token")
+          console.log("refreshing token");
           const accessToken = await jwt.sign(
             {
               access: true,
@@ -103,17 +103,16 @@ async function refreshToken(refreshToken){
 async function removeToken(token){
     return await jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, async function(err, user){
         if(err) return false;
-    
+
         database.RemoveToken(user.email, refreshToken);
         return true;
     });
 
 }
 
-module.exports = 
-                {
-                    createToken,
-                    verifyToken,
-                    refreshToken,
-                    removeToken
-                }
+module.exports = {
+    createToken,
+    verifyToken,
+    refreshToken,
+    removeToken
+  };

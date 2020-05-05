@@ -11,7 +11,7 @@ router.post('/', async function (req, res) {
 
   let response = await database.VerifyUser(email, pw);
 
-  console.log("RESULT")
+  console.log("RESULT");
   console.log(JSON.stringify(response.user_info));
 
   if(!response.access){

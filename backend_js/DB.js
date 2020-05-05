@@ -1,4 +1,4 @@
-const {Pool, Client} = require('pg')
+const {Pool, Client} = require('pg');
 const bcrypt = require('bcrypt');
 class DB {
   pool;
